@@ -1,0 +1,13 @@
+services:
+  db: 
+    image: postgres:15.5
+    environment:
+      - POSTGRES_USER=god
+      - POSTGRES_PASSWORD=secret_pass
+      - POSTGRES_DB=core
+    expose:
+      - 5432
+
+
+    
+
