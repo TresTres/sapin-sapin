@@ -1,0 +1,12 @@
+# Python artifacts
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+
+# SQL artifacts
+*.sqlite3
+*.sql
+*.db
