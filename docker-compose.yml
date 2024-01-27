@@ -5,9 +5,16 @@ services:
       context: backend
       dockerfile: Dockerfile
     environment:
+
       - PORT=8000
       - HOST=0.0.0.0
       - FLASK_ENV=production
     ports:
       - 8000:8000
-    command: gunicorn backend.server.main:app 
+    volumes:
+      - logs:/app/logs
+    command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
+    # command: sleep 999999
+
+volumes:
+  logs:

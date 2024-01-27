@@ -3,14 +3,13 @@ import enum
 import typing 
 from peewee import *
 
-sql_db = SqliteDatabase('core.db')
+from backend.db.management import sql_db
 
 class BaseModel(Model):
     """A base model that will use our Postgresql database"""
     class Meta:
         database = sql_db
         
-
 
 class ChoiceEnum(enum.Enum):
     """
