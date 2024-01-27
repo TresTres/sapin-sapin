@@ -5,8 +5,9 @@ services:
       context: backend
       dockerfile: Dockerfile
     environment:
-      - UVICORN_PORT=8000
-      - UVICORN_HOST=0.0.0.0
+      - PORT=8000
+      - HOST=0.0.0.0
+      - FLASK_ENV=production
     ports:
       - 8000:8000
-    command: uvicorn backend.server.main:app 
+    command: gunicorn backend.server.main:app 
