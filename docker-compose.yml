@@ -16,5 +16,7 @@ services:
       - ./backend/sqlite:/app/sqlite
     command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
 
+
+
 volumes:
   logs:
