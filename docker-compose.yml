@@ -15,7 +15,6 @@ services:
       - logs:/app/logs
       - ./backend/sqlite:/app/sqlite
     command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
-    # command: sleep 999999
 
 volumes:
   logs:

@@ -1,9 +1,10 @@
 
-from flask import Flask
+from flask import Flask, Response
 
 from backend.db import sql_db as db
 from backend.server.initialization import db_init
 from backend.server.logging import logger
+from backend.server.blueprints import *
 
 def create_app() -> Flask:
     """
@@ -11,6 +12,7 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
     db_init()
+    app.register_blueprint(users_blueprint)
 
     logger.info(f"Pragmas: {db._pragmas}")
 
@@ -19,17 +21,15 @@ def create_app() -> Flask:
         db.connect()
 
     @app.teardown_request
-    def _db_close(exc: Exception) -> None:
+    def _db_close(response: Response) -> Response:
         if not db.is_closed():
             db.close()
+        return response
+            
 
     @app.get("/")
     def read_root():
         return {"Hello": "World"}
-
-    @app.post("/user")
-    def create_user():
-        pass
 
     return app
 
