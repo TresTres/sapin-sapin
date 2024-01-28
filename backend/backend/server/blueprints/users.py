@@ -1,6 +1,7 @@
 from flask import Blueprint, request 
 from playhouse.shortcuts import model_to_dict
 import datetime
+import typing 
 
 from backend.db import sql_db as db
 from backend.models import *
@@ -10,11 +11,15 @@ users_blueprint = Blueprint("users", __name__)
 
 @users_blueprint.get("/users")
 def get_users():
-    users = User.select().where(User.is_active == True)
+    users = User.select(User.username, User.email, User.date_joined).where(User.is_active == True)
     if not users:
         return {}
     return [model_to_dict(user) for user in users]
     
+    
+
+# @users_blueprint.route("/user/registration", methods=["GET", "POST"])
+ 
     
 # @users_blueprint.post("/register") 
 # def create_user():
