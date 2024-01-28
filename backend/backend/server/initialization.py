@@ -15,7 +15,7 @@ def create_tables() -> None:
     """
     with sql_db.connection_context():
         sql_db.create_tables(USER_MODELS, safe=True)
-        logger.info(sql_db.get_tables())
+        logger.info(f"Available tables: {sql_db.get_tables()}")
         
 
 def db_init() -> None:
