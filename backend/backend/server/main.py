@@ -1,28 +1,16 @@
-import logging
-from logging.handlers import RotatingFileHandler
+
 from flask import Flask
 
-from backend.db.management import sql_db as db
-from backend.models import *
-
-# Configure logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# Create a handler for stdout
-stdout_handler = logging.StreamHandler()
-stdout_handler.setLevel(logging.INFO)
-logger.addHandler(stdout_handler)
-
-# Create a handler for the log file
-file_handler = RotatingFileHandler('logs/server.log', maxBytes=1024, backupCount=3)
-file_handler.setLevel(logging.INFO)
-logger.addHandler(file_handler)
-
-
+from backend.db import sql_db as db
+from backend.server.initialization import db_init
+from backend.server.logging import logger
 
 def create_app() -> Flask:
+    """
+    App factory pattern
+    """
     app = Flask(__name__)
+    db_init()
 
     logger.info(f"Pragmas: {db._pragmas}")
 

@@ -1,9 +1,8 @@
-import abc 
 import enum
 import typing 
 from peewee import *
 
-from backend.db.management import sql_db
+from backend.db import sql_db
 
 class BaseModel(Model):
     """A base model that will use our Postgresql database"""
