@@ -12,7 +12,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - logs:/app/logs
+      - ./backend/logs:/app/logs
       - ./backend/sqlite:/app/sqlite
     command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
 
