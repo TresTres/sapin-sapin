@@ -1,5 +1,6 @@
 
 from flask import Flask, Response
+from flask_cors import CORS
 
 from backend.db import sql_db as db
 from backend.server.initialization import db_init
@@ -11,6 +12,7 @@ def create_app() -> Flask:
     App factory pattern
     """
     app = Flask(__name__)
+    CORS(app)
     db_init()
     app.register_blueprint(users_blueprint)
 
