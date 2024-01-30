@@ -29,3 +29,4 @@ def db_init() -> None:
     create_tables()
     # run_migrations()
     # fill_data()
+

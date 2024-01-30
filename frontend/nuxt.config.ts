@@ -5,7 +5,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      backendUrl: process.env.BASE_URL || 'http://127.0.0.1:8000'
+      backendUrl: process.env.BASE_URL || 'http://127.0.0.1:8000',
+      apiVersion: process.env.API_VERSION || 'DEV',
     }
   }
 })

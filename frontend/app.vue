@@ -8,5 +8,5 @@
 
 
 <script setup>
-  const { data: users } = await useBaseFetch('/users')
+  const { data: {value: { users } } } = await useBaseFetch('/users')
 </script>
