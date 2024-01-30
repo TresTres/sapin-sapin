@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Hello</h1>
+        <p>other </p>
+        <slot/>
     </div>
 </template>
-
