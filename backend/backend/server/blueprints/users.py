@@ -67,7 +67,7 @@ class UserLogin(Resource):
                     return {"user": self.to_payload(user)}, 200
                 return {"error": "Invalid password"}, 401
             except User.DoesNotExist:
-                return {"error": "User does not exist"}, 404
+                return {"error": "User does not exist"}, 401
 
 
 class AppUser(Resource):
