@@ -53,6 +53,10 @@ class User(BaseModel):
     def generate_password_hash(self, password: str) -> str:
         """Generate a password hash"""
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    
+    def check_password(self, password: str) -> bool:
+        """Check a password against the stored hash"""
+        return bcrypt.checkpw(password.encode('utf-8'), self.password)
 
     def save(self, *args, **kwargs) -> int:
         """Override the save method to conduct validations"""

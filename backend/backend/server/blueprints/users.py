@@ -1,8 +1,8 @@
-from flask import Blueprint, request 
+from flask import Blueprint, request
 from flask_restful import Api, Resource
 from playhouse.shortcuts import model_to_dict
 import datetime
-import typing 
+import typing
 
 from backend.db import sql_db as db
 from backend.models import *
@@ -16,15 +16,14 @@ users_api = Api(users_blueprint)
 class UserRegistration(Resource):
     """
     A resource for registering users.
-        
     """
-    
-    def post(self) -> typing.Tuple:
+
+    def post(self) -> ResponseTuple:
         """
         Create a new user using the information in the request
         """
         with db.atomic():
-            try: 
+            try:
                 user = User.create(
                     username=request.json["username"],
                     email=request.json["email"],
@@ -33,46 +32,73 @@ class UserRegistration(Resource):
                 )
             except IntegrityError:
                 return {"error": "User already exists"}, 409
-            return {
-                "new_user_id": user.id
-            }, 201
+            return {"new_user_id": user.id}, 201
 
-class AppUser(Resource):
+
+class UserLogin(Resource):
     """
-    A resource for retrieving users 
+    A resource for logging in users.
     """
-    
+
     def to_payload(self, user: typing.Dict) -> typing.Dict:
         """
         Convert a user dictionary to a payload
         """
-        if 'date_joined' in user:
-            user['date_joined'] = user['date_joined'].strftime("%Y-%m-%d %H:%M:%S")
-        return user 
-        
-    
+        if "date_joined" in user:
+            user["date_joined"] = user["date_joined"].strftime("%Y-%m-%d %H:%M:%S")
+        return user
+
+    def post(self) -> ResponseTuple:
+        """
+        Validate if a user's login and password is correct
+        """
+        with db.atomic():
+            try:
+                user = (
+                    User.get(
+                        (User.username == request.json["identifier"])
+                        | (User.email == request.json["identifier"]),
+                        User.is_active == True,
+                    )
+                    .select(User.username, User.email, User.date_joined)
+                    .dicts()
+                )
+                if user.check_password(request.json["password"]):
+                    return {"user": self.to_payload(user)}, 200
+                return {"error": "Invalid password"}, 401
+            except User.DoesNotExist:
+                return {"error": "User does not exist"}, 404
+
+
+class AppUser(Resource):
+    """
+    A resource for retrieving users
+    """
+
     def get(self) -> ResponseTuple:
-        users = User.select(User.username, User.email, User.date_joined).where(User.is_active == True).dicts()
+        users = (
+            User.select(User.username, User.email, User.date_joined)
+            .where(User.is_active == True)
+            .dicts()
+        )
         if not len(users):
             return {}, 204
-        
-        return {
-            "users": [
-                self.to_payload(user) for user in users
-            ]
-        }, 200
+
+        return {"users": [self.to_payload(user) for user in users]}, 200
+
 
 users_api.add_resource(UserRegistration, create_resource_path("registration"))
+users_api.add_resource(UserLogin, create_resource_path("login"))
 users_api.add_resource(AppUser, create_resource_path("users"))
 
 # @users_blueprint.route("/user/registration", methods=["POST"])
- 
-# @users_blueprint.post("/user/registration") 
-    
-# @users_blueprint.post("/register") 
+
+# @users_blueprint.post("/user/registration")
+
+# @users_blueprint.post("/register")
 # def create_user():
 #     with db.atomic():
-#         try: 
+#         try:
 #             user = User.create(
 #                 username=request.json["username"],
 #                 email=request.json["email"],
@@ -104,7 +130,6 @@ users_api.add_resource(AppUser, create_resource_path("users"))
 #             flash('That username is already taken')
 
 #     return render_template('join.html')
-
 
 
 # @users_blueprint.post("/create_user")
