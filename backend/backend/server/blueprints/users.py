@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, abort
 from playhouse.shortcuts import model_to_dict
 import datetime
 import typing
@@ -31,9 +31,9 @@ class UserRegistration(Resource):
                     date_joined=datetime.datetime.now(),
                 )
             except IntegrityError:
-                return {"error": "User already exists"}, 409
+                abort(409, message="User already exists")
             except ValidationError as val_error:
-                return {"error": val_error.message}, 400
+                abort(400, message=val_error.message)
             return {"new_user_id": user.id}, 201
 
 
@@ -67,9 +67,9 @@ class UserLogin(Resource):
                 )
                 if user.check_password(request.json["password"]):
                     return {"user": self.to_payload(user)}, 200
-                return {"error": "Invalid password"}, 401
+                abort(401, message="No password match found")
             except User.DoesNotExist:
-                return {"error": "User does not exist"}, 401
+                abort(401, message="Could not find user with that username or email")
 
 
 class AppUser(Resource):

@@ -28,6 +28,6 @@ class ValidationError(ProgrammingError):
     message: str
     
     def __init__(self, message: str):         
-        self.message = f"Validation error during save: {message}"   
+        self.message = message   
         super().__init__()
             
