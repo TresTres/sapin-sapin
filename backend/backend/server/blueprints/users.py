@@ -32,6 +32,8 @@ class UserRegistration(Resource):
                 )
             except IntegrityError:
                 return {"error": "User already exists"}, 409
+            except ValidationError as val_error:
+                return {"error": val_error.message}, 400
             return {"new_user_id": user.id}, 201
 
 

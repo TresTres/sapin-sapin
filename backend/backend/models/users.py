@@ -65,12 +65,11 @@ class User(BaseModel):
         
         if not self.validate_email(self.email):
             raise ValidationError(
-                self, "Email is invalid, must follow format: <name>@<domain>.<tld>"
+                "Email is invalid, must follow format: <name>@<domain>.<tld>"
             )
 
         if not self.validate_password(self.password):
             raise ValidationError(
-                self,
                 "Password is invalid, must be have a length between 6 and 40 characters and contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
             )
         self.password = self.generate_password_hash(self.password)

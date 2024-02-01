@@ -25,7 +25,9 @@ class ChoiceEnum(enum.Enum):
 class ValidationError(ProgrammingError):
     """A custom validation error for saving"""
     
-    def __init__(self, model: BaseModel, message):         
-        message = f"Validation error during save for model {model}: {message}"   
-        super().__init__(message)
+    message: str
+    
+    def __init__(self, message: str):         
+        self.message = f"Validation error during save: {message}"   
+        super().__init__()
             
