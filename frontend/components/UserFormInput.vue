@@ -7,6 +7,7 @@
       :type="isPassword ? 'password' : 'text'"
       :placeholder="placeholder"
       v-model="inputValue"
+      required
     />
   </div>
 </template>

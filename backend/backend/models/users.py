@@ -56,7 +56,7 @@ class User(BaseModel):
     
     def check_password(self, password: str) -> bool:
         """Check a password against the stored hash"""
-        return bcrypt.checkpw(password.encode('utf-8'), self.password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def save(self, *args, **kwargs) -> int:
         """Override the save method to conduct validations"""
@@ -72,5 +72,5 @@ class User(BaseModel):
             raise ValidationError(
                 "Password is invalid, must be have a length between 6 and 40 characters and contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
             )
-        self.password = self.generate_password_hash(self.password)
+        self.password = self.generate_password_hash(self.password).decode('utf-8')
         return super().save(*args, **kwargs)

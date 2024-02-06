@@ -62,11 +62,10 @@ class UserLogin(Resource):
                         | (User.email == request.json["identifier"]),
                         User.is_active == True,
                     )
-                    .select(User.username, User.email, User.date_joined)
-                    .dicts()
                 )
                 if user.check_password(request.json["password"]):
-                    return {"user": self.to_payload(user)}, 200
+                    result_user = user.select(User.username, User.email, User.date_joined).dicts()[0]
+                    return {"user": self.to_payload(result_user)}, 200
                 abort(401, message="No password match found")
             except User.DoesNotExist:
                 abort(401, message="Could not find user with that username or email")

@@ -56,22 +56,21 @@ const handleLogin = async (): Promise<void> => {
     }),
   })
     .then(({ data, error }) => {
-      if (error) {
-        const errorContent = error.value;
+      const errorContent = error.value;
+      if (errorContent) {
         if (errorContent?.statusCode === 401) {
-          userLoginError.value = "Invalid username or password";
+          throw new Error("Invalid username or password");
         } else {
-          userLoginError.value = "An error occurred";
-          throw error;
+          throw new Error("An error occurred");
         }
-        return;
       }
       const user = data?.value;
+      userLoginError.value = "Login successful";
       userStore.login((user as UserObject).username);
+      console.log(userStore);
     })
     .catch((error) => {
-      console.log(error);
-      //throw error;
+      userLoginError.value = error.message;
     });
 };
 </script>

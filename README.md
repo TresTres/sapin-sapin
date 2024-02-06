@@ -60,3 +60,8 @@ To set up the frontend, follow these steps:
     ```
 
 ## Production / Containerization
+
+## Test User
+- Username: `testuser`
+- Email: `foobar@baz.net`
+- Password: `testPassword987%`
