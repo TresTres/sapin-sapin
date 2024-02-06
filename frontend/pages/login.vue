@@ -64,10 +64,9 @@ const handleLogin = async (): Promise<void> => {
           throw new Error("An error occurred");
         }
       }
-      const user = data?.value;
+      const { user } = data?.value as UserResponseObject;
       userLoginError.value = "Login successful";
-      userStore.login((user as UserObject).username);
-      console.log(userStore);
+      userStore.login(user.username);
     })
     .catch((error) => {
       userLoginError.value = error.message;
