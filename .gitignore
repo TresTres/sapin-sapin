@@ -10,6 +10,7 @@ __pycache__/
 *.sqlite3
 *.sql
 *.db
+*.db-*
 
 # Nuxt dev/build outputs
 .output
