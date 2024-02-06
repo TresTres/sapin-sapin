@@ -5,8 +5,19 @@ services:
       context: backend
       dockerfile: Dockerfile
     environment:
-      - UVICORN_PORT=8000
-      - UVICORN_HOST=0.0.0.0
+
+      - PORT=8000
+      - HOST=0.0.0.0
+      - FLASK_ENV=production
+      - API_VERSION=1.0
     ports:
       - 8000:8000
-    command: uvicorn backend.server.main:app 
+    volumes:
+      - ./backend/logs:/app/logs
+      - ./backend/sqlite:/app/sqlite
+    command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
+
+
+
+volumes:
+  logs:

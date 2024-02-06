@@ -1,16 +1,14 @@
-import abc 
 import enum
 import typing 
 from peewee import *
 
-sql_db = SqliteDatabase('core.db')
+from backend.db import sql_db
 
 class BaseModel(Model):
     """A base model that will use our Postgresql database"""
     class Meta:
         database = sql_db
         
-
 
 class ChoiceEnum(enum.Enum):
     """
@@ -23,6 +21,13 @@ class ChoiceEnum(enum.Enum):
         return [(i.name, i.value) for i in cls]
 
 
+
+class ValidationError(ProgrammingError):
+    """A custom validation error for saving"""
     
+    message: str
     
-    
+    def __init__(self, message: str):         
+        self.message = message   
+        super().__init__()
+            
