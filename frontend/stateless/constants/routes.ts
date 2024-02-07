@@ -19,8 +19,4 @@ export const userRoutes = [
     name: "Profile",
     path: "profile",
   },
-  {
-    name: "Logout",
-    path: "logout",
-  },
 ];

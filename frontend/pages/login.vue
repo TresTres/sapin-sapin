@@ -45,7 +45,7 @@ const password = ref("");
 
 
 const userStore = getUserStore();
-
+const router = useRouter();
 
 const handleLogin = async (): Promise<void> => {
   await useBaseFetch("/login", {
@@ -64,9 +64,10 @@ const handleLogin = async (): Promise<void> => {
           throw new Error("An error occurred");
         }
       }
-      const { user } = data?.value as UserResponseObject;
+      const { user } = data?.value as { user: UserResponseObject };
       userLoginError.value = "Login successful";
-      userStore.login(user.username);
+      userStore.login(user);
+      router.push("/");
     })
     .catch((error) => {
       userLoginError.value = error.message;
