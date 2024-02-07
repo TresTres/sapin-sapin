@@ -71,23 +71,5 @@ class UserLogin(Resource):
                 abort(401, message="Could not find user with that username or email")
 
 
-class AppUser(Resource):
-    """
-    A resource for retrieving users
-    """
-
-    def get(self) -> ResponseTuple:
-        users = (
-            User.select(User.username, User.email, User.date_joined)
-            .where(User.is_active == True)
-            .dicts()
-        )
-        if not len(users):
-            return {}, 204
-
-        return {"users": [self.to_payload(user) for user in users]}, 200
-
-
 users_api.add_resource(UserRegistration, create_resource_path("registration"))
 users_api.add_resource(UserLogin, create_resource_path("login"))
-users_api.add_resource(AppUser, create_resource_path("users"))
