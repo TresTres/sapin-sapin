@@ -2,7 +2,7 @@ from flask import Flask, Response
 from flask_cors import CORS
 
 from backend.db import sql_db as db
-from backend.server.initialization import db_init
+from backend.server.initialization import init_db
 from backend.server.logging import logger
 from backend.server.blueprints import *
 
@@ -14,7 +14,7 @@ def create_app() -> Flask:
     """
     app = Flask(__name__)
     CORS(app)
-    db_init()
+    init_db(db)
     app.register_blueprint(users_blueprint)
 
     logger.info(f"Pragmas: {db._pragmas}")
