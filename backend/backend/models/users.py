@@ -35,7 +35,7 @@ class User(BaseModel):
         r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+"
     )
     password_regex = re.compile(
-        r"(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^A-Za-z\s0-9]){6,40}"
+        r"^(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z\d])(?!.*?[;\-\s]).{6,40}$"
     )
 
     def validate_email(self, email: str) -> bool:
@@ -70,7 +70,7 @@ class User(BaseModel):
 
         if not self.validate_password(self.password):
             raise ValidationError(
-                "Password is invalid, must be have a length between 6 and 40 characters and contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character",
+                "Password is invalid, must be have a length between 6 and 40 characters and contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character (excluding ; or - or whitespace)",
             )
         self.password = self.generate_password_hash(self.password).decode('utf-8')
         return super().save(*args, **kwargs)
