@@ -39,7 +39,7 @@ def create_app() -> Flask:
         return {"Hello": "World"}
     
     @app.errorhandler(404)
-    def not_found() -> Response:
+    def not_found(_e: Exception) -> Response:
         return {"error": "Not found"}, 404
 
     return app
