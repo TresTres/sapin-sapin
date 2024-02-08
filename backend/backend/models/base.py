@@ -2,12 +2,12 @@ import enum
 import typing 
 from peewee import *
 
-from backend.db import sql_db
+from backend.db import db
 
 class BaseModel(Model):
     """A base model that will use our Postgresql database"""
     class Meta:
-        database = sql_db
+        database = db
         
 
 class ChoiceEnum(enum.Enum):

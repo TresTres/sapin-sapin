@@ -1,23 +1,38 @@
-from flask import Flask, Response
+import os 
+from flask import Flask, Response, Config
 from flask_cors import CORS
 
-from backend.db import sql_db as db
-from backend.server.initialization import init_db
-from backend.server.logging import logger
+from backend.db import db
+from backend.server.migrations import migrate
+from backend.server.logging import logger, configure_logging
 from backend.server.blueprints import *
+from backend.server.routes import register_routes
+
+def prepare_db(app_config: Config) -> None:
+    """
+    Prepare the database
+    """
+    db.init(app_config.get('DATABASE_URL', 'sqlite:///:memory:'))
+    migrate(db)
 
 
-
-def create_app() -> Flask:
+def create_app(mode: str) -> Flask:
     """
     App factory pattern
     """
     app = Flask(__name__)
     CORS(app)
-    init_db(db)
+    app.config.from_object(f'config.{mode.lower()}_config')
     app.register_blueprint(users_blueprint)
 
+
+    prepare_db(app.config)
+    register_routes(app.config)
+    configure_logging(app.config)
+
     logger.info(f"Pragmas: {db._pragmas}")
+    logger.info(app.url_map)
+
 
     @app.before_request
     def _db_connect() -> None:

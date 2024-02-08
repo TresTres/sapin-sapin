@@ -1,13 +1,13 @@
-from flask import Blueprint, request, make_response, Response
+from flask import Blueprint, request, make_response, Response, current_app
 from flask_restful import Api, Resource, abort
 import jwt
 import datetime
 import typing
 
-from backend.db import sql_db as db
+
 from backend.models import *
+from backend.db import db
 from backend.server.logging import logger
-from backend.server.utils import create_resource_path, APP_KEY
 
 users_blueprint = Blueprint("users", __name__)
 users_api = Api(users_blueprint)
@@ -68,7 +68,7 @@ class UserLogin(Resource):
                     # Send a JWT token with 30 minute expiration date 
                     token = jwt.encode({
                         "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
-                    }, key=APP_KEY, algorithm="HS256")
+                    }, key=current_app.config['APP_KEY'], algorithm="HS256")
                     
                     return make_response(
                         {
@@ -89,6 +89,3 @@ class UserLogin(Resource):
                     headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
                 )
 
-
-users_api.add_resource(UserRegistration, create_resource_path("registration"))
-users_api.add_resource(UserLogin, create_resource_path("login"))

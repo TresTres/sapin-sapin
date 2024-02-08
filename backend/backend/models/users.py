@@ -9,7 +9,7 @@ class Currency(ChoiceEnum):
     EUR = "€"
 
 
-class Config(BaseModel):
+class UserConfig(BaseModel):
     """A model for storing configuration values"""
 
     currency = CharField(choices=Currency.as_choices(), default=Currency.USD)

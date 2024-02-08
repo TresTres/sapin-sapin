@@ -18,7 +18,7 @@ def create_tables(db: SqliteDatabase) -> None:
         logger.info(f"Available tables: {db.get_tables()}")
 
 
-def init_db(db: SqliteDatabase) -> None:
+def migrate(db: SqliteDatabase) -> None:
     """
     Initialize the database.
 
@@ -27,5 +27,4 @@ def init_db(db: SqliteDatabase) -> None:
     Run migrations?
     """
     create_tables(db)
-    # run_migrations()
     # fill_data()
