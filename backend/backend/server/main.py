@@ -12,13 +12,13 @@ def prepare_db(app_config: Config) -> None:
     """
     Prepare the database
     """
-    db.init(app_config.get('DATABASE_URL', 'sqlite:///:memory:'))
+    db.init(app_config.get('DATABASE_URL', ':memory:'))
     migrate(db)
 
 
 def create_app(mode: str) -> Flask:
     """
-    App factory pattern
+    Factory pattern to generate a Flask app
     """
     app = Flask(__name__)
     CORS(app)

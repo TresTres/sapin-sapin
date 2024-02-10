@@ -67,7 +67,7 @@ class UserLogin(Resource):
                     ).dicts()[0]
                     # Send a JWT token with 30 minute expiration date 
                     token = jwt.encode({
-                        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+                        "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=30),
                     }, key=current_app.config['APP_KEY'], algorithm="HS256")
                     
                     return make_response(
@@ -79,7 +79,7 @@ class UserLogin(Resource):
                     )
                 abort(
                     401,
-                    message="No password match found",
+                    message="Incorrect password",
                     headers={"WWW-Authenticate": "Basic realm='Wrong password'"},
                 )
             except User.DoesNotExist:
