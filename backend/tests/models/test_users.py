@@ -20,7 +20,6 @@ class TestUserModel:
                 password=VALID_PASSWORD,
             )
 
-
     @pytest.mark.parametrize(
         "username",
         [

@@ -65,11 +65,16 @@ class UserLogin(Resource):
                     result_user = user.select(
                         User.username, User.email, User.date_joined
                     ).dicts()[0]
-                    # Send a JWT token with 30 minute expiration date 
-                    token = jwt.encode({
-                        "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=30),
-                    }, key=current_app.config['APP_KEY'], algorithm="HS256")
-                    
+                    # Send a JWT token with 30 minute expiration date
+                    token = jwt.encode(
+                        {
+                            "exp": datetime.datetime.now(datetime.UTC)
+                            + datetime.timedelta(minutes=30),
+                        },
+                        key=current_app.config["APP_KEY"],
+                        algorithm="HS256",
+                    )
+
                     return make_response(
                         {
                             "user": self.to_payload(result_user),
@@ -88,4 +93,3 @@ class UserLogin(Resource):
                     message="Could not find user with that username or email",
                     headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
                 )
-

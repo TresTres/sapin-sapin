@@ -7,7 +7,6 @@ from backend.db import db
 from tests.constants import *
 
 
-
 @pytest.fixture(scope="function")
 def client_with_user(client: werkzeug.test.Client) -> werkzeug.test.Client:
     """
@@ -23,6 +22,8 @@ def client_with_user(client: werkzeug.test.Client) -> werkzeug.test.Client:
     yield client
     with db.connection_context():
         User.truncate_table()
+
+
 class TestUserRegistration:
 
     @pytest.mark.parametrize(
@@ -34,7 +35,7 @@ class TestUserRegistration:
         ],
     )
     def test_registration_failure_invalid_input(
-        self, 
+        self,
         client: werkzeug.test.Client,
         username: str,
         email: str,
@@ -55,7 +56,9 @@ class TestUserRegistration:
         assert response.status_code == 400
         assert expected_message in response.json["message"]
 
-    def test_registration_failure_user_exists(self, client_with_user: werkzeug.test.Client) -> None:
+    def test_registration_failure_user_exists(
+        self, client_with_user: werkzeug.test.Client
+    ) -> None:
         """
         Test exception when creating a user that already exists
         """
@@ -69,7 +72,7 @@ class TestUserRegistration:
         )
         assert response.status_code == 409
         assert "User already exists" in response.json["message"]
-                                  
+
     def test_registration_success(self, client: werkzeug.test.Client) -> None:
         """
         Test successful user registration
@@ -85,9 +88,9 @@ class TestUserRegistration:
         assert response.status_code == 201
         assert "new_user" in response.json
 
-        
+
 class TestUserLogin:
-    
+
     @pytest.mark.parametrize(
         "identifier",
         [
@@ -95,7 +98,9 @@ class TestUserLogin:
             VALID_EMAIL,
         ],
     )
-    def test_login_failure_user_does_not_exist(self, client: werkzeug.test.Client, identifier: str) -> None:
+    def test_login_failure_user_does_not_exist(
+        self, client: werkzeug.test.Client, identifier: str
+    ) -> None:
         """
         Test exception when logging in a user that does not exist
         """
@@ -106,7 +111,9 @@ class TestUserLogin:
         assert response.status_code == 401
         assert "Could not find user" in response.json["message"]
 
-    def test_login_failure_incorrect_password(self, client_with_user: werkzeug.test.Client) -> None:
+    def test_login_failure_incorrect_password(
+        self, client_with_user: werkzeug.test.Client
+    ) -> None:
         """
         Test exception when logging in a user that is not active
         """
@@ -121,7 +128,7 @@ class TestUserLogin:
         """
         Test successful user login
         """
-    
+
         response = client_with_user.post(
             create_resource_path(client_with_user.application.config, "login"),
             json={"identifier": VALID_USERNAME, "password": VALID_PASSWORD},

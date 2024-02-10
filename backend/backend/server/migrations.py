@@ -10,6 +10,7 @@ USER_MODELS = [
 
 MODELS = USER_MODELS
 
+
 @db.connection_context()
 def create_tables(db: SqliteDatabase) -> None:
     """

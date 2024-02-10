@@ -1,2 +1,2 @@
 from .users import *
-from .rules import * 
+from .rules import *
