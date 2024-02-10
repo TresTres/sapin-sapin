@@ -1,12 +1,7 @@
-import peewee
 import pytest
+import peewee
 
-from backend.models import *
-
-
-MODELS = [
-    User,
-]
+from backend.server.migrations import MODELS
 
 
 @pytest.fixture(scope="class", autouse=True)
