@@ -40,6 +40,7 @@ def create_app(mode: str) -> Flask:
         
     @app.after_request
     def _see_response(response: Response) -> Response:
+        logger.debug(f"Headers: {response.headers}")
         logger.debug(f"Response: {response.get_data()}")
         return response
 
