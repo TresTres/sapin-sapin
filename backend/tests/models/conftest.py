@@ -1,13 +1,10 @@
-import peewee
 import pytest
+import peewee
 
-from backend.models import * 
-
-
-MODELS = [User,]
+from backend.server.migrations import MODELS
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="class", autouse=True)
 def db() -> peewee.SqliteDatabase:
     """Create a database connection with tables loaded"""
     db = peewee.SqliteDatabase(":memory:")
@@ -16,4 +13,3 @@ def db() -> peewee.SqliteDatabase:
         with db.connection_context():
             yield db
         db.drop_tables(MODELS, safe=True)
-        

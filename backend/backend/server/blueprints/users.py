@@ -1,13 +1,13 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response, Response, current_app
 from flask_restful import Api, Resource, abort
-from playhouse.shortcuts import model_to_dict
+import jwt
 import datetime
 import typing
 
-from backend.db import sql_db as db
+
 from backend.models import *
+from backend.db import db
 from backend.server.logging import logger
-from backend.server.utils import create_resource_path, ResponseTuple
 
 users_blueprint = Blueprint("users", __name__)
 users_api = Api(users_blueprint)
@@ -18,7 +18,7 @@ class UserRegistration(Resource):
     A resource for registering users.
     """
 
-    def post(self) -> ResponseTuple:
+    def post(self) -> Response:
         """
         Create a new user using the information in the request
         """
@@ -34,7 +34,7 @@ class UserRegistration(Resource):
                 abort(409, message="User already exists")
             except ValidationError as val_error:
                 abort(400, message=val_error.message)
-            return {"new_user_id": user.id}, 201
+            return make_response({"new_user": user.username}, 201)
 
 
 class UserLogin(Resource):
@@ -50,26 +50,46 @@ class UserLogin(Resource):
             user["date_joined"] = user["date_joined"].strftime("%Y-%m-%d %H:%M:%S")
         return user
 
-    def post(self) -> ResponseTuple:
+    def post(self) -> Response:
         """
         Validate if a user's login and password is correct
         """
         with db.atomic():
             try:
-                user = (
-                    User.get(
-                        (User.username == request.json["identifier"])
-                        | (User.email == request.json["identifier"]),
-                        User.is_active == True,
-                    )
+                user = User.get(
+                    (User.username == request.json["identifier"])
+                    | (User.email == request.json["identifier"]),
+                    User.is_active == True,
                 )
                 if user.check_password(request.json["password"]):
-                    result_user = user.select(User.username, User.email, User.date_joined).dicts()[0]
-                    return {"user": self.to_payload(result_user)}, 200
-                abort(401, message="No password match found")
+                    result_user = user.select(
+                        User.username, User.email, User.date_joined
+                    ).dicts()[0]
+                    # Send a JWT token with 30 minute expiration date
+                    token = jwt.encode(
+                        {
+                            "exp": datetime.datetime.now(datetime.UTC)
+                            + datetime.timedelta(minutes=30),
+                        },
+                        key=current_app.config["APP_KEY"],
+                        algorithm="HS256",
+                    )
+
+                    return make_response(
+                        {
+                            "user": self.to_payload(result_user),
+                        },
+                        200,
+                        {"Authorization": f"Bearer {token}"},
+                    )
+                abort(
+                    401,
+                    message="Incorrect password",
+                    headers={"WWW-Authenticate": "Basic realm='Wrong password'"},
+                )
             except User.DoesNotExist:
-                abort(401, message="Could not find user with that username or email")
-
-
-users_api.add_resource(UserRegistration, create_resource_path("registration"))
-users_api.add_resource(UserLogin, create_resource_path("login"))
+                abort(
+                    401,
+                    message="Could not find user with that username or email",
+                    headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
+                )
