@@ -23,6 +23,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@vueuse/core": "^10.7.2",
     "purecss": "^3.0.0"
   }
 }

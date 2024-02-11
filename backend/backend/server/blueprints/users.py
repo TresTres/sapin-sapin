@@ -72,7 +72,7 @@ class UserLogin(Resource):
                             "exp": datetime.datetime.now(datetime.UTC)
                             + datetime.timedelta(minutes=5),
                         },
-                        key=current_app.config["APP_KEY"],
+                        key=current_app.config["ACCESS_KEY_SECRET"],
                         algorithm="HS256",
                     )
 
@@ -87,7 +87,7 @@ class UserLogin(Resource):
                         {
                             "user": user.id,
                         },
-                        key=current_app.config["APP_KEY"],
+                        key=current_app.config["REFRESH_KEY_SECRET"],
                         algorithm="HS256",
                     )
                     # TODO: Make the cookie secure and use HTTPS
