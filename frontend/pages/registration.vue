@@ -88,7 +88,7 @@ const handleRegistration = async (): Promise<void> => {
     )
     .then(({ data, error }) => {
       const errorContent = error.value;
-      if (errorContent) {
+      if (errorContent || !data.value ) {
         if (
           errorContent?.statusCode === 409 ||
           errorContent?.statusCode === 400
@@ -98,7 +98,8 @@ const handleRegistration = async (): Promise<void> => {
           throw new Error("Unspecified error");
         }
       }
-      userRegistrationError.value = "Registration successful";
+      const newUser = data.value as UserRegistrationObject
+      userRegistrationError.value = `Registration successful for username: ${newUser.new_user}.  Proceed to login.`;
     })
     .catch((error) => {
       userRegistrationError.value = error.message;

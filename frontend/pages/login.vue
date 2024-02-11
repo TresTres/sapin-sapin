@@ -1,20 +1,19 @@
-import { UserResponseObject, UserObject } from '../stateless/interfaces/response-objects';
 <template>
   <form class="pure-form-1-2 pure-form-aligned" @submit.prevent="handleLogin">
     <fieldset class="pure-group">
-      <span v-text="userLoginError"></span>
+      <span v-text="authError"></span>
       <div>
         <UserFormInput
           :label="identifierLabel"
-          :index=0
-          :isPassword=false
+          :index="0"
+          :isPassword="false"
           :placeholder="identifierLabel"
           v-model:inputValue="identifier"
         />
         <UserFormInput
           :label="passwordLabel"
-          :index=1
-          :isPassword=true
+          :index="1"
+          :isPassword="true"
           :placeholder="passwordLabel"
           v-model:inputValue="password"
         />
@@ -34,43 +33,15 @@ definePageMeta({
   layout: "landing",
 });
 
-const userLoginError = defineModel("userLoginError", {
-  type: String,
-  default: "",
-});
 const identifierLabel = "Username or Email";
 const passwordLabel = "Password";
 const identifier = ref("");
 const password = ref("");
 
-
-const userStore = getUserStore();
-const router = useRouter();
+const authStore = getAuthStore();
+const { authError } = storeToRefs(authStore);
 
 const handleLogin = async (): Promise<void> => {
-  await useBaseFetch("/login", {
-    method: "POST",
-    body: JSON.stringify({
-      identifier: identifier.value,
-      password: password.value,
-    }),
-  })
-    .then(({ data, error }) => {
-      const errorContent = error.value;
-      if (errorContent) {
-        if (errorContent?.statusCode === 401) {
-          throw new Error("Invalid username or password");
-        } else {
-          throw new Error("An error occurred");
-        }
-      }
-      const { user } = data?.value as { user: UserResponseObject };
-      userLoginError.value = "Login successful";
-      userStore.login(user);
-      router.push("/");
-    })
-    .catch((error) => {
-      userLoginError.value = error.message;
-    });
+  await authStore.login(identifier.value, password.value);
 };
 </script>

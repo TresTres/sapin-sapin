@@ -20,6 +20,6 @@ export default defineNuxtConfig({
   imports: {
     dirs: [
       'stateless/**/*'
-    ]
+    ],  
   }
 });

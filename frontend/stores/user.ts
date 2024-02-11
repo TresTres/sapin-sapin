@@ -1,26 +1,23 @@
 export const getUserStore = defineStore('userStore', {
     state: () => ({
-      isLoggedIn: false, 
-      username: '',
-      email: '', 
-      dateJoined: new Date(),
+      username: '' as string,
+      email: '' as string, 
+      dateJoined: new Date() as Date,
     }),
     actions: {
-        login(user: UserResponseObject) {
-            this.isLoggedIn = true
+        fillUser(user: UserObject) {
             this.username = user.username
             this.email = user.email
             this.dateJoined = new Date(user.date_joined)
         },
-        logout() {
-            this.isLoggedIn = false
+        
+        clear() {
             this.username = ''
+            this.email = ''
+            this.dateJoined = new Date()
         }
     },
     getters: {
-        loginStatus(state): boolean {
-            return state.isLoggedIn
-        },
         getUsername(state): string {
             return state.username
         },

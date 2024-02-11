@@ -9,7 +9,7 @@
   <NuxtLoadingIndicator />
   <NuxtLayout>
     <Navbar
-      :routes="[...appRoutes, ...(userStore.loginStatus ? userRoutes : landingRoutes)]"
+      :routes="[...appRoutes, ...(authStore.loginStatus ? userRoutes : landingRoutes)]"
     />
     <NuxtPage />
   </NuxtLayout>
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import "purecss";
 
-const userStore = getUserStore();
+const authStore = getAuthStore();
 
 </script>
 
