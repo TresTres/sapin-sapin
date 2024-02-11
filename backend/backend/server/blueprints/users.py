@@ -66,22 +66,35 @@ class UserLogin(Resource):
                         User.username, User.email, User.date_joined
                     ).dicts()[0]
                     # Send a JWT token with 30 minute expiration date
-                    token = jwt.encode(
+                    access_token = jwt.encode(
                         {
+                            "user": user.id, 
                             "exp": datetime.datetime.now(datetime.UTC)
-                            + datetime.timedelta(minutes=30),
+                            + datetime.timedelta(minutes=5),
                         },
                         key=current_app.config["APP_KEY"],
                         algorithm="HS256",
                     )
 
-                    return make_response(
+                    resp = make_response(
                         {
                             "user": self.to_payload(result_user),
                         },
                         200,
-                        {"Authorization": f"Bearer {token}"},
+                        {"Authorization": f"Bearer {access_token}"},
                     )
+                    refresh_token = jwt.encode(
+                        {
+                            "user": user.id,
+                        },
+                        key=current_app.config["APP_KEY"],
+                        algorithm="HS256",
+                    )
+                    # TODO: Make the cookie secure and use HTTPS
+                    # TODO: Set the cookie to samesite="Strict" if the domain is singular
+                    # max-age > expires https://www.rfc-editor.org/rfc/rfc7234#section-5.3
+                    resp.set_cookie("refresh_token", refresh_token, httponly=True, max_age=60*30)
+                    return resp
                 abort(
                     401,
                     message="Incorrect password",

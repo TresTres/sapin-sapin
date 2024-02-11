@@ -22,6 +22,7 @@ def create_app(mode: str) -> Flask:
     Factory pattern to generate a Flask app
     """
     app = Flask(__name__)
+    # TODO: Setup singular domain and disable CORS(?)
     CORS(app)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
