@@ -23,7 +23,7 @@ def create_app(mode: str) -> Flask:
     """
     app = Flask(__name__)
     # TODO: Setup singular domain and disable CORS(?)
-    CORS(app)
+    CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
 
