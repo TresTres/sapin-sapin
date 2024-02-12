@@ -1,22 +1,16 @@
 services:
 
-  backend:
+  backend: 
     build:
       context: backend
       dockerfile: Dockerfile
     environment:
-
       - PORT=8000
       - HOST=0.0.0.0
-      - FLASK_ENV=production
-      - APP_MODE=prod
-
     ports:
       - 8000:8000
     volumes:
       - ./backend/logs:/app/logs
       - ./backend/sqlite:/app/sqlite
-    command: ./prod_entrypoint.sh
+    command: sh ./prod_entrypoint.sh
 
-volumes:
-  logs:

@@ -16,6 +16,7 @@ RUN poetry config virtualenvs.create false \
 
 # Copy code into working directory.  Expected context: <project root>/backend
 COPY . /app
+RUN mv /app/config/gunicorn.conf.py /app/gunicorn.conf.py
 
 # Set permissions
 RUN chown -R server_admin:server_admin /app

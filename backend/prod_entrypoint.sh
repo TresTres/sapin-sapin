@@ -2,5 +2,4 @@
 
 # Server entry point which receives the environment variables and starts the server
 
-
-gunicorn backend.server.wsgi:app  
+APP_MODE=PROD gunicorn backend.server.wsgi:app

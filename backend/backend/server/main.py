@@ -30,15 +30,18 @@ def create_app(mode: str) -> Flask:
     register_routes(app.config)
     configure_logging(app.config)
 
+    logger.info(f"App mode: {mode}")
     logger.info(f"Pragmas: {db._pragmas}")
     logger.info(app.url_map)
 
     @app.before_request
-    def _db_connect() -> None:
+    def _db_connect(r) -> None:
+        print(r)
         db.connect()
 
     @app.after_request
     def _see_response(response: Response) -> Response:
+        logger.info(f"Response: {response}")
         logger.debug(f"Headers: {response.headers}")
         logger.debug(f"Response: {response.get_data()}")
         return response
