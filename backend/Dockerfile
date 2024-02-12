@@ -11,16 +11,16 @@ WORKDIR /app
 RUN pip install poetry
 COPY poetry.lock pyproject.toml /app/
 # Project initialization:
-RUN poetry --version
-RUN poetry install --no-interaction --no-ansi --without dev 
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --without dev 
 
 # Copy code into working directory.  Expected context: <project root>/backend
 COPY . /app
+
 # Set permissions
-RUN chown -R server_admin /app
+RUN chown -R server_admin:server_admin /app
+# USER server_admin
 RUN chmod +x prod_entrypoint.sh
 
-USER server_admin
 
 ENTRYPOINT [ "poetry", "run" ]
-
