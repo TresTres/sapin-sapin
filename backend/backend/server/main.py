@@ -1,5 +1,5 @@
 import os
-from flask import Flask, Response, Config
+from flask import Flask, Response, Config, request
 from flask_cors import CORS
 
 from backend.db import db
@@ -35,15 +35,17 @@ def create_app(mode: str) -> Flask:
     logger.info(app.url_map)
 
     @app.before_request
-    def _db_connect(r) -> None:
-        print(r)
+    def _db_connect() -> None:
+        logger.info(f"Request: {request}")
+        # logger.debug(f"Request Headers: {request.headers}")
+        # logger.info(f"Request Data: {request.get_data()}")
         db.connect()
 
     @app.after_request
     def _see_response(response: Response) -> Response:
         logger.info(f"Response: {response}")
-        logger.debug(f"Headers: {response.headers}")
-        logger.debug(f"Response: {response.get_data()}")
+        # logger.debug(f"Response Headers: {response.headers}")
+        # logger.info(f"Response Data: {response.get_data()}")
         return response
 
     @app.teardown_request

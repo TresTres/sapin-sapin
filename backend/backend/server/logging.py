@@ -18,13 +18,16 @@ def configure_logging(config: Config) -> None:
     """
     Configure the logging level and handlers.
     """
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     log_level = LOGGING_LEVELS[config.get("LOG_LEVEL", "INFO")]
     logger.setLevel(log_level)
     # Create a handler for stdout
     stdout_handler = logging.StreamHandler()
     stdout_handler.setLevel(log_level)
+    stdout_handler.setFormatter(formatter)
     logger.addHandler(stdout_handler)
     # Create a handler for the log file
     file_handler = RotatingFileHandler("logs/server.log", maxBytes=1024, backupCount=3)
     file_handler.setLevel(log_level)
+    file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
