@@ -10,7 +10,7 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./backend/logs:/app/logs
-      - ./backend/sqlite:/app/sqlite
+      - ./backend/logs:/server/logs
+      - ./backend/sqlite:/server/sqlite
     command: sh ./prod_entrypoint.sh
 
