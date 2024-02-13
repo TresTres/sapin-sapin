@@ -26,9 +26,9 @@ def create_app(mode: str) -> Flask:
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
 
+    configure_logging(app.config)
     prepare_db(app.config)
     register_routes(app.config)
-    configure_logging(app.config)
 
     logger.info(f"App mode: {mode}")
     logger.info(f"Pragmas: {db._pragmas}")
