@@ -1,5 +1,5 @@
 
-FROM python:3.12.0-slim-bullseye
+FROM python:3.12.2-slim-bullseye
 
 
 # Create a user for running the app
@@ -7,9 +7,16 @@ RUN useradd -m server_admin
 
 WORKDIR /server
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y netcat
+
+
 # Install poetry
 RUN pip install poetry
 COPY poetry.lock pyproject.toml /server/
+
+
+
 # Project initialization:
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --without dev 

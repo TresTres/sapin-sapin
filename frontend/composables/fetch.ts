@@ -4,5 +4,5 @@ export const useBaseFetch: typeof useFetch = (request, opts?) => {
     */
 
     const config = useRuntimeConfig()
-    return useFetch(request, { baseURL: `${config.public.backendUrl}/api/v${config.public.apiVersion}`, ...opts })
+    return useFetch(request, { baseURL: `${config.public.backendUrl}/v${config.public.apiVersion}`, ...opts })
 }

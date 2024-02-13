@@ -22,7 +22,7 @@ def create_app(mode: str) -> Flask:
     Factory pattern to generate a Flask app
     """
     app = Flask(__name__)
-    CORS(app)
+    # CORS(app)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
 
@@ -37,15 +37,15 @@ def create_app(mode: str) -> Flask:
     @app.before_request
     def _db_connect() -> None:
         logger.info(f"Request: {request}")
-        # logger.debug(f"Request Headers: {request.headers}")
-        # logger.info(f"Request Data: {request.get_data()}")
+        logger.debug(f"Request Headers: {request.headers}")
+        logger.debug(f"Request Data: {request.get_data()}")
         db.connect()
 
     @app.after_request
     def _see_response(response: Response) -> Response:
         logger.info(f"Response: {response}")
-        # logger.debug(f"Response Headers: {response.headers}")
-        # logger.info(f"Response Data: {response.get_data()}")
+        logger.debug(f"Response Headers: {response.headers}")
+        logger.debug(f"Response Data: {response.get_data()}")
         return response
 
     @app.teardown_request

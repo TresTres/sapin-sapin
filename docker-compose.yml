@@ -7,6 +7,7 @@ services:
     environment:
       - PORT=8000
       - HOST=0.0.0.0
+      - APP_MODE=PROD
     expose:
       - 8000
     networks:
@@ -16,7 +17,7 @@ services:
       - ./backend/sqlite:/server/sqlite
     command: sh ./prod_entrypoint.sh
 
-  app:
+  web:
     depends_on:
       - backend
     build:
@@ -24,11 +25,23 @@ services:
       dockerfile: Dockerfile
       args:
         API_VERSION: '0.0'
-        BASE_URL: http://backend:8000
+        BASE_URL: http:/localhost/api
     ports:
-      - 3000:3000
+      - 3000
+    networks:
+      - webnet
+
+  nginx:
+    depends_on:
+      - backend
+    build:
+      context: services
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
     networks:
       - webnet
     
+
 networks:
   webnet:
