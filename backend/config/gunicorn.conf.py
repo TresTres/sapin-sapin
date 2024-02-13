@@ -4,4 +4,4 @@
 max_requests = 1000
 max_requests_jitter = 50
 
-workers = 4
+workers = 1
