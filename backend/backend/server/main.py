@@ -3,18 +3,20 @@ from flask import Flask, Response, Config, request
 from flask_cors import CORS
 
 from backend.db import db
-from backend.server.migrations import migrate
+from backend.server.migrations import migrate, create_test_user
 from backend.server.logging import logger, configure_logging
 from backend.server.blueprints import *
 from backend.server.routes import register_routes
 
 
-def prepare_db(app_config: Config) -> None:
+def prepare_db(app_config: Config, app_mode: str) -> None:
     """
     Prepare the database
     """
     db.init(app_config.get("DATABASE_URL", ":memory:"))
     migrate(db)
+    if app_mode == "DEV":
+        create_test_user(db)
 
 
 def create_app(mode: str) -> Flask:
@@ -22,12 +24,12 @@ def create_app(mode: str) -> Flask:
     Factory pattern to generate a Flask app
     """
     app = Flask(__name__)
-    # CORS(app)
+    CORS(app)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
 
     configure_logging(app.config)
-    prepare_db(app.config)
+    prepare_db(app.config, mode)
     register_routes(app.config)
 
     logger.info(f"App mode: {mode}")
