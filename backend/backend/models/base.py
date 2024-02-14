@@ -24,10 +24,5 @@ class ChoiceEnum(enum.Enum):
 
 
 class ValidationError(ProgrammingError):
-    """A custom validation error for saving"""
-
-    message: str
-
-    def __init__(self, message: str):
-        self.message = message
-        super().__init__()
+    """A custom validation error for saving""" 
+    pass

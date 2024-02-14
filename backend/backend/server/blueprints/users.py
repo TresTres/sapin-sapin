@@ -33,7 +33,7 @@ class UserRegistration(Resource):
             except IntegrityError:
                 abort(409, message="User already exists")
             except ValidationError as val_error:
-                abort(400, message=val_error.message)
+                abort(400, message=val_error.args[0])
             return make_response({"new_user": user.username}, 201)
 
 
