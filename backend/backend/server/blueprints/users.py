@@ -86,7 +86,7 @@ class UserLogin(Resource):
                     # TODO: Make the cookie secure and use HTTPS
                     # TODO: Set the cookie to samesite="Strict" if the domain is singular
                     # max-age > expires https://www.rfc-editor.org/rfc/rfc7234#section-5.3
-                    resp.set_cookie("refresh_token", refresh_token, httponly=True, max_age=60*30)
+                    resp.set_cookie("refresh_token", refresh_token, httponly=True, samesite="Strict", max_age=60*30)
                     return resp
                 abort(
                     401,
