@@ -1,7 +1,6 @@
 import peewee
 import pytest
 
-from backend.db import db
 from backend.models.users import User
 from backend.models.base import ValidationError
 from tests.constants import *

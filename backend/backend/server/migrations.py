@@ -9,7 +9,12 @@ USER_MODELS = [
     User,
 ]
 
-MODELS = USER_MODELS
+DATA_MODELS = [
+    DataEventSeries,
+    DataEvent,
+]
+
+MODELS = [ *USER_MODELS, *DATA_MODELS ]
 
 def create_tables(db: SqliteDatabase) -> None:
     """

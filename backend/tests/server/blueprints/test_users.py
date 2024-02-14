@@ -1,5 +1,6 @@
 import werkzeug
 import pytest
+import typing
 
 from backend.server.routes import create_resource_path
 from backend.models import User
@@ -8,7 +9,7 @@ from tests.constants import *
 
 
 @pytest.fixture(scope="function")
-def client_with_user(client: werkzeug.test.Client) -> werkzeug.test.Client:
+def client_with_user(client: werkzeug.test.Client) -> typing.Generator[werkzeug.test.Client, None, None]:
     """
     Create a user for testing
     """
