@@ -28,7 +28,7 @@ class UserRegistration(Resource):
                     username=request.json["username"],
                     email=request.json["email"],
                     password=request.json["password"],
-                    date_joined=datetime.datetime.now(),
+                    date_joined=datetime.datetime.now(datetime.UTC),
                 )
             except IntegrityError:
                 abort(409, message="User already exists")
@@ -42,13 +42,6 @@ class UserLogin(Resource):
     A resource for logging in users.
     """
 
-    def to_payload(self, user: typing.Dict) -> typing.Dict:
-        """
-        Convert a user dictionary to a payload
-        """
-        if "date_joined" in user:
-            user["date_joined"] = user["date_joined"].strftime("%Y-%m-%d %H:%M:%S")
-        return user
 
     def post(self) -> Response:
         """
@@ -78,7 +71,7 @@ class UserLogin(Resource):
 
                     resp = make_response(
                         {
-                            "user": self.to_payload(result_user),
+                            "user": result_user,
                         },
                         200,
                         {"Authorization": f"Bearer {access_token}"},

@@ -1,23 +1,47 @@
 services:
 
-  backend:
+  backend: 
     build:
       context: backend
       dockerfile: Dockerfile
     environment:
-
       - PORT=8000
       - HOST=0.0.0.0
-      - FLASK_ENV=production
-      - API_VERSION=1.0
-    ports:
-      - 8000:8000
+      - APP_MODE=PROD
+    expose:
+      - 8000
+    networks:
+      - webnet
     volumes:
-      - ./backend/logs:/app/logs
-      - ./backend/sqlite:/app/sqlite
-    command: gunicorn backend.server.wsgi:app --access-logfile /app/logs/access.log --error-logfile /app/logs/error.log 
+      - ./backend/logs:/server/logs
+      - ./backend/sqlite:/server/sqlite
+    command: sh ./prod_entrypoint.sh
 
+  web:
+    depends_on:
+      - backend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        API_VERSION: '0.0'
+        BASE_URL: http://localhost/api
+    ports:
+      - 3000
+    networks:
+      - webnet
 
+  nginx:
+    depends_on:
+      - backend
+    build:
+      context: services
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - webnet
+    
 
-volumes:
-  logs:
+networks:
+  webnet:

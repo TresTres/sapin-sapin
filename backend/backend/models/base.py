@@ -6,7 +6,7 @@ from backend.db import db
 
 
 class BaseModel(Model):
-    """A base model that will use our Postgresql database"""
+    """A base model that will use our database"""
 
     class Meta:
         database = db

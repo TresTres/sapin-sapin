@@ -1,3 +1,4 @@
+import datetime
 from peewee import SqliteDatabase
 
 from backend.server.logging import logger
@@ -10,15 +11,13 @@ USER_MODELS = [
 
 MODELS = USER_MODELS
 
-
-@db.connection_context()
 def create_tables(db: SqliteDatabase) -> None:
     """
     Create tables if they do not yet exist.
     """
-    db.create_tables(MODELS, safe=True)
-    logger.info(f"Available tables: {db.get_tables()}")
-
+    with db.connection_context():
+        db.create_tables(MODELS, safe=True)
+        logger.info(f"Available tables: {db.get_tables()}")
 
 def migrate(db: SqliteDatabase) -> None:
     """
@@ -30,3 +29,25 @@ def migrate(db: SqliteDatabase) -> None:
     """
     create_tables(db)
     # fill_data()
+
+
+def create_test_user(db: SqliteDatabase) -> None:
+    """
+    Create a test user if it does not yet exist.
+    """
+    with db.connection_context():
+        try: 
+            _user, created = User.get_or_create(
+                username="testuser1",
+                email="foobar@baz.net",
+                defaults={
+                    "is_active": True,
+                    "date_joined": datetime.datetime.now(datetime.UTC),
+                    "password": "testPassword987%",
+                }
+            )
+            if created:
+                logger.info(f"Created test user")
+            
+        except IntegrityError:
+            logger.warn("Test user already exists.  Skipping...")
