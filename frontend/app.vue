@@ -23,7 +23,13 @@ const userStore = getUserStore();
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $light-color;
+}
 
 </style>

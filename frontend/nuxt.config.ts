@@ -20,5 +20,14 @@ export default defineNuxtConfig({
     dirs: [
       'stateless/**/*'
     ]
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "@/assets/scss/_theme.scss";`
+        }
+      }
+    }
   }
 });
