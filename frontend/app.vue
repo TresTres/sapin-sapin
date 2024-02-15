@@ -3,7 +3,6 @@
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <template #header>
-        <div>Header</div>
         <Navbar
           :routes="[...appRoutes, ...(userStore.loginStatus ? userRoutes : landingRoutes)]"
         />
@@ -26,10 +25,10 @@ const userStore = getUserStore();
 <style lang="scss" scoped>
 
 .app-container {
-  display: flex;
-  flex-direction: column;
   height: 100%;
   background-color: $light-color;
+  margin: 0;
+  padding: 0;
 }
 
 </style>

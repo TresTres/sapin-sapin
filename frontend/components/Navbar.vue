@@ -1,6 +1,6 @@
 <template>
-  <div class="pure-menu pure-menu-horizontal">
-    <ul class="pure-menu-list navbar-container" v-for="route in routes">
+  <div class="pure-menu pure-menu-horizontal navbar-container">
+    <ul class="pure-menu-list" v-for="route in routes">
         <li class="pure-menu-item">
             <NuxtLink class="pure-menu-link navbar-link" :to="`/${route.path}`">{{route.name}}</NuxtLink>
         </li>
@@ -17,15 +17,17 @@ const { routes } = defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .navbar-container {
-    background-color: #671ec1;
+    width: 100%;
+    background-color: $primary-purple-color;
     list-style-type: none;
     padding: 0;
  }
  .navbar-link {
-    color: white;
+    color: $light-color;
     text-decoration: none;
+
  }
 </style>

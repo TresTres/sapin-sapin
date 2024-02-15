@@ -21,6 +21,7 @@ export default defineNuxtConfig({
       'stateless/**/*'
     ]
   },
+  css: ["@/assets/scss/main.scss"],
   vite: {
     css: {
       preprocessorOptions: {

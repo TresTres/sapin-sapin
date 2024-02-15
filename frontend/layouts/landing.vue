@@ -9,3 +9,15 @@
         <slot name="footer"/>
     </div>
 </template>
+
+
+<style lang="scss" scoped>
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: $dark-color;
+  text-align: center;
+  padding: 2vh;
+}
+</style>
