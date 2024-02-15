@@ -9,16 +9,6 @@ from backend.server.blueprints import *
 from backend.server.routes import register_routes
 
 
-def prepare_db(app_config: Config, app_mode: str) -> None:
-    """
-    Prepare the database
-    """
-    db.init(app_config.get("DATABASE_URL", ":memory:"))
-    migrate(db)
-    if app_mode == "DEV":
-        create_test_user(db)
-
-
 def create_app(mode: str) -> Flask:
     """
     Factory pattern to generate a Flask app
@@ -30,7 +20,12 @@ def create_app(mode: str) -> Flask:
     app.register_blueprint(users_blueprint)
 
     configure_logging(app.config)
-    prepare_db(app.config, mode)
+    
+    # Prepare the database and set up routes
+    db.init(app.config.get("DATABASE_URL", ":memory:"))
+    migrate(db)
+    if mode == "DEV":
+        create_test_user(db)
     register_routes(app.config)
 
     logger.info(f"App mode: {mode}")
