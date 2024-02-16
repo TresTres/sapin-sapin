@@ -1,13 +1,11 @@
 <template>
-  <div class="header-container">
     <div class="navbar-container">
-        <ul class="pure-menu-list" >
-            <li class="pure-menu-item navbar-item" v-for="route in routes">
-                <NuxtLink class="pure-menu-link navbar-link" :to="`/${route.path}`">{{route.name}}</NuxtLink>
+        <ul class="navbar-list" >
+            <li class="navbar-item" v-for="route in routes">
+                <NuxtLink class="navbar-link" :to="`/${route.path}`">{{route.name}}</NuxtLink>
             </li>
         </ul>
     </div>
-  </div>  
 </template>
 
 <script setup lang="ts">
@@ -23,12 +21,26 @@ const { routes } = defineProps<{
 
 .navbar-container {
     height: 6vh;
-    list-style-type: none;
- 
+
 
     background-color: $primary-purple-color;
+}
 
- }
+
+.navbar-list {
+
+    width: 80%;
+    height: 100%;
+    padding: 0;
+    margin: auto;
+
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
  .navbar-link {
 
     color: $light-color;

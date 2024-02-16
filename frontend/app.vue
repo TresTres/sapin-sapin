@@ -20,16 +20,3 @@
 const userStore = getUserStore();
 
 </script>
-
-<style lang="scss" scoped>
-
-
-.app-container {
-
-  margin: 0;
-  padding: 0;
-
-  background-color: $primary-yellow-color;
-}
-
-</style>
