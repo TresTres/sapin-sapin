@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import "purecss";
 
 const userStore = getUserStore();
 
@@ -24,11 +23,13 @@ const userStore = getUserStore();
 
 <style lang="scss" scoped>
 
+
 .app-container {
-  height: 100%;
-  background-color: $light-color;
+
   margin: 0;
   padding: 0;
+
+  background-color: $primary-yellow-color;
 }
 
 </style>

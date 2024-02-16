@@ -2,7 +2,7 @@
     <div class="header">
         <slot name="header"/>
     </div>
-    <div class="pure-g">
+    <div class="page-content">
         <slot />
     </div>
     <div class="footer">
@@ -12,6 +12,12 @@
 
 
 <style lang="scss" scoped>
+.page-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .footer {
   position: fixed;
   bottom: 0;
