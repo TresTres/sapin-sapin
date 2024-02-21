@@ -2,11 +2,14 @@
   <div class="app-container">
     <NuxtLoadingIndicator />
     <NuxtLayout>
-      <template #header>
+      <div v-if="userStore.loginStatus">
         <Navbar
-          :routes="[...appRoutes, ...(userStore.loginStatus ? userRoutes : landingRoutes)]"
+          :routes="appRoutes"
         />
-      </template>
+      </div>
+      <div v-else>
+        <LandingCard />
+      </div>
       <NuxtPage />
       <template #footer>
         <div>Footer</div>

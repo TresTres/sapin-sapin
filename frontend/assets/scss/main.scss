@@ -14,23 +14,6 @@ html, body, #__nuxt {
     flex-direction: column;
 
     height: 100%;
+    background-color: $light-color;
 }
   
-
-.app-container {
-    @extend #__nuxt;
-
-    margin: 0;
-    padding: 0;
-    
-    background-color: $primary-yellow-color;
-}
-
-.header-container {
-    display: flex;
-    
-    height: 6vh;
-
-
-    background-color: $primary-purple-color;
-}

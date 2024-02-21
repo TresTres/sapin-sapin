@@ -19,38 +19,5 @@ const { routes } = defineProps<{
 
 <style lang="scss" scoped>
 
-.navbar-container {
-    height: 6vh;
 
-
-    background-color: $primary-purple-color;
-}
-
-
-.navbar-list {
-
-    width: 80%;
-    height: 100%;
-    padding: 0;
-    margin: auto;
-
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-}
-
- .navbar-link {
-
-    color: $light-color;
-    text-decoration: none;
-    font-size: 1.1rem;
-
-
- }
-
- pure-menu-selected {
-    background-color: $secondary-purple-color;
-}
 </style>
