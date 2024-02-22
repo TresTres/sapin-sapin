@@ -18,15 +18,6 @@ export const getUserStore = defineStore('userStore', {
         }
     },
     getters: {
-        loginStatus(state): boolean {
-            return state.isLoggedIn
-        },
-        getUsername(state): string {
-            return state.username
-        },
-        getEmail(state): string {
-            return state.email
-        },
         getAccountAge(state): number {
             const now = new Date()
             const msPerDay = 1000 * 60 * 60 * 24

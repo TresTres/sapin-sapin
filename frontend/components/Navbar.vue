@@ -1,5 +1,5 @@
 <template>
-    <div class="navbar-container">
+    <div v-show="userStore.isLoggedIn" class="navbar-container">
         <ul class="navbar-list" >
             <li class="navbar-item" v-for="route in routes">
                 <NuxtLink class="navbar-link" :to="`/${route.path}`">{{route.name}}</NuxtLink>
@@ -15,9 +15,15 @@ const { routes } = defineProps<{
         path: string;
     }[];
 }>();
+
+const userStore = getUserStore();
 </script>
 
 <style lang="scss" scoped>
-
+.navbar-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
 
 </style>
