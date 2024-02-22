@@ -2,24 +2,26 @@
   <div class="app-container">
     <NuxtLoadingIndicator />
     <NuxtLayout>
-      <div v-if="userStore.loginStatus">
-        <Navbar
-          :routes="appRoutes"
-        />
-      </div>
-      <div v-else>
-        <LandingCard />
-      </div>
+      <template #header>
+        <Navbar :routes="appRoutes" />
+      </template>
       <NuxtPage />
       <template #footer>
-        <div>Footer</div>
+        <div>Footer Text</div>
       </template>
     </NuxtLayout>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-const userStore = getUserStore();
+<style lang="scss" scoped>
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 
-</script>
+  background-color: $dark-color;
+}
+
+</style>
