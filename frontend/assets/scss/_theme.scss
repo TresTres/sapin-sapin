@@ -1,16 +1,17 @@
 
-$primary-red-color: #D42D08;
-$primary-orange-color: #C48206;
-$primary-yellow-color: #F0EA72;
-$primary-green-color: #406F02;
-$primary-purple-color: #642db2;
+$primary-red-color: hsl(11, 93%, 43%);
+$primary-orange-color: hsl(39, 94%, 40%);
+$primary-yellow-color: hsl(57, 81%, 69%);
+$primary-green-color: hsl(86, 96%, 22%);
+$primary-purple-color: hsl(265, 60%, 44%);
 
 
-$secondary-orange-color: #9A680B;
-$secondary-green-color: #134220;
-$secondary-purple-color: #2E1B48;
-$light-color: #F8F9FA;
-$dark-color: #343A40;
+$secondary-orange-color: hsl(39, 87%, 32%);
+$secondary-green-color: hsl(137, 55%, 17%);
+$secondary-purple-color: hsl(265, 45%, 19%);
+
+$light-color: hsl(210, 17%, 98%);
+$dark-color: hsl(207, 10%, 18%);
 
 
 $success-color: $primary-green-color;
