@@ -8,14 +8,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: [
-    [
-      "@pinia/nuxt",
-      {
-        autoImports: ["defineStore"],
-      },
-    ],
-  ],
+  modules: [[
+    "@pinia/nuxt",
+    {
+      autoImports: ["defineStore"],
+    },
+  ], "@nuxt/image"],
   imports: {
     dirs: [
       'stateless/**/*'
