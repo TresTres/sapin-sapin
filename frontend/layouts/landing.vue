@@ -25,12 +25,9 @@
   background-image: radial-gradient(farthest-corner circle at 30% 40%,  $light-purple-color 10%, $primary-purple-color);
   background-color: $light-purple-color;
 
-
-  border-style: solid;
   border-radius: 18px;
-  border-width: 2px;
-  border-color: $dark-purple-color;
 
+  box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2), 4px 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .footer {
@@ -39,7 +36,7 @@
   padding: 2vh;
 
   text-align: center;
-  font-size: 0.5rem;
+  font-size: 0.6rem;
 
   color: $gray-color;
 }

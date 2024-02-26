@@ -1,13 +1,14 @@
 <template>
-  <div class="text-lg">
-    Home Page Content
+  <div class="">
   </div>
 </template>
-
 
 <script setup lang="ts">
     definePageMeta({
         title: "Home Page",
         layout: "landing"
     })
+
+
+const userStore = getUserStore();
 </script>
