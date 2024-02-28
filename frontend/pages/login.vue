@@ -7,6 +7,7 @@
       <UserForm
         title="Login"
         buttonTitle="Sign In"
+        description-value="Please enter your credentials to sign in."
         v-model:bannerValue="userLoginError"
         @submit="handleLogin"
       >
