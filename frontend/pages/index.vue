@@ -1,13 +1,18 @@
 <template>
-  <div class="text-lg">
-    Home Page Content
-  </div>
+  <h1>Example</h1>
 </template>
 
-
 <script setup lang="ts">
-    definePageMeta({
-        title: "Home Page",
-        layout: "landing"
-    })
+definePageMeta({
+  title: "Profile Page",
+  layout: "dashboard",
+});
+
+const userStore = getUserStore();
 </script>
+
+<style lang="scss" scoped>
+h1 {
+  color: red;
+}
+</style>

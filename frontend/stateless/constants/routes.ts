@@ -1,22 +1,18 @@
-export const appRoutes = [
+export const appRoutes: { name: string; path: string }[] = [
   {
     name: "Home",
     path: "",
   },
-];
-export const landingRoutes = [
-  {
-    name: "Register",
-    path: "registration",
-  },
-  {
-    name: "Login",
-    path: "login",
-  },
-];
-export const userRoutes = [
   {
     name: "Profile",
     path: "profile",
+  },
+  {
+    name: "Graphs",
+    path: "graphs",
+  },
+  {
+    name: "Data",
+    path: "data",
   },
 ];
