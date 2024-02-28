@@ -45,10 +45,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: 3vh;
 
     width: 100%;
-    padding: 1rem;
+    padding: .5rem;
 
     border: none;
 
@@ -59,7 +59,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1vh;
     
 
     h1 {
@@ -76,7 +76,6 @@
     }
   }
 
-
   .banner {
     font-size: $medium-text-size;
     color: $danger-color;
@@ -91,7 +90,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 3rem;
+        gap: 4vh;
       }
     }
 
