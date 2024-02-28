@@ -22,13 +22,19 @@
   height: 60vh;
   width: 60vw;
 
-  background-image: radial-gradient(farthest-corner circle at 30% 40%,  $light-purple-color 30%, $primary-purple-color);
+  background-image: radial-gradient(
+    farthest-corner circle at 30% 40%,
+    $light-purple-color 30%,
+    $primary-purple-color
+  );
   background-color: $light-purple-color;
 
   border-radius: 18px;
 
-  box-shadow: 2px 4px 8px 0 rgba(0, 0, 0, 0.2), 4px 6px 20px 0 rgba(0, 0, 0, 0.19);
-  
+  box-shadow:
+    2px 4px 8px 0 rgba(0, 0, 0, 0.2),
+    4px 6px 20px 0 rgba(0, 0, 0, 0.19);
+
   overflow: hidden;
 }
 

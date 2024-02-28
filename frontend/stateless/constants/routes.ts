@@ -1,4 +1,4 @@
-export const appRoutes: {name: string, path: string}[] = [
+export const appRoutes: { name: string; path: string }[] = [
   {
     name: "Home",
     path: "",
@@ -12,8 +12,7 @@ export const appRoutes: {name: string, path: string}[] = [
     path: "graphs",
   },
   {
-    name: "Data", 
+    name: "Data",
     path: "data",
-  }
+  },
 ];
-

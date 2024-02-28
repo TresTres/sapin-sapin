@@ -3,10 +3,10 @@
     <label v-if="label" for="aligned-identifier">{{ label }}</label>
     <input
       :id="`aligned-identifier-${index}`"
+      v-model="inputValue"
       class="user-input"
       :type="isPassword ? 'password' : 'text'"
       :placeholder="placeholder"
-      v-model="inputValue"
       required
     />
   </div>
@@ -39,18 +39,14 @@ const inputValue = defineModel("inputValue", {
 </script>
 
 <style lang="scss" scoped>
-
 .control-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 }
 .user-input {
-
   padding: 0.5rem 2rem;
   width: 100%;
-
 
   border: none;
   border-radius: 0.7em;
@@ -59,7 +55,6 @@ const inputValue = defineModel("inputValue", {
   color: $dark-purple-color;
 
   font-size: $medium-text-size;
-
 }
 
 .user-input::placeholder {
@@ -74,7 +69,4 @@ const inputValue = defineModel("inputValue", {
 label {
   display: none;
 }
-
-
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <form class="user-input-form" @submit.prevent="$emit('submit', $event)">
-    <div class="heading"> 
+    <div class="heading">
       <h1>{{ title }}</h1>
       <span class="description" v-text="descriptionValue"></span>
     </div>
@@ -17,99 +17,94 @@
 </template>
 
 <script setup lang="ts">
-  defineProps({
-    title: {
-      type: String,
-      default: "Sign Up",
-    },
-    buttonTitle: {
-      type: String,
-      default: "Sign Up",
-    },
-    descriptionValue: {
-      type: String,
-      default: "",
-    }
-  });
-
-  const bannerValue = defineModel("bannerValue", {
+defineProps({
+  title: {
+    type: String,
+    default: "Sign Up",
+  },
+  buttonTitle: {
+    type: String,
+    default: "Sign Up",
+  },
+  descriptionValue: {
     type: String,
     default: "",
-  });
+  },
+});
 
-  defineEmits(["submit"]);
+const bannerValue = defineModel("bannerValue", {
+  type: String,
+  default: "",
+});
+
+defineEmits(["submit"]);
 </script>
 
 <style lang="scss" scoped>
-  .user-input-form {
+.user-input-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vh;
+
+  width: 100%;
+  padding: 0.5rem;
+
+  border: none;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+
+  h1 {
+    font-size: $large-title-size;
+    color: $dark-purple-color;
+
+    text-transform: uppercase;
+  }
+
+  .description {
+    font-size: $small-text-size;
+    color: $dark-purple-color;
+  }
+}
+
+.banner {
+  font-size: $medium-text-size;
+  color: $danger-color;
+
+  padding: 0.2rem;
+}
+
+.input-group {
+  border: none;
+
+  .control-groups {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3vh;
-
-    width: 100%;
-    padding: .5rem;
-
-    border: none;
-
-   
+    gap: 4vh;
   }
+}
 
-  .heading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1vh;
-    
+.form-submit-button {
+  padding: 0.5rem 1.3rem;
 
-    h1 {
-      font-size: $large-title-size;
-      color: $dark-purple-color;
+  font-size: $large-text-size;
 
-      text-transform: uppercase;
-    }
+  background-color: $dark-purple-color;
+  color: $light-color;
+  opacity: 0.8;
 
-    .description {
+  border: none;
+  border-radius: 0.75rem;
 
-      font-size: $small-text-size;
-      color: $dark-purple-color;
-    }
+  &:hover {
+    background-color: $light-color;
+    color: $dark-purple-color;
   }
-
-  .banner {
-    font-size: $medium-text-size;
-    color: $danger-color;
-
-    padding: .2rem;
-  }
-
-    .input-group {
-      border: none;
-
-      .control-groups {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4vh;
-      }
-    }
-
-  .form-submit-button {
-
-    padding: .5rem 1.3rem;
-
-    font-size: $large-text-size;
-
-    background-color: $dark-purple-color;
-    color: $light-color;
-    opacity: .8;
-
-    border: none;
-    border-radius: .75rem; 
-
-    &:hover {
-      background-color: $light-color;
-      color: $dark-purple-color;
-    }
-  }
+}
 </style>

@@ -8,16 +8,17 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: [[
-    "@pinia/nuxt",
-    {
-      autoImports: ["defineStore"],
-    },
-  ], "@nuxt/image"],
+  modules: [
+    [
+      "@pinia/nuxt",
+      {
+        autoImports: ["defineStore"],
+      },
+    ],
+    "@nuxt/image",
+  ],
   imports: {
-    dirs: [
-      'stateless/**/*'
-    ]
+    dirs: ["stateless/**/*"],
   },
   css: ["@/assets/scss/main.scss"],
   vite: {
@@ -28,9 +29,9 @@ export default defineNuxtConfig({
                           @use 'sass:color';
                           @import "@/assets/scss/_theme.scss";
                           @import "@/assets/scss/_font.scss";
-                          `
-        }
-      }
-    }
-  }
+                          `,
+        },
+      },
+    },
+  },
 });

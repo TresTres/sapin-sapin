@@ -3,5 +3,3 @@ export type UserResponseObject = {
   email: string;
   date_joined: string;
 };
-
-

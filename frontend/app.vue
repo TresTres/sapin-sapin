@@ -23,5 +23,4 @@
 
   background-color: $dark-color;
 }
-
 </style>
