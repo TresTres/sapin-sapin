@@ -10,22 +10,20 @@
         v-model:bannerValue="userLoginError"
         @submit="handleLogin"
       >
-        <div>
-          <UserFormInput
-            :label="identifierLabel"
-            :index="0"
-            :isPassword="false"
-            :placeholder="identifierLabel"
-            v-model:inputValue="identifier"
-          />
-          <UserFormInput
-            :label="passwordLabel"
-            :index="1"
-            :isPassword="true"
-            :placeholder="passwordLabel"
-            v-model:inputValue="password"
-          />
-        </div>
+        <UserFormInput
+          :label="identifierLabel"
+          :index="0"
+          :isPassword="false"
+          :placeholder="identifierLabel"
+          v-model:inputValue="identifier"
+        />
+        <UserFormInput
+          :label="passwordLabel"
+          :index="1"
+          :isPassword="true"
+          :placeholder="passwordLabel"
+          v-model:inputValue="password"
+        />
       </UserForm>
       <!-- <UserRegistration /> -->
     </div>
@@ -88,24 +86,26 @@
   }
 
   .image-area {
-    max-width: 65%;
+    max-width: 70%;
     height: 100%;
 
     border-right: 2px $dark-color solid;
 
     overflow: hidden;
-
     img {
-      height: 100%;
+      height: 110%;
 
       object-fit: cover;
     }
   }
 
   .form-area {
-    width: 100%;
+    width: 50%;
+    height: 100%;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     padding: 2rem;
   }
