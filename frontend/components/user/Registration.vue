@@ -7,32 +7,32 @@
       <span v-text="userRegistrationError"></span>
       <div>
         <UserFormInput
+          v-model:inputValue="username"
           :label="usernameLabel"
           :index="0"
-          :isPassword="false"
+          :is-password="false"
           :placeholder="usernameLabel"
-          v-model:inputValue="username"
         />
         <UserFormInput
+          v-model:inputValue="email"
           :label="emailLabel"
           :index="1"
-          :isPassword="false"
+          :is-password="false"
           :placeholder="emailLabel"
-          v-model:inputValue="email"
         />
         <UserFormInput
+          v-model:inputValue="password"
           :label="passwordLabel"
           :index="2"
-          :isPassword="true"
+          :is-password="true"
           :placeholder="passwordLabel"
-          v-model:inputValue="password"
         />
         <UserFormInput
+          v-model:inputValue="confirmPassword"
           :label="confirmPasswordLabel"
           :index="3"
-          :isPassword="true"
+          :is-password="true"
           :placeholder="confirmPasswordLabel"
-          v-model:inputValue="confirmPassword"
         />
       </div>
     </fieldset>
@@ -65,7 +65,7 @@ const confirmPassword = ref("");
 
 const validatePasswordMatch = async (): Promise<boolean> => {
   return new Promise<boolean>((resolve) =>
-    resolve(confirmPassword.value === password.value)
+    resolve(confirmPassword.value === password.value),
   );
 };
 
@@ -84,7 +84,7 @@ const handleRegistration = async (): Promise<void> => {
           email: email.value,
           password: password.value,
         }),
-      })
+      }),
     )
     .then(({ data, error }) => {
       const errorContent = error.value;
