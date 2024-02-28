@@ -1,10 +1,5 @@
-export type UserObject = {
+export type UserResponseObject = {
   username: string;
   email: string;
   date_joined: string;
 };
-
-
-export type UserRegistrationObject = {
-  new_user: string;
-}

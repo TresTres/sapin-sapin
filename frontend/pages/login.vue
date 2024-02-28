@@ -1,47 +1,113 @@
 <template>
-  <form class="pure-form-1-2 pure-form-aligned" @submit.prevent="handleLogin">
-    <fieldset class="pure-group">
-      <span v-text="authError"></span>
-      <div>
+  <div v-if="!userStore.isLoggedIn" class="landing-container">
+    <div class="image-area">
+      <NuxtImg preload src="/draft_theme.jpeg" sizes="40vw" loading="lazy" />
+    </div>
+    <div class="form-area">
+      <UserForm
+        v-model:bannerValue="userLoginError"
+        title="Login"
+        button-title="Sign In"
+        description-value="Please enter your credentials to sign in."
+        @submit="handleLogin"
+      >
         <UserFormInput
+          v-model:inputValue="identifier"
           :label="identifierLabel"
           :index="0"
-          :isPassword="false"
+          :is-password="false"
           :placeholder="identifierLabel"
-          v-model:inputValue="identifier"
         />
         <UserFormInput
+          v-model:inputValue="password"
           :label="passwordLabel"
           :index="1"
-          :isPassword="true"
+          :is-password="true"
           :placeholder="passwordLabel"
-          v-model:inputValue="password"
         />
-      </div>
-    </fieldset>
-    <button
-      type="submit"
-      class="pure-button pure-input-1-2 pure-button-primary"
-    >
-      Login
-    </button>
-  </form>
+      </UserForm>
+      <!-- <UserRegistration /> -->
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
+  title: "Login",
   layout: "landing",
 });
 
+const userLoginError = defineModel("userLoginError", {
+  type: String,
+  default: "",
+});
 const identifierLabel = "Username or Email";
 const passwordLabel = "Password";
 const identifier = ref("");
 const password = ref("");
 
-const authStore = getAuthStore();
-const { authError } = storeToRefs(authStore);
+const userStore = getUserStore();
+const router = useRouter();
 
 const handleLogin = async (): Promise<void> => {
-  await authStore.login(identifier.value, password.value);
+  await useBaseFetch("/login", {
+    method: "POST",
+    body: JSON.stringify({
+      identifier: identifier.value,
+      password: password.value,
+    }),
+  })
+    .then(({ data, error }) => {
+      const errorContent = error.value;
+      if (errorContent) {
+        if (errorContent?.statusCode === 401) {
+          throw new Error("Invalid username or password");
+        } else {
+          throw new Error("An error occurred");
+        }
+      }
+      const { user } = data?.value as { user: UserResponseObject };
+      userLoginError.value = "Login successful";
+      userStore.login(user);
+      navigateTo("/");
+    })
+    .catch((error) => {
+      userLoginError.value = error.message;
+    });
 };
 </script>
+
+<style lang="scss" scoped>
+.landing-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+
+  align-content: space-around;
+}
+
+.image-area {
+  max-width: 70%;
+  height: 100%;
+
+  border-right: 2px $dark-color solid;
+
+  overflow: hidden;
+  img {
+    height: 110%;
+
+    object-fit: cover;
+  }
+}
+
+.form-area {
+  width: 50%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 2rem;
+}
+</style>
