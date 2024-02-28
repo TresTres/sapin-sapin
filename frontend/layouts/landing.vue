@@ -22,7 +22,7 @@
   height: 60vh;
   width: 60vw;
 
-  background-image: radial-gradient(farthest-corner circle at 30% 40%,  $light-purple-color 10%, $primary-purple-color);
+  background-image: radial-gradient(farthest-corner circle at 30% 40%,  $light-purple-color 30%, $primary-purple-color);
   background-color: $light-purple-color;
 
   border-radius: 18px;
