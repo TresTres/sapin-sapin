@@ -7,9 +7,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint --ext \".ts,.vue\" --ignore-path .dockerignore .",
+    "lintfix": "prettier --write --list-different . && yarn lint --fix"
   },
   "devDependencies": {
+    "@nuxt/image": "1.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@pinia/nuxt": "^0.5.1",
     "@typescript-eslint/parser": "^6.20.0",
@@ -18,11 +21,13 @@
     "eslint-plugin-prettier": "^5.1.3",
     "nuxt": "^3.9.3",
     "prettier": "^3.2.4",
+    "sass": "^1.70.0",
     "typescript": "^5.3.3",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
-  "dependencies": {
-    "purecss": "^3.0.0"
+  "dependencies": {},
+  "dependenciesComments": {
+    "@nuxt/image": "pinned due to https://github.com/nuxt/image/issues/1210"
   }
 }

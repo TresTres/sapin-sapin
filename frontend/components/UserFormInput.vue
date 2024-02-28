@@ -1,12 +1,12 @@
 <template>
-  <div class="pure-control-group">
+  <div class="control-group">
     <label v-if="label" for="aligned-identifier">{{ label }}</label>
     <input
       :id="`aligned-identifier-${index}`"
-      class="pure-input-1-2"
+      v-model="inputValue"
+      class="user-input"
       :type="isPassword ? 'password' : 'text'"
       :placeholder="placeholder"
-      v-model="inputValue"
       required
     />
   </div>
@@ -37,3 +37,36 @@ const inputValue = defineModel("inputValue", {
   default: "",
 });
 </script>
+
+<style lang="scss" scoped>
+.control-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-input {
+  padding: 0.5rem 2rem;
+  width: 100%;
+
+  border: none;
+  border-radius: 0.7em;
+
+  background-color: color.adjust($light-color, $alpha: -0.5);
+  color: $dark-purple-color;
+
+  font-size: $medium-text-size;
+}
+
+.user-input::placeholder {
+  color: color.adjust($dark-purple-color, $alpha: -0.4);
+}
+
+.user-input:focus {
+  outline: 2px solid $light-purple-color;
+  color: $primary-purple-color;
+}
+
+label {
+  display: none;
+}
+</style>
