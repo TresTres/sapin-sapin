@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/image": "1.2.0",
+    "@nuxt/image": "1.2.0", 
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@pinia/nuxt": "^0.5.1",
     "@typescript-eslint/parser": "^6.20.0",
@@ -24,5 +24,8 @@
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "dependenciesComments": {
+    "@nuxt/image": "pinned due to https://github.com/nuxt/image/issues/1210"
+  }
 }
