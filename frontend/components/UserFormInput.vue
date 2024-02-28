@@ -43,26 +43,32 @@ const inputValue = defineModel("inputValue", {
 .control-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
   
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+}
+.user-input {
 
+  padding: 0.5rem 2rem;
   width: 100%;
 
 
-  input {
+  border: none;
+  border-radius: 0.7em;
 
-    padding: 0.5rem;
-    width: 90%;
+  background-color: color.adjust($light-color, $alpha: -0.5);
+  color: $dark-purple-color;
 
+  font-size: $medium-text-size;
 
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
+}
 
-  
-    font-size: 1.3rem;
+.user-input::placeholder {
+  color: color.adjust($dark-purple-color, $alpha: -0.4);
+}
 
-  }
+.user-input:focus {
+  outline: 2px solid $light-purple-color;
+  color: $primary-purple-color;
 }
 
 label {
