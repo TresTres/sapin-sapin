@@ -69,7 +69,7 @@
         const { user } = data?.value as { user: UserResponseObject };
         userLoginError.value = "Login successful";
         userStore.login(user);
-        router.push("/");
+        navigateTo("/");
       })
       .catch((error) => {
         userLoginError.value = error.message;
