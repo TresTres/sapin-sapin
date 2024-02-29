@@ -1,3 +1,5 @@
+import datetime
+
 from backend.models.base import *
 from backend.models.users import User
 
@@ -30,9 +32,26 @@ class DataEvent(BaseModel):
     """
     label = CharField(null=False, constraints=[Check("length(label) < 120")], default="")
     description = CharField(null=True)
-    date = DateTimeField(null=False)
+    date = DateTimeField(null=False, index=True, default=datetime.datetime.now(datetime.UTC))
     amount = DecimalField(null=False, decimal_places=4, default=0.0000)
     series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
     
     class Meta:
-        constraints = [SQL("UNIQUE (series_id, date, label)")]
+        indexes = (
+            (("series", "date", "label"), True),
+        )
+
+
+class DataRecurrence(BaseModel):
+    """
+    Represents an event that reoccurs on a schedule.
+    """
+    label = CharField(null=False, constraints=[Check("length(label) < 120")], default="")
+    description = CharField(null=True)
+    start_date = DateTimeField(null=False, index=True, default=datetime.datetime.now(datetime.UTC))
+    end_date = DateTimeField(null=True)
+    amount = DecimalField(null=False, decimal_places=4, default=0.0000)
+    series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
+    
+
+
