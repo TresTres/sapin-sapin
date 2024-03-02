@@ -1,11 +1,11 @@
 <template>
-  <div v-if="!userStore.isLoggedIn" class="landing-container">
+  <div v-if="!authStore.isLoggedIn" class="landing-container">
     <div class="image-area">
       <NuxtImg preload src="/draft_theme.jpeg" sizes="40vw" loading="lazy" />
     </div>
     <div class="form-area">
       <UserForm
-        v-model:bannerValue="userLoginError"
+        v-model:bannerValue="authStore.authError"
         title="Login"
         button-title="Sign In"
         description-value="Please enter your credentials to sign in."
@@ -37,43 +37,16 @@ definePageMeta({
   layout: "landing",
 });
 
-const userLoginError = defineModel("userLoginError", {
-  type: String,
-  default: "",
-});
 const identifierLabel = "Username or Email";
 const passwordLabel = "Password";
 const identifier = ref("");
 const password = ref("");
 
-const userStore = getUserStore();
-const router = useRouter();
+const authStore = getAuthStore();
 
-const handleLogin = async (): Promise<void> => {
-  await useBaseFetch("/login", {
-    method: "POST",
-    body: JSON.stringify({
-      identifier: identifier.value,
-      password: password.value,
-    }),
-  })
-    .then(({ data, error }) => {
-      const errorContent = error.value;
-      if (errorContent) {
-        if (errorContent?.statusCode === 401) {
-          throw new Error("Invalid username or password");
-        } else {
-          throw new Error("An error occurred");
-        }
-      }
-      const { user } = data?.value as { user: UserResponseObject };
-      userLoginError.value = "Login successful";
-      userStore.login(user);
-      navigateTo("/");
-    })
-    .catch((error) => {
-      userLoginError.value = error.message;
-    });
+
+const handleLogin = async(): Promise<void> => {
+  await authStore.login(identifier.value, password.value);
 };
 </script>
 

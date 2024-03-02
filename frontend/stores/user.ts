@@ -15,6 +15,7 @@ export const getUserStore = defineStore("userStore", {
     logout() {
       this.isLoggedIn = false;
       this.username = "";
+      this.email = "";
     },
   },
   getters: {

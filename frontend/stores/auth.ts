@@ -24,20 +24,22 @@ export const getAuthStore = defineStore('authStore', {
                         throw new Error("An error occurred")
                     }
                 }
-                const { user } = data?.value as { user: UserObject }
+                const { user } = data?.value as { user: UserResponseObject }
                 const userStore = getUserStore()
-                userStore.fillUser(user)
+                userStore.login(user)
                 this.isLoggedIn = true
-                this.authError = 'Login successful'
                 await navigateTo("/")
             })
             .catch((error) => {
                 const userStore = getUserStore()
-                userStore.clear()
+                userStore.logout()
+                this.isLoggedIn = false
                 this.authError = error.message
             });
         },
         async logout(): Promise<void> {
+            const userStore = getUserStore()
+            userStore.logout();
             this.isLoggedIn = false
             this.authError = ''
             await navigateTo("/login")
