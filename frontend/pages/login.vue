@@ -5,7 +5,7 @@
     </div>
     <div class="form-area">
       <UserForm
-        v-model:bannerValue="authStore.authError"
+        :banner-text="authStore.authError"
         title="Login"
         button-title="Sign In"
         description-value="Please enter your credentials to sign in."
@@ -43,7 +43,6 @@ const identifier = ref("");
 const password = ref("");
 
 const authStore = getAuthStore();
-
 
 const handleLogin = async(): Promise<void> => {
   await authStore.login(identifier.value, password.value);
