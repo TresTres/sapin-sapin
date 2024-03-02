@@ -42,7 +42,6 @@ class UserLogin(Resource):
     A resource for logging in users.
     """
 
-
     def post(self) -> Response:
         """
         Validate if a user's login and password is correct

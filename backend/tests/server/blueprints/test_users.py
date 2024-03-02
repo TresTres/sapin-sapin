@@ -9,7 +9,9 @@ from tests.constants import *
 
 
 @pytest.fixture(scope="function")
-def client_with_user(client: werkzeug.test.Client) -> typing.Generator[werkzeug.test.Client, None, None]:
+def client_with_user(
+    client: werkzeug.test.Client,
+) -> typing.Generator[werkzeug.test.Client, None, None]:
     """
     Create a user for testing
     """

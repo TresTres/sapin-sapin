@@ -12,9 +12,11 @@ USER_MODELS = [
 DATA_MODELS = [
     DataEventSeries,
     DataEvent,
+    DataRecurrence,
 ]
 
-MODELS = [ *USER_MODELS, *DATA_MODELS ]
+MODELS = [*USER_MODELS, *DATA_MODELS]
+
 
 def create_tables(db: SqliteDatabase) -> None:
     """
@@ -23,6 +25,7 @@ def create_tables(db: SqliteDatabase) -> None:
     with db.connection_context():
         db.create_tables(MODELS, safe=True)
         logger.info(f"Available tables: {db.get_tables()}")
+
 
 def migrate(db: SqliteDatabase) -> None:
     """
@@ -41,7 +44,7 @@ def create_test_user(db: SqliteDatabase) -> None:
     Create a test user if it does not yet exist.
     """
     with db.connection_context():
-        try: 
+        try:
             _user, created = User.get_or_create(
                 username="testuser1",
                 email="foobar@baz.net",
@@ -49,10 +52,10 @@ def create_test_user(db: SqliteDatabase) -> None:
                     "is_active": True,
                     "date_joined": datetime.datetime.now(datetime.UTC),
                     "password": "testPassword987%",
-                }
+                },
             )
             if created:
                 logger.info(f"Created test user")
-            
+
         except IntegrityError:
             logger.warn("Test user already exists.  Skipping...")

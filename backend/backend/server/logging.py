@@ -18,7 +18,9 @@ def configure_logging(config: Config) -> None:
     """
     Configure the logging level and handlers.
     """
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
     log_level = LOGGING_LEVELS[config.get("LOG_LEVEL", "INFO")]
     logger.setLevel(log_level)
     # Create a handler for stdout

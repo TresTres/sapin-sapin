@@ -7,7 +7,12 @@ class Tag(BaseModel):
     Represents a tag that can be associated with an entity.
     TODO: Expand this if necessary and hook up to data models
     """
-    name = CharField(null=False, unique=True, constraints=[Check("length(name) > 0"), Check("length(name) < 50")])
+
+    name = CharField(
+        null=False,
+        unique=True,
+        constraints=[Check("length(name) > 0"), Check("length(name) < 50")],
+    )
 
     def save(self, *args, **kwargs) -> int:
         """

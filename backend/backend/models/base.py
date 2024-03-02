@@ -24,5 +24,6 @@ class ChoiceEnum(enum.Enum):
 
 
 class ValidationError(ProgrammingError):
-    """A custom validation error for saving""" 
+    """A custom validation error for saving"""
+
     pass
