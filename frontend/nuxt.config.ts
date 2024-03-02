@@ -16,6 +16,7 @@ export default defineNuxtConfig({
       },
     ],
     "@nuxt/image",
+    "@vueuse/nuxt",
   ],
   imports: {
     dirs: ["stateless/**/*"],
