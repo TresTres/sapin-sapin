@@ -26,9 +26,7 @@
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
-  "dependencies": {
-    "@vueuse/nuxt": "^10.9.0"
-  },
+  "dependencies": {},
   "dependenciesComments": {
     "@nuxt/image": "pinned due to https://github.com/nuxt/image/issues/1210"
   }
