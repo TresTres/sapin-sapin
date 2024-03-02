@@ -1,14 +1,9 @@
-import type {
-  RouteLocationNormalized,
-} from "vue-router";
-
 export const getAuthStore = defineStore("authStore", {
 
 
   state: () => ({
     isLoggedIn: false as boolean,
     authError: "" as string,
-    bearerToken: useSessionStorage("Bearer Token", "" as string),
   }),
   actions: {
     async login(identifier: string, password: string): Promise<void> {
@@ -20,7 +15,8 @@ export const getAuthStore = defineStore("authStore", {
         }),
         onResponse: ({ response }): void => {
           
-          this.bearerToken = response.headers.get("Authorization") || "";
+          // this.$state.bearerToken = response.headers.get("Authorization") || "";
+          sessionStorage.setItem("Bearer Token", response.headers.get("Authorization") || "");
         },
       })
         .then(async ({ data, error }): Promise<void> => {
@@ -40,37 +36,16 @@ export const getAuthStore = defineStore("authStore", {
           // ensure navigation to the home page
           await navigateTo("/");
         })
-        .catch(async (error): Promise<void> => {
-          await this.logout(error.message);
+        .catch((error): void => {
+          this.logout(error.message);
         });
     },
-    async logout(errorMessage?: string): Promise<void> {
+    logout(errorMessage?: string): void {
       const userStore = getUserStore();
       userStore.logout();
       this.isLoggedIn = false;
       this.authError = errorMessage || "";
-      this.bearerToken = "";
       // ensure navigation to the login page
-      await navigateTo("/login");
-    },
-    async rehydrate(to: RouteLocationNormalized): Promise<void> {
-      if (this.bearerToken !== "") {
-        await useBaseFetch("/login", {
-          method: "GET",
-        })
-          .then(async ({ data }): Promise<void> => {
-            const { user } = data?.value as { user: UserResponseObject };
-            const userStore = getUserStore();
-            userStore.login(user);
-            this.isLoggedIn = true;
-            this.authError = "";
-            await navigateTo(to.path);
-          })
-          .catch(async (error): Promise<void> => {
-            await this.logout(error.message);
-          });
-      }
-      await this.logout();
     },
   },
 });
