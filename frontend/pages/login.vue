@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!authStore.isLoggedIn" class="landing-container">
+  <div class="landing-container">
     <div class="image-area">
       <NuxtImg preload src="/draft_theme.jpeg" sizes="40vw" loading="lazy" />
     </div>

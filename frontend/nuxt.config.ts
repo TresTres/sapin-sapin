@@ -9,14 +9,14 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    "@pinia/nuxt",
     [
-      "@pinia/nuxt",
+      "@pinia-plugin-persistedstate/nuxt",
       {
-        autoImports: ["defineStore"],
-      },
+        autoImports: ["defineStore", "sessionStorage"],
+      }
     ],
     "@nuxt/image",
-    "@vueuse/nuxt",
   ],
   imports: {
     dirs: ["stateless/**/*"],

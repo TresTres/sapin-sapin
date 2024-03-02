@@ -4,7 +4,12 @@ export const getAuthStore = defineStore("authStore", {
   state: () => ({
     isLoggedIn: false as boolean,
     authError: "" as string,
+    bearerToken: "" as string,
   }),
+  persist: {
+    paths: ["isLoggedIn", "bearerToken"],
+    storage: persistedState.sessionStorage,
+  },
   actions: {
     async login(identifier: string, password: string): Promise<void> {
       await useBaseFetch("/login", {
@@ -15,8 +20,7 @@ export const getAuthStore = defineStore("authStore", {
         }),
         onResponse: ({ response }): void => {
           
-          // this.$state.bearerToken = response.headers.get("Authorization") || "";
-          sessionStorage.setItem("Bearer Token", response.headers.get("Authorization") || "");
+          this.bearerToken = response.headers.get("Authorization") || "";
         },
       })
         .then(async ({ data, error }): Promise<void> => {

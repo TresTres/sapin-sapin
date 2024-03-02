@@ -15,13 +15,12 @@
 
 <script setup lang="ts">
 definePageMeta({
-  layout: "landing",
+  layout: "dashboard",
 });
 const userStore = getUserStore();
 const router = useRouter();
 
 const logout = (): void => {
   userStore.logout();
-  router.push("/login");
 };
 </script>
