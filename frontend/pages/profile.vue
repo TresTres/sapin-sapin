@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Profile</h1>
-    <p>Username: {{ userStore.getUsername }}</p>
-    <p>Email: {{ userStore.getEmail }}</p>
-    <p>Account age: {{ userStore.getAccountAge.toFixed(2) }} days</p>
+    <p>Username: {{ username }}</p>
+    <p>Email: {{ email }}</p>
+    <p>Account age: {{ accountAge.toFixed(2) }} days</p>
     <button
       class="pure-button pure-input-1-2 pure-button-primary"
       @click="logout"
@@ -18,9 +18,11 @@ definePageMeta({
   layout: "dashboard",
 });
 const userStore = getUserStore();
-const router = useRouter();
+const authStore = getAuthStore();
+const { username , email,  accountAge } = storeToRefs(userStore);
 
-const logout = (): void => {
-  userStore.logout();
+const logout = async(): Promise<void> => {
+  authStore.logout();
+  await navigateTo("/login");
 };
 </script>

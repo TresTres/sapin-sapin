@@ -2,20 +2,24 @@ export const getUserStore = defineStore("userStore", {
   state: () => ({
     username: "",
     email: "",
-    dateJoined: new Date(),
+    dateJoined: JSON.stringify(new Date()),
   }),
+  persist: {
+    storage: persistedState.sessionStorage,
+  },
   getters: {
-    getAccountAge(state): number {
+    accountAge(state): number {
       const now = new Date();
       const msPerDay = 1000 * 60 * 60 * 24;
-      return Math.abs(now.getTime() - state.dateJoined.getTime()) / msPerDay;
+      const dateJoined = Date.parse(state.dateJoined);
+      return Math.abs(now.getTime() - dateJoined) / msPerDay;
     },
   },
   actions: {
     login(user: UserResponseObject) {
       this.username = user.username;
       this.email = user.email;
-      this.dateJoined = new Date(user.date_joined);
+      this.dateJoined = JSON.stringify(new Date(user.date_joined));
     },
     logout() {
       this.$reset();

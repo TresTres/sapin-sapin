@@ -37,19 +37,18 @@ export const getAuthStore = defineStore("authStore", {
           userStore.login(user);
           this.isLoggedIn = true;
           this.authError = "";
-          // ensure navigation to the home page
           await navigateTo("/");
         })
         .catch((error): void => {
           this.logout(error.message);
         });
     },
-    logout(errorMessage?: string): void {
+    async logout(errorMessage?: string): Promise<void>{
       const userStore = getUserStore();
       userStore.logout();
       this.isLoggedIn = false;
+      this.bearerToken = "";
       this.authError = errorMessage || "";
-      // ensure navigation to the login page
     },
   },
 });
