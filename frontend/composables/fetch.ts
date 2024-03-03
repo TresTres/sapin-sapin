@@ -21,7 +21,7 @@ export const useAuthenticatingFetch: typeof useFetch = (request, opts?) => {
       ...opts,
       headers: {
         ...opts?.headers,
-        Authorization: `Bearer ${authStore.bearerToken}`,
+        Authorization: `${authStore.bearerToken}`,
       },
     },
   );

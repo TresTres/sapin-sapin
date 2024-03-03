@@ -33,7 +33,7 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
             )
         try:
             payload = jwt.decode(
-                token,
+                token.split(" ")[1],
                 key=current_app.config["ACCESS_KEY_SECRET"],
                 algorithms=["HS256"],
             )
@@ -41,9 +41,11 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
             # TODO: Implement a check against cookie for fingerprint once https is working
             # if payload["fingerprint"] != request.cookies.get("additional_token"):
             #     abort(401, message="Invalid token")
-        except jwt.ExpiredSignatureError:
+        except jwt.ExpiredSignatureError as ese:
+            logger.error(f"Token has expired: {ese}")
             abort(401, message="Token has expired, re-login is required.")
-        except jwt.InvalidTokenError:
+        except jwt.InvalidTokenError as ite:
+            logger.error(f"Invalid token: {ite}")
             abort(401, message="Invalid token")
         return f(*args, **kwargs, user_id=user_id)
 
@@ -97,27 +99,6 @@ class UserLogin(Resource):
             algorithm="HS256",
             headers={"typ": "JWT"},
         )
-
-    @cross_origin()
-    @jwt_authenticated
-    def get(self, user_id: int) -> Response:
-        """
-        Get the user's information
-        """
-        with db.atomic():
-            user = (
-                User.select(User.username, User.email, User.date_joined)
-                .where(User.id == user_id)
-                .dicts()[0]
-            )
-            if not user:
-                abort(404, message="User not found")
-            return make_response(
-                {
-                    "user": user,
-                },
-                200,
-            )
 
     @cross_origin()
     def post(self) -> Response:
