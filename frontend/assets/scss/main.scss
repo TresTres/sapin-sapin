@@ -9,12 +9,10 @@
   font-family: "Roboto", sans-serif;
 }
 
-html,
-body,
-#__nuxt {
+html {
   display: flex;
   flex-direction: column;
 
   height: 100%;
-  background-color: $light-color;
+  background-color: $dark-color;
 }
