@@ -1,5 +1,7 @@
 import os
-from flask import Flask, Response, Config, request
+import typing 
+from functools import wraps
+from flask import Flask, Response, request
 from flask_cors import CORS
 
 from backend.db import db
@@ -60,3 +62,40 @@ def create_app(mode: str) -> Flask:
         return {"error": "Not found"}, 404
 
     return app
+
+
+
+def jwt_authenticated(f: typing.Callable) -> typing.Callable:
+    """
+    Decorator to check if a user is authenticated using JWT by checking the Authorization header.
+    The request object must be reachable.
+    """
+
+    @wraps(f)
+    def decorated(*args, **kwargs) -> typing.Callable:
+        token = request.headers.get("Authorization")
+        if not token:
+            abort(
+                401,
+                message="No token provided",
+                headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
+            )
+        try:
+            payload = jwt.decode(
+                token.split(" ")[1],
+                key=current_app.config["ACCESS_KEY_SECRET"],
+                algorithms=["HS256"],
+            )
+            user_id = payload["user"]
+            # TODO: Implement a check against cookie for fingerprint once https is working
+            # if payload["fingerprint"] != request.cookies.get("additional_token"):
+            #     abort(401, message="Invalid token")
+        except jwt.ExpiredSignatureError as ese:
+            logger.error(f"Token has expired: {ese}")
+            abort(401, message="Token has expired, re-login is required.")
+        except jwt.InvalidTokenError as ite:
+            logger.error(f"Invalid token: {ite}")
+            abort(401, message="Invalid token")
+        return f(*args, **kwargs, user_id=user_id)
+
+    return decorated
