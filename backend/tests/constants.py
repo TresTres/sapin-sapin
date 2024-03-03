@@ -1,6 +1,7 @@
 import datetime
 import decimal
 
+VALID_USER_ID = 123
 VALID_USERNAME = "test_user0"
 VALID_EMAIL = "test_email@domain.com"
 VALID_PASSWORD = "Haoot_Birthy_42!"
