@@ -1,6 +1,6 @@
 import werkzeug
 import pytest
-import typing
+from unittest.mock import patch
 
 from backend.server.routes import create_resource_path
 from backend.models import User
@@ -129,15 +129,18 @@ class TestUserLogin:
 
     def test_login_success(self, client_with_user: werkzeug.test.Client) -> None:
         """
-        Test successful user login
+        Test successful user login, includes both refresh and access token 
         """
-
-        response = client_with_user.post(
-            create_resource_path(client_with_user.application.config, "login"),
-            json={"identifier": VALID_USERNAME, "password": VALID_PASSWORD},
-        )
-        assert response.status_code == 200
-        assert "user" in response.json
-        assert "password" not in response.json["user"]
-        assert "Authorization" in response.headers
-        assert "Bearer" in response.headers["Authorization"]
+        with patch("werkzeug.wrappers.Response.set_cookie") as mock_set_cookie:
+            response = client_with_user.post(
+                create_resource_path(client_with_user.application.config, "login"),
+                json={"identifier": VALID_USERNAME, "password": VALID_PASSWORD},
+            )
+            assert response.status_code == 200
+            assert "user" in response.json
+            assert "password" not in response.json["user"]
+            assert "Authorization" in response.headers
+            assert "Bearer" in response.headers["Authorization"]
+            mock_set_cookie.assert_called_once_with(
+                "refresh_token", mock_set_cookie.call_args[0][1], httponly=True, max_age=1800
+            )
