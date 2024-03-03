@@ -4,16 +4,25 @@ export const useBaseFetch: typeof useFetch = (request, opts?) => {
     */
 
   const config = useRuntimeConfig();
-  const authStore = getAuthStore();
   return useFetch(request, {
       baseURL: `${config.public.backendUrl}/v${config.public.apiVersion}`,
       ...opts,
-      onRequest: ({ options }) => {
-          options.headers = {
-              ...options.headers,
-              Authorization: authStore.bearerToken,
-          };
-      }
     },
   );
 };
+
+export const useAuthenticatingFetch: typeof useFetch = (request, opts?) => {
+  /*
+  Include the bearer token in the request headers.
+  */
+
+  const authStore = getAuthStore();
+  return useBaseFetch(request, {
+      ...opts,
+      headers: {
+        ...opts?.headers,
+        Authorization: `Bearer ${authStore.bearerToken}`,
+      },
+    },
+  );
+}
