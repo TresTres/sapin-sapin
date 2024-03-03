@@ -30,8 +30,8 @@ def event_series(series_user: User) -> typing.Generator[DataEventSeries, None, N
     """
     yield DataEventSeries.create(
         owner=series_user,
-        title=SERIES_TITLE,
-        description=SERIES_DESCRIPTION,
+        title=VALID_SERIES_TITLE,
+        description=VALID_SERIES_DESCRIPTION,
     )
     DataEventSeries.delete().execute()
 
@@ -44,8 +44,8 @@ class TestDataEventSeriesModel:
         """
         with pytest.raises(peewee.IntegrityError):
             DataEventSeries.create(
-                title=SERIES_TITLE,
-                description=SERIES_DESCRIPTION,
+                title=VALID_SERIES_TITLE,
+                description=VALID_SERIES_DESCRIPTION,
             )
 
     def test_create_series_failure_no_title(self, series_user: User) -> None:
@@ -55,7 +55,7 @@ class TestDataEventSeriesModel:
         with pytest.raises(ValidationError) as ve:
             DataEventSeries.create(
                 owner=series_user,
-                description=SERIES_DESCRIPTION,
+                description=VALID_SERIES_DESCRIPTION,
             )
         assert "Title must be non-empty" in str(ve)
 
@@ -76,7 +76,7 @@ class TestDataEventSeriesModel:
             DataEventSeries.create(
                 title=title,
                 owner=series_user,
-                description=SERIES_DESCRIPTION,
+                description=VALID_SERIES_DESCRIPTION,
             )
         assert error in str(ie)
 
@@ -88,13 +88,13 @@ class TestDataEventSeriesModel:
         with pytest.raises(peewee.IntegrityError) as ie:
             DataEventSeries.create(
                 owner=series_user,
-                title=SERIES_TITLE,
-                description=SERIES_DESCRIPTION,
+                title=VALID_SERIES_TITLE,
+                description=VALID_SERIES_DESCRIPTION,
             )
             DataEventSeries.create(
                 owner=series_user,
-                title=SERIES_TITLE,
-                description=SERIES_DESCRIPTION,
+                title=VALID_SERIES_TITLE,
+                description=VALID_SERIES_DESCRIPTION,
             )
         assert "UNIQUE constraint failed" in str(ie)
 
@@ -104,13 +104,13 @@ class TestDataEventSeriesModel:
         """
         DataEventSeries.create(
             owner=series_user,
-            title=SERIES_TITLE,
-            description=SERIES_DESCRIPTION,
+            title=VALID_SERIES_TITLE,
+            description=VALID_SERIES_DESCRIPTION,
         )
 
         created_series = DataEventSeries.select()[0]
-        assert created_series.title == SERIES_TITLE.upper()
-        assert created_series.description == SERIES_DESCRIPTION
+        assert created_series.title == VALID_SERIES_TITLE.upper()
+        assert created_series.description == VALID_SERIES_DESCRIPTION
         assert created_series.owner == series_user
 
     def test_cascade_series_from_owner(self, series_user: User) -> None:
@@ -120,8 +120,8 @@ class TestDataEventSeriesModel:
         """
         DataEventSeries.create(
             owner=series_user,
-            title=SERIES_TITLE,
-            description=SERIES_DESCRIPTION,
+            title=VALID_SERIES_TITLE,
+            description=VALID_SERIES_DESCRIPTION,
         )
 
         series_select = DataEventSeries.select()

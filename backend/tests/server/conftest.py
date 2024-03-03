@@ -1,13 +1,15 @@
 import pytest
 import werkzeug
 import flask
-from typing import Generator
+import jwt
+from typing import Generator, Dict
 
 from backend.db import db as persisting_db
 from backend.server.main import create_app
 from backend.server.auth import jwt_authenticated
 from backend.server.migrations import MODELS
-from flask import jsonify
+from backend.models import User, DataEventSeries
+from tests.constants import *
 
 
 @pytest.fixture(scope="class")
@@ -41,3 +43,62 @@ def client_with_protected_route(app: flask.Flask) -> werkzeug.test.Client:
         return flask.make_response({"success": user_id}, 200)
     
     return app.test_client()
+
+@pytest.fixture(scope="class")
+def valid_user_token_header(
+    client: werkzeug.test.Client,
+) -> Dict[str, str]:
+    """
+    Create a valid bearer token for a user
+    """
+    token = jwt.encode(
+        {
+            "user": VALID_USER_ID,
+            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+        },
+        key=client.application.config["ACCESS_KEY_SECRET"],
+        algorithm="HS256",
+        headers={"typ": "JWT"}
+    )
+    return {
+        "Authorization": f"Bearer {token}"
+    }
+
+
+@pytest.fixture(scope="function")
+def client_with_user(
+    client: werkzeug.test.Client,
+) -> Generator[werkzeug.test.Client, None, None]:
+    """
+    Create a user for testing
+    """
+    with persisting_db.connection_context():
+        User.create(
+            id=VALID_USER_ID,
+            username=VALID_USERNAME,
+            email=VALID_EMAIL,
+            password=VALID_PASSWORD,
+            date_joined=VALID_JOIN_DATE,
+        )
+    yield client
+    with persisting_db.connection_context():
+        User.truncate_table()
+        DataEventSeries.truncate_table()
+
+
+@pytest.fixture(scope="function")
+def client_with_data_series(
+    client_with_user: werkzeug.test.Client,
+) -> Generator[werkzeug.test.Client, None, None]:
+    """
+    Create a user for testing
+    """
+    with persisting_db.connection_context():
+        DataEventSeries.create(
+            owner=User.get(User.id == VALID_USER_ID),
+            title=VALID_SERIES_TITLE,
+            description=VALID_SERIES_DESCRIPTION,
+        )
+    yield client_with_user
+    with persisting_db.connection_context():
+        DataEventSeries.truncate_table()

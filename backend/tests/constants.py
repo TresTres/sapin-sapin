@@ -7,8 +7,8 @@ VALID_EMAIL = "test_email@domain.com"
 VALID_PASSWORD = "Haoot_Birthy_42!"
 VALID_JOIN_DATE = datetime.datetime(2020, 1, 1)
 
-SERIES_TITLE = "Test Series"
-SERIES_DESCRIPTION = "Test Series Description"
+VALID_SERIES_TITLE = "Test Series"
+VALID_SERIES_DESCRIPTION = "Test Series Description"
 
 DATA_LABEL = "Test Data Label"
 DATA_AMOUNT = decimal.Decimal("-69.4201")
