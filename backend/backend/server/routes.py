@@ -18,3 +18,8 @@ def register_routes(config: Config) -> None:
         UserRegistration, create_resource_path(config, "registration")
     )
     users_api.add_resource(UserLogin, create_resource_path(config, "login"))
+    
+    data_api.add_resource(
+        DataSeriesManagement, create_resource_path(config, "data/series")
+    )
+        

@@ -20,6 +20,7 @@ def create_app(mode: str) -> Flask:
     CORS(app, supports_credentials=True)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
+    app.register_blueprint(data_blueprint)
 
     configure_logging(app.config)
     
