@@ -1,19 +1,25 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: false,
+    },
+  },
+  ssr: false, 
   runtimeConfig: {
     public: {
       backendUrl: process.env.BASE_URL || "http://127.0.0.1:8000",
       apiVersion: process.env.API_VERSION || "DEV",
     },
   },
-
   modules: [
     "@pinia/nuxt",
     [
       "@pinia-plugin-persistedstate/nuxt",
       {
-        autoImports: ["defineStore", "sessionStorage"],
+        autoImports: ["defineStore", "persistedState"],
       }
     ],
     "@nuxt/image",
