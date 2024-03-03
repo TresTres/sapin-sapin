@@ -4,7 +4,7 @@
       <h1>{{ title }}</h1>
       <span class="description" v-text="descriptionValue"></span>
     </div>
-    <span class="banner" v-text="bannerValue"></span>
+    <span class="banner" v-text="bannerText"></span>
     <fieldset class="input-group">
       <div class="control-groups">
         <slot />
@@ -30,11 +30,10 @@ defineProps({
     type: String,
     default: "",
   },
-});
-
-const bannerValue = defineModel("bannerValue", {
-  type: String,
-  default: "",
+  bannerText: {
+    type: String,
+    default: "",
+  },
 });
 
 defineEmits(["submit"]);
