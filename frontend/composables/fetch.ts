@@ -16,7 +16,9 @@ export const useAuthenticatingFetch: typeof useFetch = (request, opts?) => {
   Include the bearer token in the request headers.
   */
 
-  const authStore = getAuthStore();
+  const pinia = useNuxtApp().$pinia;
+  const authStore = getAuthStore(pinia);
+  console.log(authStore.bearerToken)
   return useBaseFetch(request, {
       ...opts,
       headers: {

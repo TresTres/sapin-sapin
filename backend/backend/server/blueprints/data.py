@@ -57,7 +57,13 @@ class DataSeriesManagement(Resource):
             return make_response(
                 {
                     "owned_series": [
-                        {"title": s.title, "description": s.description} for s in series_by_user
+                        {
+                            "id": ind,
+                            "title": s.title, 
+                            "description": s.description,
+                            "events": [],
+                            "recurrences": [],
+                        } for ind, s in enumerate(series_by_user)
                     ]
                 },
                 200
