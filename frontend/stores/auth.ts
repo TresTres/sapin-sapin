@@ -6,10 +6,6 @@ export const getAuthStore = defineStore("authStore", {
     authError: "" as string,
     bearerToken: "" as string,
   }),
-  persist: {
-    paths: ["isLoggedIn", "bearerToken"],
-    storage: persistedState.sessionStorage,
-  },
   actions: {
     async login(identifier: string, password: string): Promise<void> {
       await useBaseFetch("/login", {
@@ -49,6 +45,7 @@ export const getAuthStore = defineStore("authStore", {
       this.isLoggedIn = false;
       this.bearerToken = "";
       this.authError = errorMessage || "";
+      useCookie("refresh_token").value = null;
     },
   },
 });

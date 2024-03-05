@@ -46,9 +46,9 @@ class UserLogin(Resource):
     A resource for logging in users.
     """
 
-    def generate_token(self, user: User, fingerprint: str) -> str:
+    def generate_access_token(self, user: User, fingerprint: str) -> str:
         """
-        Generate a JWT token with a 15 minute expiration period for an authenticated user
+        Generate a JWT token with a 1 minute expiration period for an authenticated user
         """
         # generate a hash of the user's fingerprint
         digest = hashlib.sha256(fingerprint.encode()).hexdigest()
@@ -56,10 +56,26 @@ class UserLogin(Resource):
             {
                 "user": user.id,
                 "exp": datetime.datetime.now(datetime.UTC)
-                + datetime.timedelta(minutes=15),
+                + datetime.timedelta(minutes=1),
                 "fingerprint": digest,
             },
             key=current_app.config["ACCESS_KEY_SECRET"],
+            algorithm="HS256",
+            headers={"typ": "JWT"},
+        )
+        
+    def generate_refresh_token(self, user: User, fingerprint: str) -> str:
+        """
+        Generate a JWT token with a 15 minute expiration period for an authenticated user
+        """
+        digest = hashlib.sha256(fingerprint.encode()).hexdigest()
+        return jwt.encode(
+            {
+                "user": user.id, 
+                "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15),
+                "fingerprint": digest,
+            },
+            key=current_app.config["REFRESH_KEY_SECRET"],
             algorithm="HS256",
             headers={"typ": "JWT"},
         )
@@ -82,7 +98,8 @@ class UserLogin(Resource):
                         User.username, User.email, User.date_joined
                     ).dicts()[0]
                     fingerprint = secrets.token_urlsafe(32)
-                    access_token = self.generate_token(user, fingerprint)
+                    access_token = self.generate_access_token(user, fingerprint)
+                    refresh_token = self.generate_refresh_token(user, fingerprint) 
                     resp = make_response(
                         {
                             "user": result_user,
@@ -93,10 +110,11 @@ class UserLogin(Resource):
                             "Access-Control-Expose-Headers": "authorization",
                         },
                     )
-                    # TODO: Harden this cookie and use secure rules for the cookie, label it as __Secure-Fgp
-                    # and specify a domain
+                    resp.set_cookie("refresh_token", refresh_token, httponly=True, samesite="Strict", max_age=60*15)
+                    # TODO: Harden this cookie with secure and use secure rules for the cookie,
+                    # this cookie will be used to verify fingerprint information in subsequent refreshes
                     # See https://datatracker.ietf.org/doc/html/draft-west-cookie-prefixes#section-3.1
-                    # resp.set_cookie("additional_token", fingerprint, httponly=True, samesite="Strict", secure=True, max_age=60*15)
+                    # resp.set_cookie("__Secure-Fgp", fingerprint, httponly=True, samesite="Strict", secure=True, max_age=60*15)
                     return resp
                 abort(
                     401,
