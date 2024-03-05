@@ -3,7 +3,7 @@
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <template #header>
-        <Navbar :routes="appRoutes" />
+        <Navbar v-if="authStore.isLoggedIn" :routes="appRoutes" />
       </template>
       <NuxtPage />
       <template #footer>
@@ -13,7 +13,10 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const authStore = getAuthStore();
+</script>
 
 <style lang="scss" scoped>
 .app-container {
