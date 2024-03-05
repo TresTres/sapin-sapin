@@ -6,6 +6,7 @@ export default defineNuxtRouteMiddleware((to: RouteLocationNormalized, from) => 
     if(!useCookie("refresh_token")) {
       return navigateTo("/login");
     }
+    return;
   }
 
   const authStore = getAuthStore();
