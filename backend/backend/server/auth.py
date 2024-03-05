@@ -1,10 +1,48 @@
 import jwt
 import typing 
+import hashlib
+import datetime
 from functools import wraps
 
 from flask import request, current_app, jsonify, Response
+
+from backend.models import User
 from backend.server.logging import logger
 
+
+def generate_refresh_token(user: User, fingerprint: str) -> str:
+    """
+    Generate a JWT token with a 15 minute expiration period for an authenticated user
+    """
+    digest = hashlib.sha256(fingerprint.encode()).hexdigest()
+    return jwt.encode(
+        {
+            "user": user.id, 
+            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15),
+            "fingerprint": digest,
+        },
+        key=current_app.config["REFRESH_KEY_SECRET"],
+        algorithm="HS256",
+        headers={"typ": "JWT"},
+    )
+
+
+def generate_access_token(user: User, fingerprint: str) -> str:
+    """
+    Generate a JWT token with a 1 minute expiration period for an authenticated user
+    """
+    digest = hashlib.sha256(fingerprint.encode()).hexdigest()
+    return jwt.encode(
+        {
+            "user": user.id,
+            "exp": datetime.datetime.now(datetime.UTC)
+            + datetime.timedelta(minutes=1),
+            "fingerprint": digest,
+        },
+        key=current_app.config["ACCESS_KEY_SECRET"],
+        algorithm="HS256",
+        headers={"typ": "JWT"},
+    )
 
 def jwt_authenticated(f: typing.Callable) -> typing.Callable:
     """
