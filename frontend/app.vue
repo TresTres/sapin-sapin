@@ -1,4 +1,3 @@
-import { getAuthStore } from './stores/auth';
 <template>
   <div class="app-container">
     <NuxtLoadingIndicator />
