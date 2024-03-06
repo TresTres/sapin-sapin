@@ -1,14 +1,7 @@
 from flask import Config
 
 from backend.server.blueprints import *
-
-
-def create_resource_path(config: Config, resource: str) -> str:
-    """
-    Create a resource path for the API
-    """
-    return f"/v{config.get('API_VERSION', '0.0')}/{resource}"
-
+from backend.server.blueprints.utils import create_resource_path
 
 def register_routes(config: Config) -> None:
     """
