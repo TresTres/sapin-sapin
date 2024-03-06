@@ -4,7 +4,7 @@ import { getAuthStore } from './stores/auth';
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <template #header>
-        <Navbar v-if="authStore.isLoggedIn" :routes="appRoutes" />
+        <Navbar :routes="appRoutes" />
       </template>
       <NuxtPage />
       <template #footer>
