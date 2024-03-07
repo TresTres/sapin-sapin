@@ -26,7 +26,7 @@ services:
       target: development
       args:
         API_VERSION: '0.0'
-        BASE_URL: http://localhost:4000/api
+        BASE_URL: http://s.api.n
     expose:
       - 3000
     ports:
@@ -43,7 +43,9 @@ services:
     ports:
       - 4000:80
     networks:
-      - webnet
+      webnet:
+        aliases:
+          - s.api.n
     
 
 networks:
