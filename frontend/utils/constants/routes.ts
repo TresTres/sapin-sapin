@@ -16,3 +16,4 @@ export const appRoutes: { name: string; path: string }[] = [
     path: "data",
   },
 ];
+
