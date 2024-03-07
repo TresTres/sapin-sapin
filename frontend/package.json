@@ -12,6 +12,8 @@
     "lintfix": "prettier --write --list-different . && yarn lint --fix"
   },
   "devDependencies": {
+  },
+  "dependencies": {
     "@nuxt/image": "1.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
@@ -27,7 +29,6 @@
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
-  "dependencies": {},
   "dependenciesComments": {
     "@nuxt/image": "pinned due to https://github.com/nuxt/image/issues/1210"
   }

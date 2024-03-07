@@ -8,10 +8,11 @@
     - [Test User](#test-user)
   - [Development on the Frontend](#development-on-the-frontend)
   - [Production / Containerization](#production--containerization)
+  - [Cookies](#cookies)
 
 ## Development on the Backend
 
-To set up the backend, follow these steps:
+To set up the backend in isolation, follow these steps:
 
 1. Install Poetry by running the following command:
 
@@ -53,7 +54,7 @@ When running the backend server in DEV mode, a test user is created with the fol
 
 ## Development on the Frontend
 
-To set up the frontend, follow these steps:
+To set up the frontend in isolation, follow these steps:
 
 1. Navigate to the frontend folder:
 
@@ -92,10 +93,14 @@ Services are defined in `docker-compose.yml`. You can build and run the services
 docker-compose up --build --force-recreate -d
 ```
 
-Accessing the client will be at `http://localhost` (port 80). Ports 8000 and 3000 aren't exposed to the host machine.
+Accessing the client will be at `http://localhost:4000`, and you'll likely be redirected to a login page.
 
 Shut down the services with:
 
 ```bash
 docker-compose down
 ```
+
+## Cookies 
+Be aware that running this application in a browser will require you to enable third-party cookies. <br>
+This is because the backend server is running on a different port than the frontend server and browser cookies are used as part of JWT session management.
