@@ -19,15 +19,15 @@
 definePageMeta({
   layout: "dashboard",
 });
-const userStore = getUserStore();
-const authStore = getAuthStore();
+const userStore = useUserStore();
+const authStore = useAuthStore();
 const { username , email,  accountAge } = storeToRefs(userStore);
 
 const logout = async(): Promise<void> => {
   /*
     Logout the user and return to the login page
   */
-  authStore.logout();
+  authStore.clearAuth();
   await navigateTo("/login");
 };
 </script>

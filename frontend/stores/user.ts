@@ -1,4 +1,6 @@
-export const getUserStore = defineStore("userStore", {
+import type { UserResponseObject } from "~/utils/interfaces/response-objects";
+
+export const useUserStore = defineStore("userStore", {
   state: () => ({
     username: "",
     email: "",
@@ -16,12 +18,12 @@ export const getUserStore = defineStore("userStore", {
     },
   },
   actions: {
-    login(user: UserResponseObject) {
+    fillData(user: UserResponseObject) {
       this.username = user.username;
       this.email = user.email;
       this.dateJoined = new Date(user.date_joined);
     },
-    logout() {
+    clearData() {
       this.$reset();
     },
   },

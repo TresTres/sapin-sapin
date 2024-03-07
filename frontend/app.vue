@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 
-const authStore = getAuthStore();
+
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,7 @@
-export const getAuthStore = defineStore("authStore", {
+import type { SimplifiedApiResponseObject } from "~/server/utils";
+import type { UserResponseObject } from "~/utils/interfaces/response-objects";
+
+export const useAuthStore = defineStore("authStore", {
 
 
   state: () => ({
@@ -12,38 +15,36 @@ export const getAuthStore = defineStore("authStore", {
   },
   actions: {
     async login(identifier: string, password: string): Promise<void> {
-      await useBaseFetch("/login", {
+      await useFetch("/api/login", {
         method: "POST",
         body: JSON.stringify({
           identifier: identifier,
           password: password,
         }),
-        onResponse: ({ response }): void => {
-          this.accessToken = response.headers.get("Authorization") || "";
-        },
-      })
-        .then(async ({ data, error }): Promise<void> => {
-          const errorContent = error.value;
-          if (errorContent) {
-            if (errorContent?.statusCode === 401) {
-              throw new Error("Invalid username or password");
+      }).then(
+        async ({ data: { value } }):  Promise<void> => {
+          const { headers, payload, error } = value as SimplifiedApiResponseObject;
+          if(error) {
+            this.clearAuth();
+            if(error.value.statusCode === 401) {
+              this.authError = "Invalid username or password";
             } else {
-              throw new Error("An error occurred");
+              this.authError = "An unspecified error occurred";
             }
+            return;
           }
-          const { user } = data?.value as { user: UserResponseObject };
-          const userStore = getUserStore();
-          userStore.login(user);
+          this.accessToken = headers.get("Authorization") || "";
           this.isLoggedIn = true;
           this.authError = "";
+          this.accessToken = headers.get("Authorization") || "";
+          const userStore = useUserStore();
+          userStore.fillData(payload?.user as UserResponseObject);
           await navigateTo("/");
-        })
-        .catch((error): void => {
-          this.logout(error.message);
-        });
+        }
+      )
     },
     async refreshAuth(): Promise<void> {
-      await useBaseFetch("/token", {
+      await useFetch("/api/token", {
         method: "GET",        
         onResponse: ({ response }): void => {
           this.accessToken = response.headers.get("Authorization") || "";
@@ -58,18 +59,17 @@ export const getAuthStore = defineStore("authStore", {
           }
         }
         const { user } = data?.value as { user: UserResponseObject };
-        const userStore = getUserStore();
+        const userStore = useUserStore();
         userStore.login(user);
         this.isLoggedIn = true;
       }).catch((error): void => {
-        this.logout(error.message);
+        this.clearAuth(error.message);
       });
     },
-    async logout(errorMessage?: string): Promise<void>{
-      const userStore = getUserStore();
-      userStore.logout();
+    clearAuth(): void{
+      const userStore = useUserStore();
+      userStore.clearData();
       this.isLoggedIn = false;
-      this.authError = errorMessage || "";
     },
   },
 });

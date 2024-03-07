@@ -17,7 +17,7 @@ const { routes } = defineProps<{
     path: string;
   }[];
 }>();
-const authStore = getAuthStore();
+const authStore = useAuthStore();
 </script>
 
 <style lang="scss" scoped>

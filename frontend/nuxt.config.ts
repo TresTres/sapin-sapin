@@ -23,9 +23,6 @@ export default defineNuxtConfig({
     ],
     "@nuxt/image",
   ],
-  imports: {
-    dirs: ["stateless/**/*"],
-  },
   css: ["@/assets/scss/main.scss"],
   vite: {
     css: {
