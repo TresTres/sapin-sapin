@@ -1,9 +1,6 @@
-import type { SimplifiedApiResponseObject } from "~/server/utils";
-import type { UserResponseObject } from "~/utils/interfaces/response-objects";
+import type { FetchResponse, FetchError } from 'ofetch';
 
 export const useAuthStore = defineStore("authStore", {
-
-
   state: () => ({
     accessToken: "" as string,
     isLoggedIn: false as boolean,
@@ -15,33 +12,32 @@ export const useAuthStore = defineStore("authStore", {
   },
   actions: {
     async login(identifier: string, password: string): Promise<void> {
-      await useFetch("/api/login", {
+      await $fetch.raw("/api/login", {
         method: "POST",
         body: JSON.stringify({
           identifier: identifier,
           password: password,
         }),
       }).then(
-        async ({ data: { value } }):  Promise<void> => {
-          const { headers, payload, error } = value as SimplifiedApiResponseObject;
-          if(error) {
-            this.clearAuth();
-            if(error.value.statusCode === 401) {
-              this.authError = "Invalid username or password";
-            } else {
-              this.authError = "An unspecified error occurred";
-            }
-            return;
-          }
-          this.accessToken = headers.get("Authorization") || "";
+        async (resp: FetchResponse<any>):  Promise<void> => {
+          const { headers,  _data: { user } } = resp;
           this.isLoggedIn = true;
           this.authError = "";
           this.accessToken = headers.get("Authorization") || "";
           const userStore = useUserStore();
-          userStore.fillData(payload?.user as UserResponseObject);
+          userStore.fillData(user as UserResponseObject);
           await navigateTo("/");
         }
-      )
+      ).catch((error: FetchError): void => {
+        this.clearAuth();
+        if(error.status === 401) {
+          this.authError = "Invalid username or password.";
+        } else {
+          this.authError = "An error occurred on login.  Please retry again later.";
+          console.error(error.data);
+        }
+        return;
+      })
     },
     async refreshAuth(): Promise<void> {
       await useFetch("/api/token", {
