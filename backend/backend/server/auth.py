@@ -46,13 +46,12 @@ def generate_access_token(user: User, fingerprint: str) -> str:
 
 def jwt_authenticated(f: typing.Callable) -> typing.Callable:
     """
-    Decorator to check if a user is authenticated using JWT by checking the Authorization header.
-    The request object must be reachable.
+    Decorator to check if a user is authenticated using an access token JWT by checking the Authorization header.
     """
 
     @wraps(f)
     def decorated(*args, **kwargs) -> Response:
-        token = request.headers.get("Authorization")
+        token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             logger.error("No token provided")
             return jsonify(
@@ -63,7 +62,7 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
             ), 401
         try:
             payload = jwt.decode(
-                token.split(" ")[1],
+                token,
                 key=current_app.config["ACCESS_KEY_SECRET"],
                 algorithms=["HS256"],
                 options={
@@ -77,7 +76,7 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
             #     abort(401, message="Invalid token")
         except jwt.ExpiredSignatureError as ese:
             logger.error(f"Token has expired: {ese}")
-            return jsonify({"message": "Token has expired, re-login is required."}), 401
+            return jsonify({"message": "Token has expired, renewal is required."}), 401
         except jwt.InvalidTokenError as ite:
             logger.error(f"Invalid token: {ite}")
             return jsonify({"message": f"Invalid token, {ite}"}), 401
