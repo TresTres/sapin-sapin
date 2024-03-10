@@ -1,3 +1,5 @@
+import { useAuthorizingFetch } from "~/composables/authorizingFetch";
+
 export const getDataStore = defineStore("dataStore", {
   state: () => ({
     isLoading: false as boolean, 
@@ -9,8 +11,8 @@ export const getDataStore = defineStore("dataStore", {
     // async createSeries()
     async loadForUser() {
       this.isLoading = true;
-      await useAuthenticatingFetch(
-        "/data/series", 
+      await useAuthorizingFetch(
+        "api/data/series", 
       ).then(({ data }) => {
         const series = data?.value as DataEventSeriesResponseObject;
         if (series) {

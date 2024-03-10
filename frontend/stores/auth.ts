@@ -5,9 +5,10 @@ export const useAuthStore = defineStore("authStore", {
     accessToken: "" as string,
     isLoggedIn: false as boolean,
     authError: "" as string,
+    
   }),
   persist: {
-    storage: persistedState.sessionStorage,
+    storage: persistedState.localStorage,
     paths: ["isLoggedIn"]
   },
   actions: {
@@ -23,7 +24,7 @@ export const useAuthStore = defineStore("authStore", {
           const { headers,  _data: { user } } = resp;
           this.isLoggedIn = true;
           this.authError = "";
-          this.accessToken = headers.get("Authorization") || "";
+          this.accessToken = headers.get("Authorization")?.split(" ")[1] || "";
           const userStore = useUserStore();
           userStore.fillData(user as UserResponseObject);
           await navigateTo("/");
@@ -39,33 +40,35 @@ export const useAuthStore = defineStore("authStore", {
         return;
       })
     },
-    async refreshAuth(): Promise<void> {
-      await useFetch("/api/token", {
-        method: "GET",        
-        onResponse: ({ response }): void => {
-          this.accessToken = response.headers.get("Authorization") || "";
-        },
-      }).then(async ({ data, error }): Promise<void> => {
-        const errorContent = error.value;
-        if (errorContent) {
-          if (errorContent?.statusCode === 401) {
-            throw new Error("Invalid refresh token");
-          } else {
-            throw new Error("An error occurred");
-          }
-        }
-        const { user } = data?.value as { user: UserResponseObject };
-        const userStore = useUserStore();
-        userStore.login(user);
-        this.isLoggedIn = true;
-      }).catch((error): void => {
-        this.clearAuth(error.message);
-      });
-    },
     clearAuth(): void{
       const userStore = useUserStore();
       userStore.clearData();
       this.isLoggedIn = false;
     },
+    async refreshToken(): Promise<void> {
+      const refreshToken = useCookie("refresh_token");
+      if(!refreshToken.value) {
+        console.warn("No refresh token found.", process);
+        this.clearAuth();
+      } 
+      await $fetch.raw("/api/me/refresh", {
+        method: "GET",
+      }).then(
+        async (resp: FetchResponse<any>):  Promise<void> => {
+          const { headers, _data: { user } } = resp;
+          this.authError = "";
+          this.accessToken = headers.get("Authorization")?.split(" ")[1] || "";
+        }
+      ).catch((error: FetchError): void => {
+        console.error(error);
+        this.clearAuth();
+        if(error.status === 401) {
+          this.authError = "Invalid refresh token.";
+        } else {
+          this.authError = "An error occurred on refresh.  Please retry login.";
+        }
+        return;
+      })
+    }
   },
 });

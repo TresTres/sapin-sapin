@@ -105,6 +105,7 @@ class UserRefreshToken(Resource):
     A resource for refreshing the access token
     """
 
+    @cross_origin()
     def get(self) -> Response:
         """
         Validate if a user's refresh token is correct.
@@ -123,11 +124,7 @@ class UserRefreshToken(Resource):
                 fingerprint = secrets.token_urlsafe(32)
                 access_token = generate_access_token(user, fingerprint)
                 resp = make_response(
-                    {
-                        "user": user.select(
-                            User.username, User.email, User.date_joined
-                        ).dicts()[0],
-                    },
+                    "Access token refreshed",
                     200,
                     {
                         "Authorization": f"Bearer {access_token}",
@@ -151,5 +148,5 @@ class UserRefreshToken(Resource):
                 logger.error("User does not exist")
                 abort(
                     401,
-                    message="User in refresh token does not exist",
+                    message="User in refresh token does not exist"
                 )
