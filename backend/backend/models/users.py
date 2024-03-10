@@ -16,6 +16,10 @@ class UserConfig(BaseModel):
 
 
 class User(BaseModel):
+    """
+    Represents a user in the system
+    """
+
     username = CharField(
         unique=True,
         constraints=[Check("length(username) > 5"), Check("length(username) < 35")],

@@ -1,12 +1,11 @@
-FROM node:21.6.1-bullseye-slim
+FROM node:21.6.1-bullseye-slim as base
 
 ARG API_VERSION
 ARG BASE_URL
-
-# Create a user for running the app
-RUN useradd -m client_admin
-
 WORKDIR /client
+ENV API_VERSION=${API_VERSION}
+ENV BASE_URL=${BASE_URL}
+
 
 # Install dependencies
 # RUN apk update && apk upgrade
@@ -18,9 +17,18 @@ RUN yarn install && yarn cache clean --force
 # Copy code into working directory.  Expected context: <project root>/frontend
 COPY . /client
 
+FROM base as development
+
+# Run app in dev mode
+CMD ["yarn", "dev"]
+
+
+FROM base as production
+# Create a user for running the app
+WORKDIR /client
+RUN useradd -m client_admin
+
 # Build the app
-ENV API_VERSION=${API_VERSION}
-ENV BASE_URL=${BASE_URL}
 RUN yarn build
 
 # Set permissions

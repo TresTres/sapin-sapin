@@ -1,8 +1,6 @@
 import jwt
 import secrets
-import hashlib
 import datetime
-from functools import wraps
 from flask import Blueprint, request, make_response, Response, current_app
 from flask_restful import Api, Resource, abort
 from flask_cors import cross_origin
@@ -11,45 +9,10 @@ from flask_cors import cross_origin
 from backend.models import *
 from backend.db import db
 from backend.server.logging import logger
+from backend.server.auth import generate_refresh_token, generate_access_token
 
 users_blueprint = Blueprint("users", __name__)
 users_api = Api(users_blueprint)
-
-
-def jwt_authenticated(f: typing.Callable) -> typing.Callable:
-    """
-    Decorator to check if a user is authenticated using JWT by checking the Authorization header.
-    The request object must be reachable.
-    """
-
-    @wraps(f)
-    def decorated(*args, **kwargs) -> typing.Callable:
-        token = request.headers.get("Authorization")
-        if not token:
-            abort(
-                401,
-                message="No token provided",
-                headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
-            )
-        try:
-            payload = jwt.decode(
-                token.split(" ")[1],
-                key=current_app.config["ACCESS_KEY_SECRET"],
-                algorithms=["HS256"],
-            )
-            user_id = payload["user"]
-            # TODO: Implement a check against cookie for fingerprint once https is working
-            # if payload["fingerprint"] != request.cookies.get("additional_token"):
-            #     abort(401, message="Invalid token")
-        except jwt.ExpiredSignatureError as ese:
-            logger.error(f"Token has expired: {ese}")
-            abort(401, message="Token has expired, re-login is required.")
-        except jwt.InvalidTokenError as ite:
-            logger.error(f"Invalid token: {ite}")
-            abort(401, message="Invalid token")
-        return f(*args, **kwargs, user_id=user_id)
-
-    return decorated
 
 
 class UserRegistration(Resource):
@@ -73,7 +36,7 @@ class UserRegistration(Resource):
             except IntegrityError:
                 abort(409, message="User already exists")
             except ValidationError as val_error:
-                abort(400, message=val_error.message)
+                abort(400, message=val_error.args[0])
             return make_response({"new_user": user.username}, 201)
 
 
@@ -81,24 +44,6 @@ class UserLogin(Resource):
     """
     A resource for logging in users.
     """
-
-    def generate_token(self, user: User, fingerprint: str) -> str:
-        """
-        Generate a JWT token with a 15 minute expiration period for an authenticated user
-        """
-        # generate a hash of the user's fingerprint
-        digest = hashlib.sha256(fingerprint.encode()).hexdigest()
-        return jwt.encode(
-            {
-                "user": user.id,
-                "exp": datetime.datetime.now(datetime.UTC)
-                + datetime.timedelta(minutes=15),
-                "fingerprint": digest,
-            },
-            key=current_app.config["ACCESS_KEY_SECRET"],
-            algorithm="HS256",
-            headers={"typ": "JWT"},
-        )
 
     @cross_origin()
     def post(self) -> Response:
@@ -118,7 +63,8 @@ class UserLogin(Resource):
                         User.username, User.email, User.date_joined
                     ).dicts()[0]
                     fingerprint = secrets.token_urlsafe(32)
-                    access_token = self.generate_token(user, fingerprint)
+                    access_token = generate_access_token(user, fingerprint)
+                    refresh_token = generate_refresh_token(user, fingerprint)
                     resp = make_response(
                         {
                             "user": result_user,
@@ -129,10 +75,17 @@ class UserLogin(Resource):
                             "Access-Control-Expose-Headers": "authorization",
                         },
                     )
-                    # TODO: Harden this cookie and use secure rules for the cookie, label it as __Secure-Fgp
-                    # and specify a domain
+                    resp.set_cookie(
+                        "refresh_token",
+                        refresh_token,
+                        httponly=True,
+                        samesite="Strict",
+                        max_age=60 * 15,
+                    )
+                    # TODO: Harden this cookie with secure and use secure rules for the cookie,
+                    # this cookie will be used to verify fingerprint information in subsequent refreshes
                     # See https://datatracker.ietf.org/doc/html/draft-west-cookie-prefixes#section-3.1
-                    # resp.set_cookie("additional_token", fingerprint, httponly=True, samesite="Strict", secure=True, max_age=60*15)
+                    # resp.set_cookie("__Secure-Fgp", fingerprint, httponly=True, samesite="Strict", secure=True, max_age=60*15)
                     return resp
                 abort(
                     401,
@@ -144,4 +97,56 @@ class UserLogin(Resource):
                     401,
                     message="Could not find user with that username or email",
                     headers={"WWW-Authenticate": "Basic realm='Valid login required'"},
+                )
+
+
+class UserRefreshToken(Resource):
+    """
+    A resource for refreshing the access token
+    """
+
+    @cross_origin()
+    def get(self) -> Response:
+        """
+        Validate if a user's refresh token is correct.
+        A validated user will receive a new access token.
+        """
+        with db.atomic():
+            try:
+                refresh_token = request.cookies.get("refresh_token")
+                user: User = User.get(
+                    id=jwt.decode(
+                        refresh_token,
+                        key=current_app.config["REFRESH_KEY_SECRET"],
+                        algorithms=["HS256"],
+                    )["user"]
+                )
+                fingerprint = secrets.token_urlsafe(32)
+                access_token = generate_access_token(user, fingerprint)
+                resp = make_response(
+                    "Access token refreshed",
+                    200,
+                    {
+                        "Authorization": f"Bearer {access_token}",
+                        "Access-Control-Expose-Headers": "authorization",
+                    },
+                )
+                return resp
+            except jwt.ExpiredSignatureError as ese:
+                logger.error(f"Refresh token has expired: {ese}")
+                abort(
+                    401,
+                    message="Refresh token has expired, re-login is required",
+                )
+            except jwt.InvalidTokenError as ite:
+                logger.error(f"Invalid refresh token: {ite}")
+                abort(
+                    401,
+                    message="Invalid refresh token",
+                )
+            except User.DoesNotExist:
+                logger.error("User does not exist")
+                abort(
+                    401,
+                    message="User in refresh token does not exist"
                 )

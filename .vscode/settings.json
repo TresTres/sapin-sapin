@@ -4,5 +4,6 @@
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.testing.cwd": "${workspaceFolder}/backend"
+    "python.testing.cwd": "${workspaceFolder}/backend",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

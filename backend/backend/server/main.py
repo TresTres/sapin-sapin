@@ -1,5 +1,4 @@
-import os
-from flask import Flask, Response, Config, request
+from flask import Flask, Response, request
 from flask_cors import CORS
 
 from backend.db import db
@@ -18,6 +17,7 @@ def create_app(mode: str) -> Flask:
     CORS(app, supports_credentials=True)
     app.config.from_object(f"config.{mode.lower()}_config")
     app.register_blueprint(users_blueprint)
+    app.register_blueprint(data_blueprint)
 
     configure_logging(app.config)
     

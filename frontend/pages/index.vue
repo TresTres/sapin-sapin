@@ -8,7 +8,6 @@ definePageMeta({
   layout: "dashboard",
 });
 
-const userStore = getUserStore();
 </script>
 
 <style lang="scss" scoped>

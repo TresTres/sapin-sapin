@@ -7,7 +7,6 @@ export default defineNuxtConfig({
       enabled: false,
     },
   },
-  ssr: false, 
   runtimeConfig: {
     public: {
       backendUrl: process.env.BASE_URL || "http://127.0.0.1:8000",
@@ -24,9 +23,6 @@ export default defineNuxtConfig({
     ],
     "@nuxt/image",
   ],
-  imports: {
-    dirs: ["stateless/**/*"],
-  },
   css: ["@/assets/scss/main.scss"],
   vite: {
     css: {

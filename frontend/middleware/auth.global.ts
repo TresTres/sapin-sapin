@@ -1,12 +1,15 @@
 import type { RouteLocationNormalized } from "vue-router";
 
-export default defineNuxtRouteMiddleware((to: RouteLocationNormalized, from) => {
-
+export default defineNuxtRouteMiddleware((to: RouteLocationNormalized) => {
   if (process.server) {
-    console.log("Server side navigation, skipping auth check")
-    return 
-  } 
-  const authStore = getAuthStore();
+    const refreshToken = useCookie("refresh_token");
+    if(!refreshToken.value && to.path !== "/login") {
+      return navigateTo("/login");
+    }
+    return;
+  }
+
+  const authStore = useAuthStore();
   if (!authStore.isLoggedIn && to.path !== "/login") {
     return navigateTo("/login");
   }

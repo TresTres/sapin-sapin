@@ -1,28 +1,33 @@
 <template>
-  <div>
-    <h1>Profile</h1>
-    <p>Username: {{ username }}</p>
-    <p>Email: {{ email }}</p>
-    <p>Account age: {{ accountAge.toFixed(2) }} days</p>
-    <button
-      class="pure-button pure-input-1-2 pure-button-primary"
-      @click="logout"
-    >
-      Logout
-    </button>
-  </div>
+  <ClientOnly>
+    <div>
+      <h1>Profile</h1>
+      <p>Username: {{ username }}</p>
+      <p>Email: {{ email }}</p>
+      <p>Account age: {{ accountAge.toFixed(2) }} days</p>
+      <button
+        class="pure-button pure-input-1-2 pure-button-primary"
+        @click="logout"
+      >
+        Logout
+      </button>
+    </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
   layout: "dashboard",
 });
-const userStore = getUserStore();
-const authStore = getAuthStore();
+const userStore = useUserStore();
+const authStore = useAuthStore();
 const { username , email,  accountAge } = storeToRefs(userStore);
 
 const logout = async(): Promise<void> => {
-  authStore.logout();
+  /*
+    Logout the user and return to the login page
+  */
+  authStore.clearAuth();
   await navigateTo("/login");
 };
 </script>

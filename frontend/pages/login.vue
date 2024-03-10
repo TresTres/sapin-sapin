@@ -42,7 +42,7 @@ const passwordLabel = "Password";
 const identifier = ref("");
 const password = ref("");
 
-const authStore = getAuthStore();
+const authStore = useAuthStore();
 
 const handleLogin = async(): Promise<void> => {
   await authStore.login(identifier.value, password.value);
