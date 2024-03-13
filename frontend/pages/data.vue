@@ -1,10 +1,7 @@
 <template>
     <div>
         <h1>User Financial Data</h1>
-        <div v-if="dataStore.isLoading"> 
-            Loading...
-        </div>
-        <div v-else>
+        <div>
             <ul>
                 <li v-for="series in dataStore.series" :key="series.id">
                     {{ series.title }}
@@ -15,12 +12,15 @@
 </template>
 
 <script lang=ts setup>
+import { useAuthorizingFetch } from '~/composables/authorizingFetch';
+
 definePageMeta({
     title: 'User Financial Data',
     layout: 'dashboard'
 });
 
 const dataStore = getDataStore();
-await dataStore.loadForUser();
+const dataSeries = await useAuthorizingFetch('/api/data/series');
+dataStore.loadSeries(dataSeries);
 
 </script>
