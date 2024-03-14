@@ -17,13 +17,17 @@ const { routes } = defineProps<{
     path: string;
   }[];
 }>();
-const authStore = useAuthStore();
 </script>
 
 <style lang="scss" scoped>
 .navbar-container {
   display: flex;
-  justify-content: flex-end;
-  padding: 1rem;
+  flex-direction: column;
+
+  max-width: 10%;
+  height: 100vh;
+
+  background-color: $dark-purple-color;
+
 }
 </style>
