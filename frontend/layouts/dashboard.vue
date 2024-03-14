@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard-container">
     <slot name="header" />
-    <p>other</p>
     <slot />
   </div>
 </template>
