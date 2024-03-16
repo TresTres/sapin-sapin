@@ -51,7 +51,7 @@ const inputValue = defineModel("inputValue", {
   border: none;
   border-radius: 0.7em;
 
-  background-color: color.adjust($light-color, $alpha: -0.5);
+  background-color: color.adjust($white-color, $alpha: -0.5);
   color: $dark-purple-color;
 
   font-size: $medium-text-size;

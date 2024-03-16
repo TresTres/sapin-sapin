@@ -24,6 +24,6 @@
   flex-direction: column;
   height: 100vh;
 
-  background-color: $dark-color;
+  background-color: $black-color;
 }
 </style>
