@@ -62,7 +62,7 @@ const handleLogin = async(): Promise<void> => {
   max-width: 70%;
   height: 100%;
 
-  border-right: 2px $dark-color solid;
+  border-right: 2px $black-color solid;
 
   overflow: hidden;
   img {

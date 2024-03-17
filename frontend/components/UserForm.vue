@@ -95,14 +95,14 @@ defineEmits(["submit"]);
   font-size: $large-text-size;
 
   background-color: $dark-purple-color;
-  color: $light-color;
+  color: $white-color;
   opacity: 0.8;
 
   border: none;
   border-radius: 0.75rem;
 
   &:hover {
-    background-color: $light-color;
+    background-color: $white-color;
     color: $dark-purple-color;
   }
 }

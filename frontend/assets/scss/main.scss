@@ -5,8 +5,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
-  font-family: "Roboto", sans-serif;
 }
 
 html {
@@ -14,5 +12,7 @@ html {
   flex-direction: column;
 
   height: 100%;
-  background-color: $dark-color;
+  background-color: $black-color;
 }
+
+
