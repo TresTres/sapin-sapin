@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-container">
+  <aside class="navbar-container">
     <ul class="navbar-list">
       <li v-for="route in routes" class="navbar-item">
         <div class="link-container"> 
@@ -9,7 +9,7 @@
         </div>
       </li>
     </ul>
-  </div>
+  </aside>
 </template>
 
 <script setup lang="ts">
