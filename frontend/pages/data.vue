@@ -1,14 +1,18 @@
 <template>
-    <div>
-        <h1>User Financial Data</h1>
-        <div>
-            <ul>
-                <li v-for="series in dataStore.series" :key="series.id">
-                    {{ series.title }}
-                </li>
-            </ul>
-        </div>
-    </div>
+    <Activity>
+        <template #header>
+            User Financial Data
+        </template>
+        <template #content>
+            <div>
+                <ul>
+                    <li v-for="series in dataStore.series" :key="series.id">
+                        {{ series.title }}
+                    </li>
+                </ul>
+            </div>        
+        </template>
+    </Activity>
 </template>
 
 <script lang=ts setup>
