@@ -5,6 +5,9 @@
         </h1>
     </div>
     <div class="activity-container">
+        <div class="activity-bar">
+            <slot name="bar" />
+        </div>
         <slot name="content" />
     </div>
 </template>
