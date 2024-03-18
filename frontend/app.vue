@@ -7,9 +7,6 @@ import { ServerPlaceholder } from './.nuxt/components';
         <Navbar :routes="appRoutes" />
       </template>
       <NuxtPage />
-      <template #footer>
-        <div>Footer Text</div>
-      </template>
     </NuxtLayout>
   </div>
 </template>
