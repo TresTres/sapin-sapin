@@ -1,4 +1,4 @@
-export const getDataStore = defineStore("dataStore", {
+export const useDataStore = defineStore("dataStore", {
   state: () => ({
     isLoading: false as boolean, 
     series: {} as {
