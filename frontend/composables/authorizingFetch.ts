@@ -51,20 +51,12 @@ export const useAuthorizingFetch = async (
         // try request again
         return await $fetch(request, {
           ...opts,
-          method: "GET",
+          method: opts?.method as FetchRequestMethod || "GET",
           headers: { Authorization: `Bearer ${authStore.accessToken}` },
-        }).catch((error: FetchError): FetchError => {
-          console.error(error.data);
-          return error;
         });
       }
     }
-    if (error instanceof FetchError) {
-      console.error(error.data);
-    } else {
-      console.error(error);
-    }
-    return error;
+    throw error;
   }
 };
 
