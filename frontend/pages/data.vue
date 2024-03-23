@@ -81,15 +81,15 @@
     })
     .then((response) => {
       // replace element on success and cleanup
-      console.log(response);
-      dataStore.replaceSeries(response as DataEventSeries);
+      // console.log(response);
+      dataStore.replaceSeries(proposedSeries.title, response as DataEventSeries);
       showActivityForm.value = false;
       showActivityFormText.value = "Create Data Series";
       seriesTitle.value = "";
     })
     .catch((error) => {
       // display error in form banner
-      console.log(error);
+      // console.log(error);
       if (error.data) {
         const { message } = error.data;
         bannerError.value = message;
