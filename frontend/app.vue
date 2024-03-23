@@ -3,13 +3,7 @@ import { ServerPlaceholder } from './.nuxt/components';
   <div class="app-container">
     <NuxtLoadingIndicator />
     <NuxtLayout>
-      <template #header>
-        <Navbar :routes="appRoutes" />
-      </template>
       <NuxtPage />
-      <template #footer>
-        <div>Footer Text</div>
-      </template>
     </NuxtLayout>
   </div>
 </template>

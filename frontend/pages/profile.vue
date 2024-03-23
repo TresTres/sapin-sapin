@@ -1,18 +1,24 @@
 <template>
-  <ClientOnly>
-    <div>
-      <h1>Profile</h1>
-      <p>Username: {{ username }}</p>
-      <p>Email: {{ email }}</p>
-      <p>Account age: {{ accountAge.toFixed(2) }} days</p>
-      <button
-        class="pure-button pure-input-1-2 pure-button-primary"
-        @click="logout"
-      >
-        Logout
-      </button>
-    </div>
-  </ClientOnly>
+  <Activity> 
+    <template #header> 
+      Profile 
+    </template>
+    <template #content>
+      <ClientOnly>
+        <div>
+          <p>Username: {{ username }}</p>
+          <p>Email: {{ email }}</p>
+          <p>Account age: {{ accountAge.toFixed(2) }} days</p>
+          <button
+            class="pure-button pure-input-1-2 pure-button-primary"
+            @click="logout"
+          >
+            Logout
+          </button>
+        </div>
+      </ClientOnly>
+    </template>
+</Activity>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,4 @@
 import { FetchError, type FetchResponse, type FetchOptions } from "ofetch";
-import { type Store } from "pinia";
 import { useAuthStore } from '../stores/auth';
 
 type FetchRequestMethod =
@@ -26,7 +25,7 @@ type FetchRequestMethod =
 export const useAuthorizingFetch = async (
   request: string,
   opts?: FetchOptions<any>
-) => {
+): Promise<any> => {
   /*
    * This function is a wrapper around useFetch that will attempt to contact protected routes.
    * These routes require a valid access token present in the request headers.
@@ -52,20 +51,12 @@ export const useAuthorizingFetch = async (
         // try request again
         return await $fetch(request, {
           ...opts,
-          method: "GET",
+          method: opts?.method as FetchRequestMethod || "GET",
           headers: { Authorization: `Bearer ${authStore.accessToken}` },
-        }).catch((error: FetchError): FetchError => {
-          console.error(error.data);
-          return error;
         });
       }
     }
-    if (error instanceof FetchError) {
-      console.error(error.data);
-    } else {
-      console.error(error);
-    }
-    return error;
+    throw error;
   }
 };
 
