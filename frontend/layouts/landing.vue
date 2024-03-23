@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="footer">
-    <div>Footer Text</div>
+    <slot name="footer" />
   </div>
 </template>
 

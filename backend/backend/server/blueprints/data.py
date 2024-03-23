@@ -38,13 +38,7 @@ class DataSeriesManagement(Resource):
                 abort(409, message="Series already exists")
             except ValidationError as val_error:
                 abort(400, message=val_error.args[0])
-            return make_response({
-                    "id": series.id,
-                    "title": series.title,
-                    "description": series.description,
-                    "events": [],
-                    "recurrences": [],
-                }, 201)
+            return make_response({"new_series": series.title}, 201)
 
     @cross_origin() 
     @jwt_authenticated
@@ -64,12 +58,12 @@ class DataSeriesManagement(Resource):
                 {
                     "owned_series": [
                         {
-                            "id": s.id,
+                            "id": ind,
                             "title": s.title, 
                             "description": s.description,
                             "events": [],
                             "recurrences": [],
-                        } for s in series_by_user
+                        } for ind, s in enumerate(series_by_user)
                     ]
                 },
                 200
