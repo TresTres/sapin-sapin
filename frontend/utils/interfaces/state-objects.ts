@@ -2,8 +2,8 @@ export type DataEventSeries = {
   id: string;
   title: string;
   description: string;
-  events?: DataEvent[];
-  recurrences?: DataRecurrence[];
+  events: DataEvent[];
+  recurrences: DataRecurrence[];
 }
 
 export type DataEvent = {

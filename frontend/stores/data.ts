@@ -1,33 +1,17 @@
-export const useDataStore = defineStore("dataStore", {
+export const getDataStore = defineStore("dataStore", {
   state: () => ({
-    allSeries: new Map<string, DataEventSeries>(),
+    isLoading: false as boolean, 
+    series: {} as {
+      [name: string]: DataEventSeries
+    }
   }),
   actions: {
-    addSeries(series: DataEventSeries): void {
-      this.allSeries.set(upperCase(series.title), structuredClone(series));
-    },
-    loadMultipleSeries(setOfSeries: DataEventSeries[]): void {
-      if (setOfSeries) {
-        setOfSeries.forEach((series: DataEventSeries) => {
-          this.allSeries.set(upperCase(series.title), structuredClone(series));
+    loadSeries(series: DataEventSeriesResponseObject): void {
+      if (series) {
+        series.owned_series.forEach((s) => {
+          this.series[s.title] = s;
         });
       }
-    },
-    getSeries(title: string): DataEventSeries | undefined {
-      return this.allSeries.get(upperCase(title));
-    },
-    doesSeriesExist(title: string): boolean {
-      return this.allSeries.has(upperCase(title));
-    },
-    replaceSeries(title: string, series: DataEventSeries): boolean { 
-      if(this.doesSeriesExist(title)){
-        this.allSeries.set(upperCase(title), structuredClone(series));
-        return true;
-      }
-      return false;
     }
   },
 });
-
-
-const upperCase = (value: any) => String(value).toUpperCase().trim();

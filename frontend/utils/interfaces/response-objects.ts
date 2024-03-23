@@ -6,3 +6,7 @@ export type UserResponseObject = {
   date_joined: string;
 };
 
+
+export type DataEventSeriesResponseObject = {
+  owned_series: DataEventSeries[];
+};
