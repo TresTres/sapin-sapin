@@ -5,5 +5,7 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.cwd": "${workspaceFolder}/backend",
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "${workspaceFolder}/frontend/node_modules/typescript/lib",
+    "vitest.enable": true,
+    "vitest.commandLine": "",
 }

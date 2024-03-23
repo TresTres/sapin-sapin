@@ -41,19 +41,23 @@
     title: "User Financial Data",
     layout: "dashboard",
   });
-  //prepare activity
+  //activity
   const showActivityForm = ref(false);
   const showActivityFormText = ref("Create Data Series");
-  //prepare series creation form
+  //series creation form
   const seriesTitleLabel = "New Series Title";
   const seriesDescriptionLabel = "New Series Description";
   const seriesTitle = ref("");
   const description = ref("");
   const bannerError = ref("");
-  //get series
+
   const dataStore = useDataStore();
-  const { owned_series } = await useAuthorizingFetch("/api/data/series");
-  dataStore.loadMultipleSeries(owned_series as DataEventSeries[]);
+
+  //get series
+  onBeforeMount(async () => {
+    const { owned_series } = await useAuthorizingFetch("/api/data/series");
+    dataStore.loadMultipleSeries(owned_series as DataEventSeries[]);
+  });
 
   const handleSeriesCreation = async (): Promise<void> => {
     /*
