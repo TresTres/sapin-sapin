@@ -4,7 +4,7 @@
             <h2>{{ title }}</h2>
             <span class="description" v-text="descriptionValue"></span>
         </div>
-        <span class="banner" v-text="bannerText"></span>
+        <CommonBanner v-bind="{ bannerType: BannerType.WARNING, bannerText }" />
         <div class="input-fields-grid">
             <fieldset class="input-group">
                 <div class="control-groups">
