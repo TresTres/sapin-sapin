@@ -73,7 +73,7 @@ defineEmits(["submit"]);
 
 .banner {
   font-size: $medium-text-size;
-  color: $danger-color;
+  color: $dark-red-color;
 
   padding: 0.2rem;
 }
