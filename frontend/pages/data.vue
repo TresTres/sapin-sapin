@@ -12,9 +12,12 @@
       <div class="activity-form-toggle">
         <ActivityForm
           :style="{ display: showActivityForm ? 'block' : 'none' }"
-          :banner-text="bannerError"
-          title="Create Data Series"
-          button-title="Create"
+          v-bind="{
+            title: 'Create Data Series',
+            buttonTitle: 'Create',
+            bannerText: bannerError,
+            descriptionValue: 'All you need for a new data series is a unique title.'
+          }"
           @submit="handleSeriesCreation"
         >
           <ActivityFormInput
