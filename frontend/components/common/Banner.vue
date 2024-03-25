@@ -1,6 +1,6 @@
 <template>
     <div class="banner-container" v-if="bannerText">
-        <div class="banner-area" :class="bannerType.toLowerCase()">
+        <div class="banner-area" :class="`notify-${bannerType.toLowerCase()}`">
             <h1 class="logo-font">{{ bannerType }}</h1>
             <p>{{ bannerText }}</p>
         </div>
@@ -28,6 +28,11 @@ defineProps<{
 }
 
 .banner-area {
+    /* 
+    The banner area also adopts the theme colors toggled on the bannerType prop, 
+    e.g., notify-warning
+    See the notify-* classes in assets/scss/_theme.scss.
+    */
     padding: 1rem;
     border-radius: 0.5rem;
     border: 3px solid;
@@ -39,9 +44,6 @@ defineProps<{
         font-size: $standard-text-size;
     }
 }
-
-
-
 
 
 </style>

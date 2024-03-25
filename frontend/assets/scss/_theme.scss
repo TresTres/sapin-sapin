@@ -21,27 +21,24 @@ $gray-color: hsl(208, 10%, 75%);
 $black-color: hsl(210, 6%, 26%);
 
 
-.success {
-    background-color: $light-green-color;
-    border-color: $dark-green-color;
-    color: $primary-green-color;
+@mixin notification-theme($background-color, $border-color, $text-color) {
+    background-color: $background-color;
+    border-color: $border-color;
+    color: $text-color;
 }
 
-.info {
-    background-color: $white-color;
-    border-color: $gray-color;
-    color: $black-color;
+.notify-success {
+    @include notification-theme($light-green-color, $dark-green-color, $primary-green-color);
 }
 
-.warning {
-    background-color: $light-yellow-color;
-    border-color: $dark-yellow-color;
-    color: $dark-orange-color;
+.notify-info {
+    @include notification-theme($white-color, $gray-color, $black-color);
 }
 
+.notify-warning {
+    @include notification-theme($light-yellow-color, $dark-yellow-color, $primary-orange-color);
+}
 
-.error {
-    background-color: $light-red-color;
-    border-color: $dark-red-color;
-    color: $primary-red-color;
+.notify-error {
+    @include notification-theme($light-red-color, $dark-red-color, $primary-red-color);
 }
