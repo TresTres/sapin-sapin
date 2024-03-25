@@ -14,8 +14,15 @@
 
 <style lang="scss" scoped>
 .header-content {
+    padding: $large-text-size;
+
     h1 {
         color: $dark-purple-color;
     }
+}
+.activity-container {
+    display: flex;
+    flex-direction: column;
+    padding: $medium-text-size;
 }
 </style>
