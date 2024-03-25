@@ -17,12 +17,17 @@
     padding: $large-text-size;
 
     h1 {
-        color: $dark-purple-color;
+        color: $dark-orange-color;
+
+        letter-spacing: .1em;
     }
 }
 .activity-container {
     display: flex;
     flex-direction: column;
     padding: $medium-text-size;
+
+    color: $white-color;
+    font-weight: 350;
 }
 </style>

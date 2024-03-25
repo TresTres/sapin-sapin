@@ -29,7 +29,7 @@
     max-width: 20%;
     height: 100vh;
 
-    background-color: $dark-purple-color;
+    background-color: $light-purple-color;
 
     box-shadow:
       4px 0px 12px 0 rgba(0, 0, 0, 0.2),
@@ -39,16 +39,17 @@
       list-style: none;
       .navbar-link {
         text-decoration: none;
-        color: $light-purple-color;
+        color: $primary-purple-color;
         font-size: $medium-text-size;
+        letter-spacing: .05em;
         
         .link-container {
-          padding: 0.5rem 2rem;
+          padding: 1rem 2rem;
         }
       
       }
       :hover {
-        background-color: $primary-purple-color;
+        color: $white-color;
       }
     }
   }
