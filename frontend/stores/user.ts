@@ -1,4 +1,4 @@
-import type { UserResponseObject } from "~/utils/interfaces/response-objects";
+import type { UserResponseObject } from "@/utils/interfaces/response-objects";
 
 export const useUserStore = defineStore("userStore", {
   state: () => ({

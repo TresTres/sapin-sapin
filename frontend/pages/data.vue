@@ -11,7 +11,7 @@
       </button>
       <div class="activity-form-toggle">
         <ActivityForm
-          :style="{ display: showActivityForm ? 'block' : 'none' }"
+          v-show="showActivityForm"
           :banner-text="bannerError"
           title="Create Data Series"
           button-title="Create"

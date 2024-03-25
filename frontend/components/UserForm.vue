@@ -4,7 +4,7 @@
       <h1>{{ title }}</h1>
       <span class="description" v-text="descriptionValue"></span>
     </div>
-    <span class="banner" v-text="bannerText"></span>
+    <CommonBanner v-bind="{ bannerType: BannerType.ERROR, bannerText }" />
     <fieldset class="input-group">
       <div class="control-groups">
         <slot />
@@ -73,7 +73,7 @@ defineEmits(["submit"]);
 
 .banner {
   font-size: $medium-text-size;
-  color: $danger-color;
+  color: $dark-red-color;
 
   padding: 0.2rem;
 }
