@@ -59,7 +59,7 @@ defineEmits(["submit"]);
   gap: 1vh;
 
   h1 {
-    font-size: $large-title-size;
+    font-size: $standard-title-size;
     color: $dark-purple-color;
 
     text-transform: uppercase;
@@ -72,7 +72,7 @@ defineEmits(["submit"]);
 }
 
 .banner {
-  font-size: $medium-text-size;
+  font-size: $medium-large-text-size;
   color: $dark-red-color;
 
   padding: 0.2rem;

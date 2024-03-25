@@ -123,7 +123,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: $medium-text-size;
+    padding: $medium-large-text-size;
   }
   
 </style>

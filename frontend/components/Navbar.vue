@@ -40,7 +40,7 @@
       .navbar-link {
         text-decoration: none;
         color: $primary-purple-color;
-        font-size: $medium-text-size;
+        font-size: $medium-large-text-size;
         letter-spacing: .05em;
         
         .link-container {

@@ -19,13 +19,15 @@
     h1 {
         color: $dark-orange-color;
 
-        letter-spacing: .1em;
+        font-size: $large-title-size;
+        font-weight: 550;
+        letter-spacing: .1ch;
     }
 }
 .activity-container {
     display: flex;
     flex-direction: column;
-    padding: $medium-text-size;
+    padding: $medium-large-text-size;
 
     color: $white-color;
     font-weight: 350;

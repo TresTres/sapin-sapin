@@ -54,7 +54,7 @@ const inputValue = defineModel("inputValue", {
   background-color: color.adjust($white-color, $alpha: -0.5);
   color: $dark-purple-color;
 
-  font-size: $medium-text-size;
+  font-size: $medium-large-text-size;
 }
 
 .user-input::placeholder {
