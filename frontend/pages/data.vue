@@ -9,32 +9,39 @@
       >
         {{ showActivityFormText }}
       </button>
-      <div class="activity-form-toggle">
-        <ActivityForm
-          :style="{ display: showActivityForm ? 'block' : 'none' }"
-          v-bind="{
-            title: 'Create Data Series',
-            buttonTitle: 'Create',
-            bannerText: bannerError,
-            descriptionValue: 'All you need for a new data series is a unique title.'
-          }"
-          @submit="handleSeriesCreation"
-        >
-          <ActivityFormInput
-            v-model:inputValue="seriesTitle"
-            :label="seriesTitleLabel"
-            :index="0"
-            placeholder="Monthly Grocery Budget"
-          />
-        </ActivityForm>
-      </div>
+      
     </template>
     <template #content>
-      <ul>
-        <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
-          {{ series.title + " - " + series.id }}
-        </li>
-      </ul>
+      <div class="content-container">
+        <div class="context-display">
+          <div class="activity-form">
+            <ActivityForm
+              :style="{ display: showActivityForm ? 'block' : 'none' }"
+              v-bind="{
+                title: 'Create Data Series',
+                buttonTitle: 'Create',
+                bannerText: bannerError,
+                descriptionValue: 'All you need for a new data series is a unique title.'
+              }"
+              @submit="handleSeriesCreation"
+            >
+              <ActivityFormInput
+                v-model:inputValue="seriesTitle"
+                :label="seriesTitleLabel"
+                :index="0"
+                placeholder="Monthly Grocery Budget"
+              />
+            </ActivityForm>
+          </div>
+        </div>
+        <div class="series-display">
+          <ul>
+            <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
+              {{ series.title + " - " + series.id }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </template>
   </Activity>
 </template>
@@ -109,3 +116,14 @@
       : "Create Data Series";
   };
 </script>
+
+
+<style lang="scss" scoped>
+  .content-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: $medium-text-size;
+  }
+  
+</style>
