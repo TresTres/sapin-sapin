@@ -33,15 +33,15 @@ defineProps<{
     e.g., notify-warning
     See the notify-* classes in assets/scss/_theme.scss.
     */
-    padding: 1rem;
+    padding: $small-text-size;
     border-radius: 0.5rem;
     border: 3px solid;
 
     h1 {
-        font-size: $medium-text-size;
+        font-size: $standard-text-size;
     }
     p {
-        font-size: $standard-text-size;
+        font-size: $small-text-size;
     }
 }
 
