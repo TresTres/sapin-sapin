@@ -149,7 +149,8 @@
     grid-area: A;
     padding: $medium-large-text-size;
 
-    border: 1px solid $dark-orange-color;
+    border: 4px solid $dark-orange-color;
+    border-radius: 1.3rem;
   }
   
   .series-display {
@@ -161,7 +162,8 @@
     grid-area: B;
     padding: $medium-large-text-size;
 
-    border: 1px solid $dark-orange-color;
+    border: 4px solid $dark-orange-color;
+    border-radius: 1.3rem;
   }
 
 
