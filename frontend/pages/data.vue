@@ -16,7 +16,7 @@
         <div class="context-display">
           <div class="activity-form">
             <ActivityForm
-              :style="{ display: showActivityForm ? 'block' : 'none' }"
+              v-show="showActivityForm"
               v-bind="{
                 title: 'Create Data Series',
                 buttonTitle: 'Create',
@@ -126,4 +126,14 @@
     padding: $medium-large-text-size;
   }
   
+  .series-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: $medium-large-text-size;
+
+    width: 50%;
+
+    border: 1px solid $dark-orange-color;
+  }
 </style>

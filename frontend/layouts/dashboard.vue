@@ -27,7 +27,9 @@
 }
 
 .dashboard-content {
-  
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
   padding: 3rem;
 }
 </style>
