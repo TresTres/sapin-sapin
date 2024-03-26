@@ -27,6 +27,7 @@
 .activity-container {
     display: flex;
     flex-direction: column;
+    height: 100%;
     padding: $medium-large-text-size;
 
     color: $white-color;

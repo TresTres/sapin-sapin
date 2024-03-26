@@ -120,20 +120,49 @@
 
 <style lang="scss" scoped>
   .content-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: $medium-large-text-size;
-  }
-  
-  .series-display {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
+
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+
+    gap: 4rem;
+
     padding: $medium-large-text-size;
 
-    width: 50%;
+    grid-template-areas:
+      "A A A A   B B B B  C C C C"
+      "A A A A   B B B B  C C C C"
+      "A A A A   B B B B  D D D D"
+      "A A A A   B B B B  D D D D"
+      "A A A A   B B B B  D D D D"
+      "A A A A   B B B B  D D D D"
+      "A A A A   B B B B  D D D D"
+      "A A A A   B B B B  D D D D";
+  }
+
+  .context-display {
+
+
+    grid-area: A;
+    padding: $medium-large-text-size;
 
     border: 1px solid $dark-orange-color;
   }
+  
+  .series-display {
+
+
+    display: flex;
+    flex-direction: column;
+
+    grid-area: B;
+    padding: $medium-large-text-size;
+
+    border: 1px solid $dark-orange-color;
+  }
+
+
 </style>
