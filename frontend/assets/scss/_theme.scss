@@ -1,7 +1,7 @@
 $primary-red-color: hsl(11, 93%, 43%);
 $primary-orange-color: hsl(42, 62%, 51%);
 $primary-green-color: hsl(86, 84%, 34%);
-$primary-purple-color: hsl(269, 58%, 53%);
+$primary-purple-color: hsl(269, 65%, 52%);
 
 
 $light-red-color: hsl(11, 86%, 80%);
@@ -22,6 +22,10 @@ $light-gray-color: hsl(228, 22%, 82%);
 $gray-color: hsl(258, 6%, 59%);
 $black-color: hsl(210, 6%, 26%);
 
+
+@function adjust-alpha($color, $alpha) {
+    @return hsla(hue($color), saturation($color), lightness($color), $alpha);
+}
 
 @mixin notification-theme($background-color, $border-color, $text-color) {
     background-color: $background-color;

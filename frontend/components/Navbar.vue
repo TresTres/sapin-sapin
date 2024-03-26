@@ -49,6 +49,7 @@
       
       }
       :hover {
+        background-color: $primary-purple-color;
         color: $white-color;
       }
     }

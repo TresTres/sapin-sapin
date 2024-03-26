@@ -7,11 +7,23 @@
   </div>
 </template>
 
-<style lang="scss">
+
+<style lang="scss" scoped>
 
 .dashboard-container {
   display: flex;
+  align-items: stretch;
   flex-direction: row;
+
+
+  background-image: radial-gradient(
+    farthest-corner circle at 90% 90%,
+    $primary-purple-color 0%,
+    adjust-alpha($primary-purple-color, 50%) 20%,
+    adjust-alpha($primary-purple-color, 10%) 50%,
+    adjust-alpha($dark-purple-color, 100%) 90%
+  );
+  background-color: $dark-purple-color;
 }
 
 .dashboard-content {
