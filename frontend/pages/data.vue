@@ -149,7 +149,9 @@
     grid-area: A;
     padding: $medium-large-text-size;
 
-    border: 4px solid $dark-orange-color;
+    background-color: adjust-alpha($light-purple-color, 15%);
+    @include small-box-shadow();
+
     border-radius: 1.3rem;
   }
   
@@ -162,7 +164,9 @@
     grid-area: B;
     padding: $medium-large-text-size;
 
-    border: 4px solid $dark-orange-color;
+    background-color: adjust-alpha($light-purple-color, 15%);
+    @include small-box-shadow();
+
     border-radius: 1.3rem;
   }
 
