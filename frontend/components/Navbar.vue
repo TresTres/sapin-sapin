@@ -31,10 +31,8 @@
 
     background-color: $light-purple-color;
 
-    box-shadow:
-      4px 0px 12px 0 rgba(0, 0, 0, 0.2),
-      8px 0px 24px 0 rgba(0, 0, 0, 0.19);
-
+    @include small-box-shadow();
+    
     li {
       list-style: none;
       .navbar-link {
