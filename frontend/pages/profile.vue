@@ -5,17 +5,17 @@
     </template>
     <template #content>
       <ClientOnly>
-        <div>
+        <CommonCard class="profile-card">
           <p>Username: {{ username }}</p>
           <p>Email: {{ email }}</p>
           <p>Account age: {{ accountAge.toFixed(2) }} days</p>
           <button
-            class="pure-button pure-input-1-2 pure-button-primary"
+            class="logout-button"
             @click="logout"
           >
             Logout
           </button>
-        </div>
+        </CommonCard>
       </ClientOnly>
     </template>
 </Activity>
@@ -37,3 +37,35 @@ const logout = async(): Promise<void> => {
   await navigateTo("/login");
 };
 </script>
+
+<style lang="scss" scoped>
+.profile-card {
+  display: block;
+  width: 40%;
+  padding: $medium-large-text-size;
+
+  font-size: $medium-large-text-size;
+}
+
+.logout-button {
+
+  padding: $small-text-size $medium-large-text-size;
+  margin: $medium-large-text-size;
+
+  font-size: $large-text-size;
+  
+  background-color: $dark-orange-color;
+  color: $white-color;
+  opacity: 0.8;
+
+  border: none;
+  border-radius: 0.75rem;
+
+
+  &:hover {
+    background-color: $white-color;
+    color: $primary-orange-color;
+  }
+
+}
+</style>
