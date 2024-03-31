@@ -33,3 +33,27 @@
   });
   </script>
   
+  <style lang="scss" scoped>
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .input-field {
+    padding: 0.5rem 2rem;
+    width: 100%;
+
+    border: none;
+    border-radius: 0.7em;
+
+    background-color: adjust-alpha($white-color, 20%);
+    color: $white-color;
+
+    font-size: $medium-large-text-size;
+
+    ::placeholder {
+      color: $light-purple-color
+    }
+  }
+  </style>

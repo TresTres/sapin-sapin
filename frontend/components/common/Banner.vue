@@ -35,7 +35,7 @@ defineProps<{
     */
     padding: $small-text-size;
     border-radius: 0.5rem;
-    border: 3px solid;
+    @include small-box-shadow();
 
     h1 {
         font-size: $standard-text-size;

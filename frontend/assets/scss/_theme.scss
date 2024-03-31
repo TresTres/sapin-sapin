@@ -1,44 +1,56 @@
 $primary-red-color: hsl(11, 93%, 43%);
-$primary-orange-color: hsl(39, 94%, 40%);
+$primary-orange-color: hsl(42, 62%, 51%);
 $primary-green-color: hsl(86, 84%, 34%);
-$primary-purple-color: hsl(265, 60%, 44%);
+$primary-purple-color: hsl(269, 65%, 52%);
 
 
 $light-red-color: hsl(11, 86%, 80%);
+$light-orange-color: hsl(35, 67%, 70%);
 $light-yellow-color: hsl(57, 81%, 69%);
 $light-green-color: hsl(95, 76%, 58%);
-$light-purple-color: hsl(265, 76%, 64%);
+$light-purple-color: hsl(265, 61%, 82%);
 
 
 $dark-red-color: hsl(5, 54%, 32%);
-$dark-orange-color: hsl(39, 87%, 32%);
+$dark-orange-color: hsl(35, 94%, 42%);
 $dark-yellow-color: hsl(57, 57%, 45%);
 $dark-green-color: hsl(119, 35%, 37%);
-$dark-purple-color: hsl(259, 67%, 26%);
+$dark-purple-color: hsl(257, 72%, 29%);
 
-$white-color: hsl(210, 17%, 98%);
-$gray-color: hsl(208, 10%, 75%);
+$white-color: hsl(65, 48%, 95%);
+$light-gray-color: hsl(228, 22%, 82%);
+$gray-color: hsl(258, 6%, 59%);
 $black-color: hsl(210, 6%, 26%);
 
 
-@mixin notification-theme($background-color, $border-color, $text-color) {
+@function adjust-alpha($color, $alpha) {
+    @return hsla(hue($color), saturation($color), lightness($color), $alpha);
+}
+
+@mixin notification-theme($background-color, $text-color) {
     background-color: $background-color;
-    border-color: $border-color;
     color: $text-color;
 }
 
+@mixin small-box-shadow() {
+    box-shadow:
+        4px 0px 12px 0 rgba(0, 0, 0, 0.2),
+        8px 0px 24px 0 rgba(0, 0, 0, 0.19);
+}
+
 .notify-success {
-    @include notification-theme($light-green-color, $dark-green-color, $primary-green-color);
+    @include notification-theme($light-green-color, $primary-green-color);
 }
 
 .notify-info {
-    @include notification-theme($white-color, $gray-color, $black-color);
+    @include notification-theme($white-color, $black-color);
 }
 
 .notify-warning {
-    @include notification-theme($light-yellow-color, $dark-yellow-color, $primary-orange-color);
+    @include notification-theme($light-yellow-color, $dark-orange-color);
 }
 
 .notify-error {
-    @include notification-theme($light-red-color, $dark-red-color, $primary-red-color);
+    @include notification-theme($light-red-color, $primary-red-color);
 }
+

@@ -21,8 +21,9 @@ import { ServerPlaceholder } from './.nuxt/components';
   flex-direction: column;
   height: 100vh;
 
-  background-color: $black-color;
+  background-color: $dark-purple-color;
 
   font-family: "Rubik", Roboto, sans-serif;
+  font-weight: 425;
 }
 </style>

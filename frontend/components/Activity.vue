@@ -14,8 +14,31 @@
 
 <style lang="scss" scoped>
 .header-content {
+    padding: $large-text-size;
+
     h1 {
-        color: $dark-purple-color;
+        color: $dark-orange-color;
+
+        font-size: $large-title-size;
+        font-weight: 550;
+        letter-spacing: .1ch;
     }
+}
+.activity-bar {
+    width: 100%;
+    justify-content: space-between;
+
+    padding: $medium-large-text-size;
+}
+
+.activity-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: $medium-large-text-size;
+
+    color: $white-color;
+    font-weight: 350;
 }
 </style>
