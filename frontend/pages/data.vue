@@ -37,7 +37,8 @@
         <div class="series-display">
           <ul>
             <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
-              {{ series.title + " - " + series.id }}
+              <h3> {{ title }} </h3>
+              <p> {{  series.description }}</p>
             </li>
           </ul>
         </div>
@@ -49,7 +50,7 @@
 <script lang="ts" setup>
   definePageMeta({
     title: "User Financial Data",
-    layout: "dashboard",
+    layout: "dashboard",3
   });
   //activity
   const showActivityForm = ref(false);
@@ -168,6 +169,23 @@
     @include small-box-shadow();
 
     border-radius: 1.3rem;
+
+    li {
+      list-style: none;
+
+      margin: 0.5rem;
+
+      padding: $small-text-size;
+      border-radius: 0.5rem;
+
+      
+      color: $light-orange-color;
+      background-color: adjust-alpha($dark-orange-color, 45%);
+
+      h3 {
+        text-transform: capitalize;
+      }
+    }
   }
 
 
