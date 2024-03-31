@@ -50,7 +50,7 @@
 <script lang="ts" setup>
   definePageMeta({
     title: "User Financial Data",
-    layout: "dashboard",3
+    layout: "dashboard",
   });
   //activity
   const showActivityForm = ref(false);
@@ -189,4 +189,23 @@
   }
 
 
+
+
+  .activity-form-toggle-button {
+    padding: 0.5rem 1.3rem;
+  
+    font-size: $medium-large-text-size;
+
+    background-color: adjust-alpha($light-purple-color, 80%);
+    color: $white-color;
+    opacity: 0.8;
+  
+    border: none;
+    border-radius: 0.75rem;
+  
+    &:hover {
+      background-color: $white-color;
+      color: $dark-purple-color;
+    }
+  }
 </style>

@@ -24,6 +24,13 @@
         letter-spacing: .1ch;
     }
 }
+.activity-bar {
+    width: 100%;
+    justify-content: space-between;
+
+    padding: $medium-large-text-size;
+}
+
 .activity-container {
     display: flex;
     flex-direction: column;
