@@ -13,7 +13,7 @@
     </template>
     <template #content>
       <div class="content-container">
-        <div class="context-display">
+        <CommonCard class="context-display">
           <div class="activity-form">
             <ActivityForm
               v-show="showActivityForm"
@@ -31,17 +31,23 @@
                 :index="0"
                 placeholder="Monthly Grocery Budget"
               />
+              <ActivityFormInput
+                v-model:inputValue="description"
+                :label="seriesDescriptionLabel"
+                :index="1"
+                placeholder="Does not include department store purchases."
+              />
             </ActivityForm>
           </div>
-        </div>
-        <div class="series-display">
+        </CommonCard>
+        <CommonCard class="series-display">
           <ul>
             <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
               <h3> {{ title }} </h3>
               <p> {{  series.description }}</p>
             </li>
           </ul>
-        </div>
+        </CommonCard>
       </div>
     </template>
   </Activity>
@@ -134,26 +140,18 @@
     padding: $medium-large-text-size;
 
     grid-template-areas:
-      "A A A A   B B B B  C C C C"
-      "A A A A   B B B B  C C C C"
-      "A A A A   B B B B  D D D D"
-      "A A A A   B B B B  D D D D"
-      "A A A A   B B B B  D D D D"
-      "A A A A   B B B B  D D D D"
-      "A A A A   B B B B  D D D D"
-      "A A A A   B B B B  D D D D";
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B"
+      "A A A A   B B B B  B B B B";
   }
 
   .context-display {
-
-
     grid-area: A;
-    padding: $medium-large-text-size;
-
-    background-color: adjust-alpha($light-purple-color, 15%);
-    @include small-box-shadow();
-
-    border-radius: 1.3rem;
   }
   
   .series-display {
@@ -163,12 +161,6 @@
     flex-direction: column;
 
     grid-area: B;
-    padding: $medium-large-text-size;
-
-    background-color: adjust-alpha($light-purple-color, 15%);
-    @include small-box-shadow();
-
-    border-radius: 1.3rem;
 
     li {
       list-style: none;
