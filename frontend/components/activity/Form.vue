@@ -39,3 +39,11 @@ defineProps({
 });
 defineEmits(["submit"]);
 </script>
+
+<style lange="scss" scoped>
+.input-group {
+  border: none;
+}
+
+
+</style>
