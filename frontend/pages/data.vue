@@ -140,14 +140,14 @@
     padding: $medium-large-text-size;
 
     grid-template-areas:
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B"
-      "A A A A   B B B B  B B B B";
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B"
+      "A A A A   A B B B  B B B B";
   }
 
   .context-display {
