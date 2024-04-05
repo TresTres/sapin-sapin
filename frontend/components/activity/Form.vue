@@ -15,7 +15,7 @@
         <button type="submit" class="form-submit-button">
             {{ buttonTitle }}
         </button>
-    </form>
+  </form>
 </template>
 
 <script setup lang="ts">

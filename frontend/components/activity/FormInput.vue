@@ -1,11 +1,22 @@
+import { defineVitestConfig } from '@nuxt/test-utils/config';
 <template>
     <div class="control-group">
       <label v-if="label" for="aligned-identifier">{{ label }}</label>
-      <input
+      <textarea
+        v-if="inputType == InputType.AREA"
         :id="`${label}-${index}`"
         v-model="inputValue"
         class="input-field"
         :placeholder="placeholder"
+        required
+      />
+      <input
+        v-else 
+        :id="`${label}-${index}`"
+        v-model="inputValue"
+        class="input-field"
+        :placeholder="placeholder"
+        :type="inputType"
         required
       />
     </div>
@@ -13,6 +24,10 @@
   
   <script setup lang="ts">
   defineProps({
+    inputType: {
+      type: InputType,
+      default: InputType.TEXT,
+    },
     label: {
       type: [String, Boolean],
       default: false,

@@ -28,14 +28,16 @@
               <ActivityFormInput
                 v-model:inputValue="seriesTitle"
                 :label="seriesTitleLabel"
-                :index="0"
+                index="0"
                 placeholder="Monthly Grocery Budget"
               />
               <ActivityFormInput
                 v-model:inputValue="description"
+                :inputType="InputType.AREA"
                 :label="seriesDescriptionLabel"
-                :index="1"
+                index="1"
                 placeholder="Does not include department store purchases."
+    
               />
             </ActivityForm>
           </div>
