@@ -1,28 +1,28 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config';
 <template>
-    <div class="control-group">
-      <label v-if="label" for="aligned-identifier">{{ label }}</label>
-      <textarea
-        v-if="inputType == InputType.AREA"
-        :id="`${label}-${index}`"
-        v-model="inputValue"
-        class="input-field"
-        :placeholder="placeholder"
-        required
-      />
-      <input
-        v-else 
-        :id="`${label}-${index}`"
-        v-model="inputValue"
-        class="input-field"
-        :placeholder="placeholder"
-        :type="inputType"
-        required
-      />
-    </div>
-  </template>
-  
-  <script setup lang="ts">
+  <div class="control-group">
+    <label v-if="label" for="aligned-identifier">{{ label }}</label>
+    <textarea
+      v-if="inputType == InputType.AREA"
+      :id="`${label}-${index}`"
+      v-model="inputValue"
+      class="input-field input-area"
+      rows="5"
+      :placeholder="placeholder"
+      required
+    />
+    <input
+      v-else
+      :id="`${label}-${index}`"
+      v-model="inputValue"
+      class="input-field"
+      :placeholder="placeholder"
+      :type="inputType"
+      required
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
   defineProps({
     inputType: {
       type: InputType,
@@ -41,14 +41,14 @@ import { defineVitestConfig } from '@nuxt/test-utils/config';
       required: true,
     },
   });
-  
+
   const inputValue = defineModel("inputValue", {
     type: String,
     default: "",
   });
-  </script>
-  
-  <style lang="scss" scoped>
+</script>
+
+<style lang="scss" scoped>
   .control-group {
     display: flex;
     flex-direction: column;
@@ -77,4 +77,8 @@ import { defineVitestConfig } from '@nuxt/test-utils/config';
     }
   }
 
-  </style>
+  .input-area {
+    resize: none;
+    overflow: auto;
+  }
+</style>
