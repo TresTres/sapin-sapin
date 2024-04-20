@@ -20,7 +20,7 @@
         color: $dark-orange-color;
 
         font-size: $large-title-size;
-        font-weight: 550;
+        font-weight: $header-text-weight;
         letter-spacing: .1ch;
     }
 }
@@ -39,6 +39,6 @@
     padding: $medium-large-text-size;
 
     color: $white-color;
-    font-weight: 350;
+    font-weight: $thin-text-weight;
 }
 </style>
