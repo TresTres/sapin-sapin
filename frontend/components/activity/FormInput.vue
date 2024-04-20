@@ -1,5 +1,3 @@
-import { FormInputType } from '../../utils/constants/view-constants';
-import type { FormInputType from '#imports';
 <template>
   <div class="control-group">
     <label v-if="label" for="aligned-identifier">
@@ -60,12 +58,13 @@ import type { FormInputType from '#imports';
 
   label {
     font-size: $medium-large-text-size;
-    font-weight: 500;
+    font-weight: $header-text-weight;
     margin-bottom: 0.5rem;
   }
 
   .required {
     font-size: $small-text-size;
+    font-weight: $thin-text-weight;
     color: $primary-red-color;
   }
 
@@ -94,7 +93,6 @@ import type { FormInputType from '#imports';
 
     &:focus {
       outline: 2px solid $primary-purple-color;
-      color: $primary-purple-color;
     }
   }
 
