@@ -1,14 +1,19 @@
+import { FormInputType } from '../../utils/constants/view-constants';
+import type { FormInputType from '#imports';
 <template>
   <div class="control-group">
-    <label v-if="label" for="aligned-identifier">{{ label }}</label>
+    <label v-if="label" for="aligned-identifier">
+        {{ label }}
+        <span v-if="required" class="required">*required</span>
+    </label>
     <textarea
-      v-if="inputType == InputType.AREA"
+      v-if="inputType == FormInputType.AREA"
       :id="`${label}-${index}`"
       v-model="inputValue"
       class="input-field input-area"
       rows="5"
       :placeholder="placeholder"
-      required
+      :required="required"
     />
     <input
       v-else
@@ -17,30 +22,33 @@
       class="input-field"
       :placeholder="placeholder"
       :type="inputType"
-      required
+      :required="required"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  defineProps({
-    inputType: {
-      type: InputType,
-      default: InputType.TEXT,
-    },
-    label: {
-      type: [String, Boolean],
-      default: false,
-    },
-    index: {
-      type: [Number],
-      default: 0,
-    },
-    placeholder: {
-      type: String,
-      required: true,
-    },
-  });
+
+
+  interface Props {
+    //it's nonsensical that TS complains about this
+    //@ts-expect-error: TS2749
+    inputType: FormInputType;
+    label: string | boolean;
+    index: number;
+    placeholder: string;
+    required: boolean;
+  }
+
+  withDefaults(
+    defineProps<Props>(),
+    {
+      inputType: FormInputType.TEXT,
+      label: false,
+      index: 0,
+      required: false,
+    }
+  )
 
   const inputValue = defineModel("inputValue", {
     type: String,
@@ -49,6 +57,18 @@
 </script>
 
 <style lang="scss" scoped>
+
+  label {
+    font-size: $medium-large-text-size;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .required {
+    font-size: $small-text-size;
+    color: $primary-red-color;
+  }
+
   .control-group {
     display: flex;
     flex-direction: column;
@@ -56,7 +76,7 @@
   }
 
   .input-field {
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
     width: 100%;
 
     border: none;
@@ -66,6 +86,7 @@
     color: $dark-purple-color;
 
     font-size: $medium-large-text-size;
+    font-family: inherit;
 
     &::placeholder {
       color: adjust-alpha($dark-purple-color, 50%);
@@ -80,5 +101,8 @@
   .input-area {
     resize: none;
     overflow: auto;
+
+    font-size: $standard-text-size;
+
   }
 </style>
