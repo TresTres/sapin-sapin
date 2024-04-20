@@ -24,7 +24,6 @@ import { ServerPlaceholder } from './.nuxt/components';
   background-color: $dark-purple-color;
 
   font-family: "Rubik", Roboto, sans-serif;
-  font-weight: $standard-text-weight;
-  letter-spacing: .05ch;
+  font-weight: 425;
 }
 </style>

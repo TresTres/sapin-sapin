@@ -4,9 +4,3 @@ export enum BannerType {
   WARNING = "Warning",
   ERROR = "Error",
 };
-
-export enum FormInputType {
-  TEXT = "text",
-  HIDDEN = "password",
-  AREA = "textarea"
-};
