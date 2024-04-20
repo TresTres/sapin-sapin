@@ -102,5 +102,6 @@
 
     font-size: $standard-text-size;
 
+    @include rounded-scrollbar();
   }
 </style>
