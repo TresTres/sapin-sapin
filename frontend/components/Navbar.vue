@@ -27,7 +27,7 @@
     flex-direction: column;
 
     max-width: 20%;
-    height: 100vh;
+    height: 100%;
 
     background-color: $light-purple-color;
 
