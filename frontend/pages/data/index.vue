@@ -33,8 +33,10 @@
         <CommonCard class="series-display">
           <ul>
             <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
-              <h3>{{ title }}</h3>
-              <p>{{ series.description }}</p>
+              <NuxtLink :to="`/data/series-${title}`">
+                <h3>{{ title }}</h3>
+                <p>{{ series.description }}</p>
+              </NuxtLink>
             </li>
           </ul>
         </CommonCard>
