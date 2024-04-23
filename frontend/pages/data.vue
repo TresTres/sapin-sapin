@@ -114,7 +114,7 @@
     align-items: stretch;
 
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    grid-template-rows: repeat(7, 1fr);
 
     gap: 4rem;
 
@@ -125,7 +125,6 @@
       "A A A A   A B B B  B B B B"
       "A A A A   A B B B  B B B B"
       "A A A A   A B B B  B B B B"
-      "C C C C   C B B B  B B B B"
       "C C C C   C B B B  B B B B"
       "C C C C   C B B B  B B B B"
       "C C C C   C B B B  B B B B";

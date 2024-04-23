@@ -17,9 +17,11 @@ import { ServerPlaceholder } from './.nuxt/components';
 
 
 .app-container {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
 
   background-color: $dark-purple-color;
 
