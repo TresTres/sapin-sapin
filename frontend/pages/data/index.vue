@@ -33,9 +33,11 @@
         <CommonCard class="series-display">
           <ul>
             <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
-              <NuxtLink :to="`/data/series-${title}`">
-                <h3>{{ title }}</h3>
-                <p>{{ series.description }}</p>
+              <NuxtLink :to="`/data/series-${title}`" class="series-link">
+                <div class="series-box">
+                  <h3>{{ title }}</h3>
+                  <p>{{ series.description }}</p>
+                </div>
               </NuxtLink>
             </li>
           </ul>
@@ -56,7 +58,6 @@
   const seriesTitle = ref("");
   const description = ref("");
   const bannerError = ref("");
-
 
   const dataStore = useDataStore();
 
@@ -142,20 +143,43 @@
 
     grid-area: B;
 
+    overflow: auto;
+
     li {
       list-style: none;
 
-      margin: 0.5rem;
-
-      padding: $small-text-size;
+      margin: 0.3rem;
+      padding: 0.3rem;
       border-radius: 0.5rem;
+      border: 3px solid transparent;
 
-      color: $light-orange-color;
-      background-color: adjust-alpha($dark-orange-color, 45%);
+        
+      transition: 
+        background-color 0.5s ease-in-out,
+        border 0.5s ease-in-out;
 
-      h3 {
-        text-transform: capitalize;
+
+      &:hover {
+        background-color: adjust-alpha($dark-purple-color, 60%);
+        border: 3px solid $primary-orange-color;
       }
+
+      background-color: adjust-alpha($dark-purple-color, 45%);
+
+      .series-link {
+        color: $primary-orange-color;
+        text-decoration: none;
+        color: $primary-orange-color;
+
+        .series-box {
+          padding: 1rem 1rem;
+        }
+
+        h3 {
+          text-transform: capitalize;
+        }
+      }
+
     }
   }
 
