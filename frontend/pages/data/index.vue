@@ -32,7 +32,7 @@
         </CommonCard>
         <CommonCard class="series-display">
           <ul>
-            <li v-for="[title, series] of dataStore.allSeries" :key="series.id">
+            <li v-for="[title, series] of dataStore.allSeriesEntries" :key="series.id">
               <NuxtLink :to="`/data/series-${title}`" class="series-link">
                 <div class="series-box">
                   <h3>{{ title }}</h3>
@@ -71,7 +71,7 @@
     /*
      * Attempt to create a new data series, and display an error if the series cannot be created.
      */
-    if (dataStore.doesSeriesExist(seriesTitle.value)) {
+    if (dataStore.has(seriesTitle.value)) {
       bannerError.value = "Series already exists";
       return;
     }

@@ -42,7 +42,9 @@ export const useAuthStore = defineStore("authStore", {
     },
     clearAuth(): void{
       const userStore = useUserStore();
-      userStore.clearData();
+      const dataStore = useDataStore();
+      userStore.$reset();
+      dataStore.$reset();
       this.isLoggedIn = false;
     }
   },
