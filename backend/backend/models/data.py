@@ -1,5 +1,6 @@
 import datetime
 import decimal
+import uuid
 
 from backend.models.base import *
 from backend.models.users import User
@@ -90,7 +91,11 @@ class DataEvent(BaseModel):
         Label must be non-empty
         """
         if not self.label:
-            raise ValidationError("Label must be non-empty")
+            # TODO: If I ever need to do this again, refactor it to a util
+            random_id = uuid.uuid4()
+            sanitized_series_tile = self.series.title.lower().replace(" ", "-")
+            self.label = f"{sanitized_series_tile}-event-{random_id}"
+
         self.label = self.label.strip()
         return super().save(*args, **kwargs)
 
