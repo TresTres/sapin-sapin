@@ -7,6 +7,7 @@ VALID_EMAIL = "test_email@domain.com"
 VALID_PASSWORD = "Haoot_Birthy_42!"
 VALID_JOIN_DATE = datetime.datetime(2020, 1, 1)
 
+VALID_SERIES_ID = 1337
 VALID_SERIES_TITLE = "Test Series"
 VALID_SERIES_DESCRIPTION = "Test Series Description"
 

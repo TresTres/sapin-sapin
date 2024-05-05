@@ -143,14 +143,6 @@ class TestDataEventModel:
                 amount=DATA_AMOUNT,
             )
 
-    def test_create_event_failure_no_label(self, event_series: DataEventSeries) -> None:
-        """
-        Test exception when creating a data event without a label
-        """
-        with pytest.raises(ValidationError) as ve:
-            DataEvent.create(date=DATA_DATE, amount=DATA_AMOUNT, series=event_series)
-        assert "Label must be non-empty" in str(ve)
-
     @pytest.mark.parametrize(
         "label,error",
         [
@@ -205,6 +197,18 @@ class TestDataEventModel:
         assert created_event.date == DATA_DATE
         assert created_event.amount == DATA_AMOUNT
         assert created_event.series == event_series
+        
+    def test_create_event_default_label(self, event_series: DataEventSeries) -> None:
+        """
+        Test creating a data event with a default label
+        """
+        DataEvent.create(
+            date=DATA_DATE, amount=DATA_AMOUNT, series=event_series
+        )
+
+        created_event = DataEvent.select()[0]
+        sanitized_series_tile = event_series.title.lower().replace(" ", "-")
+        assert created_event.label.startswith(f"{sanitized_series_tile}-event-")
 
     def test_cascade_event_from_series(self, event_series: DataEventSeries) -> None:
         """
