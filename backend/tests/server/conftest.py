@@ -95,6 +95,7 @@ def client_with_data_series(
     """
     with persisting_db.connection_context():
         DataEventSeries.create(
+            id=VALID_SERIES_ID, 
             owner=User.get(User.id == VALID_USER_ID),
             title=VALID_SERIES_TITLE,
             description=VALID_SERIES_DESCRIPTION,

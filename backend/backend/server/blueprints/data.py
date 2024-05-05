@@ -99,27 +99,64 @@ class DataBatch(Resource):
             if date_str
             else datetime.date.today()
         )
+        
+    def sanitize_batch(self, batch: List[Dict[str, str]], series_id: int, batch_offset: int) -> Dict: 
+        """
+        Sanitize the data batch to ensure that all required fields are present.
+        This returns an object containing the sanitized data and the collection of errors if 
+        any occurred. 
+        """
+        sanitized_batch = []   
+        error_collection = []
+        
+        for ind, d in enumerate(batch):
+            if not d:
+                error_collection.append({ "item": ind + batch_offset, "message": "Item was empty", "field": ""})
+                continue
+            # TODO: replace all this with validation via pydantic
+            try: 
+                d["series"] = series_id
+                d["amount"] = float(d.get("amount", 0.0))
+                d["date"] = self.get_date_from_string(d.get("date", ""))
+            except ValueError as ve:
+                # TODO: collect all applicable errors in a single item, but not with 
+                # multiple try-except blocks
+                if "time data" in str(ve):
+                    error_collection.append({ "item": ind + batch_offset, "message": "Date must be in the format YYYY-MM-DD", "field": "date" })
+                elif "could not convert string to float" in str(ve):
+                    error_collection.append({ "item": ind + batch_offset, "message": "Amount must be a number", "field": "amount" })
+                continue
+            sanitized_batch.append(d)
+        return {
+            "sanitized": sanitized_batch,
+            "errors": error_collection
+        }
 
     def create_data_in_batch(
         self, txn: ContextManager, series: DataEventSeries, data: List[Dict[str, str]]
-    ) -> None:
+    ) -> int:
         """
-        Use the source data to create a batch of data associated to the series
+        Use the source data to create a batch of data associated to the series.
+        Returns the number of rows created and any errors that occurred.
         TODO: If I need to unpack data again, conduct validation using pydantic
         """
-        for batch in chunked(data, 100):
-            DataEvent.insert_many(
-                [
-                    {
-                        "label": d.get("label", ""),
-                        "description": d.get("description", ""),
-                        "amount": d.get("amount", 0.0),
-                        "date": self.get_date_from_string(d.get("date", "")),
-                        "series": series,
-                    }
-                    for d in batch
-                ]
-            )
+        inserted_rows = 0
+        errors = []
+        with db.atomic():
+            if data: 
+                for batch in chunked(data, 100):
+                    batch_result = self.sanitize_batch(batch, series.id, inserted_rows)
+                    errors.extend(batch_result["errors"])
+                    sanitized_data = batch_result["sanitized"]
+                    if not sanitized_data:
+                        continue
+                    inserted_rows += DataEvent.insert_many(
+                        sanitized_data
+                    ).as_rowcount().execute()
+        return {
+            "created": inserted_rows,
+            "errors": errors
+        }
 
     @cross_origin()
     @jwt_authenticated
@@ -134,7 +171,14 @@ class DataBatch(Resource):
                 series = DataEventSeries.get(
                     DataEventSeries.id == request.json.get("series_id")
                 )
-                self.create_data_in_batch(atxn, series, request.json.get("data"))
-                
+                result = self.create_data_in_batch(atxn, series, request.json.get("data"))
+                if result["created"] == 0:
+                    atxn.rollback()
+                    abort(400, message="No valid data were provided", batch_errors=result["errors"])
             except DataEventSeries.DoesNotExist:
+                atxn.rollback()
                 abort(404, message="Series does not exist")
+            return make_response(
+                result,
+                201,
+            )#
