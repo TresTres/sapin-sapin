@@ -63,26 +63,30 @@ class DataEventSeries(BaseModel):
         self.title = self.title.strip().upper()
         return super().save(*args, **kwargs)
 
-
-class DataEvent(BaseModel):
+class DataModel(BaseModel):
     """
-    Represents a single event in a series.
+    Represents a generic data model.
     """
-
     label = CharField(
         null=False,
         constraints=[Check("length(label) > 0"), Check("length(label) < 120")],
         default="",
     )
     description = CharField(null=True)
+    amount = DecimalField(null=False, decimal_places=4, default=0.0000)
+    series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
+    class Meta:
+        constraints = [SQL("UNIQUE (series_id, label)")]
+
+
+class DataEvent(DataModel):
+    """
+    Represents a single event in a series.
+    """
     date = DateTimeField(
         null=False, index=True, default=datetime.datetime.now(datetime.UTC)
     )
-    amount = DecimalField(null=False, decimal_places=4, default=0.0000)
-    series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
-
     class Meta:
-        constraints = [SQL("UNIQUE (series_id, label)")]
         indexes = ((("series", "label", "date"), True),)
 
     def save(self, *args, **kwargs) -> int:
@@ -90,7 +94,7 @@ class DataEvent(BaseModel):
         Override the save method to conduct validations.
         Label must be non-empty
         """
-        if not self.label:
+        if not self.label or len(self.label.strip()) == 0:
             # TODO: If I ever need to do this again, refactor it to a util
             random_id = uuid.uuid4()
             sanitized_series_tile = self.series.title.lower().replace(" ", "-")

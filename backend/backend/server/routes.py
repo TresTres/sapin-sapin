@@ -14,6 +14,9 @@ def register_routes(config: Config) -> None:
     users_api.add_resource(UserRefreshToken, create_resource_path(config, "me/refresh"))
     
     data_api.add_resource(
-        DataSeriesManagement, create_resource_path(config, "data/series")
+        DataSeries, create_resource_path(config, "data/series")
+    )
+    data_api.add_resource(
+        DataBatch, create_resource_path(config, "data/batch")
     )
         

@@ -8,7 +8,7 @@ from backend.db import db as persisting_db
 from backend.server.main import create_app
 from backend.server.auth import jwt_authenticated
 from backend.server.migrations import MODELS
-from backend.models import User, DataEventSeries
+from backend.models import User, DataEventSeries, DataEvent
 from tests.constants import *
 
 
