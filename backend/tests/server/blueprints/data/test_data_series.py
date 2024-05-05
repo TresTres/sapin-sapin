@@ -82,9 +82,9 @@ class TestDataSeriesCreation:
             headers=valid_user_token_header,
         )
         assert response.status_code == 201
-        assert "new_series" in response.json
-        
-        
+        assert VALID_SERIES_TITLE.upper() in response.json.values()
+        assert VALID_SERIES_DESCRIPTION in response.json.values()
+              
 class TestDataSeriesRetrieval:
     
     def test_series_retrieval_failure_no_user(

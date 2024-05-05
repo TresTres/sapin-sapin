@@ -8,7 +8,7 @@ from backend.db import db as persisting_db
 from backend.server.main import create_app
 from backend.server.auth import jwt_authenticated
 from backend.server.migrations import MODELS
-from backend.models import User, DataEventSeries
+from backend.models import User, DataEventSeries, DataEvent
 from tests.constants import *
 
 
@@ -95,6 +95,7 @@ def client_with_data_series(
     """
     with persisting_db.connection_context():
         DataEventSeries.create(
+            id=VALID_SERIES_ID, 
             owner=User.get(User.id == VALID_USER_ID),
             title=VALID_SERIES_TITLE,
             description=VALID_SERIES_DESCRIPTION,
