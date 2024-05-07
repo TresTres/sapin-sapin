@@ -12,17 +12,17 @@
               descriptionValue:
                 'All you need for a new data series is a unique title.',
             }"
-            @submit="handleSeriesCreation"
+            @submit.prevent="handleSeriesCreation"
           >
             <ActivityFormInput
-              v-model:inputValue="seriesTitle"
+              @update:inputValue="seriesTitle = $event"
               :label="seriesTitleLabel"
               :index="0"
               placeholder="Monthly Grocery Budget"
               required
             />
             <ActivityFormInput
-              v-model:inputValue="description"
+              @update:inputValue="description = $event"
               :inputType="FormInputType.AREA"
               :label="seriesDescriptionLabel"
               :index="1"
@@ -55,8 +55,8 @@
   //series creation form
   const seriesTitleLabel = "New Series Title";
   const seriesDescriptionLabel = "New Series Description";
-  const seriesTitle = ref("");
-  const description = ref("");
+  let seriesTitle = "";
+  let description = "";
   const bannerError = ref("");
 
   const dataStore = useDataStore();
@@ -71,15 +71,15 @@
     /*
      * Attempt to create a new data series, and display an error if the series cannot be created.
      */
-    if (dataStore.has(seriesTitle.value)) {
+    if (dataStore.has(seriesTitle)) {
       bannerError.value = "Series already exists";
       return;
     }
     // update UI
     const proposedSeries: DataEventSeries = {
       id: "-0",
-      title: seriesTitle.value,
-      description: description.value,
+      title: seriesTitle,
+      description: description,
     };
     dataStore.addSeries(proposedSeries);
     // POST to server
@@ -93,7 +93,7 @@
           proposedSeries.title,
           response as DataEventSeries
         );
-        seriesTitle.value = "";
+        seriesTitle = "";
       })
       .catch((error) => {
         // display error in form banner

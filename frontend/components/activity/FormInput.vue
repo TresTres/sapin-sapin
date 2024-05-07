@@ -1,23 +1,27 @@
 <template>
   <div class="control-group">
     <label v-if="label" for="aligned-identifier">
-        {{ label }}
-        <span v-if="required" class="required">*required</span>
+      {{ label }}
+      <span v-if="required" class="required">*required</span>
     </label>
     <textarea
       v-if="inputType == FormInputType.AREA"
       :id="`${label}-${index}`"
-      v-model="inputValue"
       class="input-field input-area"
       rows="5"
+      @input="
+        $emit('update:inputValue', ($event.target as HTMLInputElement)?.value)
+      "
       :placeholder="placeholder"
       :required="required"
     />
     <input
       v-else
       :id="`${label}-${index}`"
-      v-model="inputValue"
       class="input-field"
+      @input="
+        $emit('update:inputValue', ($event.target as HTMLInputElement)?.value)
+      "
       :placeholder="placeholder"
       :type="inputType"
       :required="required"
@@ -26,36 +30,29 @@
 </template>
 
 <script setup lang="ts">
-
-
   interface Props {
     //it's nonsensical that TS complains about this
     //@ts-expect-error: TS2749
-    inputType: FormInputType;
+    inputType?: FormInputType;
+    inputValue?: string;
     label: string | boolean;
     index: number;
     placeholder: string;
-    required: boolean;
+    required?: boolean;
   }
 
-  withDefaults(
-    defineProps<Props>(),
-    {
-      inputType: FormInputType.TEXT,
-      label: false,
-      index: 0,
-      required: false,
-    }
-  )
-
-  const inputValue = defineModel("inputValue", {
-    type: String,
-    default: "",
+  withDefaults(defineProps<Props>(), {
+    inputType: FormInputType.TEXT,
+    inputValue: "",
+    label: false,
+    index: 0,
+    required: false,
   });
+
+  defineEmits(["update:inputValue"]);
 </script>
 
 <style lang="scss" scoped>
-
   label {
     font-size: $medium-large-text-size;
     font-weight: $header-text-weight;
@@ -101,6 +98,5 @@
     overflow: auto;
 
     font-size: $standard-text-size;
-
   }
 </style>
