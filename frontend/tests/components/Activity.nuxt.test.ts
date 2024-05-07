@@ -21,7 +21,6 @@ describe('Activity', () => {
     const wrapperBar = wrapper.find('.activity-bar');
     expect(wrapperBar.element).toBe(wrapperActivityContainer.element.children[0]);
     expect(wrapperBar.text()).toBe('Bar');
-    console.log(wrapperActivityContainer.element.children[1].textContent);
     expect(wrapperActivityContainer.element.children[1].textContent).toBe('Content');
   });
 });

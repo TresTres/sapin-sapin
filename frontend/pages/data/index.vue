@@ -89,7 +89,6 @@
     })
       .then((response) => {
         // replace element on success and cleanup
-        // console.log(response);
         dataStore.replaceSeries(
           proposedSeries.title,
           response as DataEventSeries
@@ -98,7 +97,6 @@
       })
       .catch((error) => {
         // display error in form banner
-        // console.log(error);
         if (error.data) {
           const { message } = error.data;
           bannerError.value = message;
@@ -121,7 +119,7 @@
 
     gap: 4rem;
 
-    padding: $medium-large-text-size;
+    padding: $standard-text-size;
 
     grid-template-areas:
       "A A A A   A B B B  B B B B"
