@@ -55,6 +55,9 @@
               <button class="add-node-button" @click.stop.prevent="addNode()">
                 +
               </button>
+              <button class ="clear-nodes-button" @click.stop.prevent="clearAllNodes()">
+                Clear All
+              </button>
             </template>
           </ActivityForm>
         </CommonCard>
@@ -116,6 +119,20 @@
     dataPoints.value.splice(ind, 1);
     console.log(dataPoints.value);
   };
+
+  const clearAllNodes = () => {
+    dataPoints.value = [
+      {
+        fieldSetId: 0,
+        data: {
+          label: "",
+          description: "",
+          date: new Date(),
+          amount: 0,
+        },
+      },
+    ];
+  }
 
   const handleSaveAll = () => {
     console.log(dataPoints.value);
@@ -199,8 +216,6 @@
     @include large-button;
 
     width: 30%;
-    bottom: 0;
-    right: 0;
 
     font-weight: $bold-text-weight;
 
@@ -209,6 +224,21 @@
 
     &:hover {
       background-color: $light-orange-color;
+      color: $dark-red-color;
+    }
+  }
+
+  .clear-nodes-button {
+    @include large-button;
+
+    width: 20%;
+    left: 0;
+
+    background-color: $dark-red-color;
+    color: $white-color;
+
+    &:hover {
+      background-color: $light-red-color;
       color: $dark-red-color;
     }
   }
