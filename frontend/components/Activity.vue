@@ -1,37 +1,43 @@
 <template>
-    <div class="header-content">
-        <h1>
-            <slot name="header" />
-        </h1>
-    </div>
-    <div class="activity-container">
-        <div class="activity-bar">
+  <div class="header-content">
+    <h1>
+      <slot name="header" />
+    </h1>
+  </div>
+  <div class="activity-container">
+    <!-- <div class="activity-bar">
             <slot name="bar" />
-        </div>
-        <slot name="content" />
-    </div>
+        </div> -->
+    <slot name="content" />
+  </div>
 </template>
 
-<style lang="scss" scoped>
-.header-content {
-    padding: $large-text-size;
+<style lang="scss" >
+  .header-content {
+    padding: $small-text-size;
 
     h1 {
-        color: $dark-orange-color;
+      color: $primary-orange-color;
 
-        font-size: $large-title-size;
-        font-weight: $header-text-weight;
-        letter-spacing: .1ch;
+      font-size: $large-title-size;
+      font-weight: $header-text-weight;
+      letter-spacing: 0.1ch;
+      p {
+        color: $primary-orange-color;
+
+        font-size: $standard-text-size;
+        font-weight: $standard-text-weight;
+      }
     }
-}
-.activity-bar {
-    width: 100%;
-    justify-content: space-between;
+  }
+  // .activity-bar {
+  //     width: 100%;
+  //     justify-content: space-between;
 
-    padding: $medium-large-text-size;
-}
+  //     padding: $medium-large-text-size;
+  // }
 
-.activity-container {
+  .activity-container {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -40,5 +46,5 @@
 
     color: $white-color;
     font-weight: $thin-text-weight;
-}
+  }
 </style>
