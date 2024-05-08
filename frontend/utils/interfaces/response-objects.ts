@@ -1,4 +1,3 @@
-import type { DataEventSeries } from './state-objects';
 
 export type UserResponseObject = {
   username: string;

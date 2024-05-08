@@ -72,25 +72,7 @@
   }
 
   .input-field {
-    padding: 0.5rem 1rem;
-    width: 100%;
-
-    border: none;
-    border-radius: 0.7em;
-
-    background-color: adjust-alpha($white-color, 50%);
-    color: $dark-purple-color;
-
-    font-size: $medium-large-text-size;
-    font-family: inherit;
-
-    &::placeholder {
-      color: adjust-alpha($dark-purple-color, 50%);
-    }
-
-    &:focus {
-      outline: 2px solid $primary-purple-color;
-    }
+    @include text-input;
   }
 
   .input-area {

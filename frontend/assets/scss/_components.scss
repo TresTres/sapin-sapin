@@ -10,11 +10,11 @@
   border: none;
   transition: background-color 0.3s;
 
-
   cursor: pointer;
 
   background-color: $primary-purple-color;
   color: $white-color;
+
   &:hover {
     background-color: $white-color;
     color: $dark-purple-color;
@@ -37,3 +37,36 @@
     border-radius: 0.3em;
     font-size: $small-text-size;
 }
+
+@mixin text-input() {
+  
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 0.6em;
+
+  cursor: text;
+  transition: 
+    background-color 0.3s,
+    color 0.3s;
+
+  background-color: adjust-alpha($white-color, 60%);
+  color: $dark-purple-color;
+
+  font-size: $medium-large-text-size;
+  font-family: inherit;
+
+  &::placeholder {
+    color: adjust-alpha($dark-purple-color, 50%);
+  }
+
+  &:focus {
+    outline: 2px solid $primary-purple-color;
+    background-color: adjust-alpha($white-color, 80%);
+  }
+}
+
+
+
+
+
