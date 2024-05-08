@@ -6,9 +6,6 @@
     </template>
     <template #content>
       <div class="content-container">
-        <div className="graph-area"></div>
-
-        <div className="cells-area"></div>
 
         <CommonCard class="edit-area">
           <ActivityForm
@@ -21,33 +18,35 @@
             @submit.prevent="handleSaveAll"
           >
             <div class="node-container">
-              <div
+              <fieldset
+                class="node"
                 v-for="(point, index) in dataPoints"
                 :key="point.fieldSetId"
               >
-                <fieldset class="node">
-                  <ActivityFormInput
-                    @update:inputValue="point.data.label = $event"
-                    label="Data Label"
-                    v-bind="{
-                      index,
-                      placeholder: 'Label',
-                      required: true,
-                      inputValue: point.data.label,
-                    }"
-                  />
-                  <button class="remove-button"
-                    v-if="dataPoints.length > 1"
-                    @click.stop.prevent="removeNode(index)"
-                  >
-                    X
-                  </button>
-                </fieldset>
-              </div>
-              <button @click.stop.prevent="addNode()">+</button>
+                <ActivityFormInput
+                  @update:inputValue="point.data.label = $event"
+                  label="Data Label"
+                  v-bind="{
+                    index,
+                    placeholder: 'Label',
+                    required: true,
+                    inputValue: point.data.label,
+                  }"
+                />
+                <button
+                  class="remove-node-button"
+                  v-if="dataPoints.length > 1"
+                  @click.stop.prevent="removeNode(index)"
+                >
+                  X
+                </button>
+              </fieldset>
+              <button class="add-node-button" @click.stop.prevent="addNode()">+</button>
             </div>
           </ActivityForm>
         </CommonCard>
+        <div className="graph-area"></div>
+        <div className="cells-area"></div>
       </div>
     </template>
   </Activity>
@@ -68,18 +67,20 @@
   type DataEventProps = {
     fieldSetId: number;
     data: DataEvent;
-  }
+  };
 
   const bannerError = ref("");
-  const dataPoints = ref<DataEventProps[]>([{
-    fieldSetId: 0,
-    data: {
-      label: "",
-      description: "",
-      date: new Date(),
-      amount: 0,
+  const dataPoints = ref<DataEventProps[]>([
+    {
+      fieldSetId: 0,
+      data: {
+        label: "",
+        description: "",
+        date: new Date(),
+        amount: 0,
+      },
     },
-  }]);
+  ]);
 
   //retrieve series data
   onBeforeMount(() => {
@@ -139,33 +140,53 @@
     grid-area: A;
   }
 
-  .node {
+  .node-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
 
+  .node {
     width: 100%;
     border: dashed red;
 
-  
-    display: flex;
-    flex-direction: row;
+    position: relative;
 
-  }
+    .remove-node-button {
+      @include small-button;
 
-  .remove-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      max-height: 1.9em;
+      
 
-    @include small-button;
+      background-color: $dark-red-color;
+      color: $white-color;
 
-    top: 0;
-    right: 0;
-    max-height: 1.9em;
-
-    background-color: $dark-red-color;
-    color: $white-color;
-
-    &:hover {
-      background-color: $light-red-color;
-      color: $dark-red-color;
+      &:hover {
+        background-color: $light-red-color;
+        color: $dark-red-color;
+      }
     }
 
-
   }
+
+  
+  .add-node-button {
+      @include large-button;
+
+      width: 100%;
+      font-size: $large-text-size;
+      font-weight: $bold-text-weight;
+
+      background-color: $primary-orange-color;
+      color: $dark-red-color;
+
+      &:hover {
+        background-color: $light-orange-color;
+        color: $dark-red-color;
+      }
+    }
 </style>
