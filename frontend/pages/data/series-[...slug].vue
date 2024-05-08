@@ -6,7 +6,6 @@
     </template>
     <template #content>
       <div class="content-container">
-
         <CommonCard class="edit-area">
           <ActivityForm
             v-bind="{
@@ -18,7 +17,7 @@
             @submit.prevent="handleSaveAll"
           >
             <div class="node-container">
-              <fieldset
+              <div
                 class="node"
                 v-for="(point, index) in dataPoints"
                 :key="point.fieldSetId"
@@ -33,6 +32,16 @@
                     inputValue: point.data.label,
                   }"
                 />
+                <ActivityFormInput
+                  @update:inputValue="point.data.description = $event"
+                  label="Data Description"
+                  v-bind="{
+                    index,
+                    placeholder: 'Description',
+                    required: false,
+                    inputValue: point.data.description,
+                  }"
+                />
                 <button
                   class="remove-node-button"
                   v-if="dataPoints.length > 1"
@@ -40,9 +49,13 @@
                 >
                   X
                 </button>
-              </fieldset>
-              <button class="add-node-button" @click.stop.prevent="addNode()">+</button>
+              </div>
             </div>
+            <template #buttons>
+              <button class="add-node-button" @click.stop.prevent="addNode()">
+                +
+              </button>
+            </template>
           </ActivityForm>
         </CommonCard>
         <div className="graph-area"></div>
@@ -124,34 +137,45 @@
     padding: $standard-text-size;
 
     grid-template-areas:
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A B B B  B B B B  B B B B"
-      "A A A A  A C C C  C C C C  C C C C"
-      "A A A A  A C C C  C C C C  C C C C"
-      "A A A A  A C C C  C C C C  C C C C"
-      "A A A A  A C C C  C C C C  C C C C";
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A C  C C C C  C C C C"
+      "A A A A  A A A C  C C C C  C C C C"
+      "A A A A  A A A C  C C C C  C C C C"
+      "A A A A  A A A C  C C C C  C C C C";
   }
 
   .edit-area {
     grid-area: A;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
   }
 
   .node-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
+    max-height: 100%;
+    width: 100%;
+
     align-items: center;
   }
 
   .node {
     width: 100%;
-    border: dashed red;
 
     position: relative;
+    padding: 1rem;
+
+    border: 2px adjust-alpha($primary-orange-color, 50%);
+    border-style: solid none;
 
     .remove-node-button {
       @include small-button;
@@ -160,7 +184,6 @@
       top: 0;
       right: 0;
       max-height: 1.9em;
-      
 
       background-color: $dark-red-color;
       color: $white-color;
@@ -170,23 +193,23 @@
         color: $dark-red-color;
       }
     }
-
   }
 
-  
   .add-node-button {
-      @include large-button;
+    @include large-button;
 
-      width: 100%;
-      font-size: $large-text-size;
-      font-weight: $bold-text-weight;
+    width: 30%;
+    bottom: 0;
+    right: 0;
 
-      background-color: $primary-orange-color;
+    font-weight: $bold-text-weight;
+
+    background-color: $primary-orange-color;
+    color: $white-color;
+
+    &:hover {
+      background-color: $light-orange-color;
       color: $dark-red-color;
-
-      &:hover {
-        background-color: $light-orange-color;
-        color: $dark-red-color;
-      }
     }
+  }
 </style>

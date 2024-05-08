@@ -8,7 +8,9 @@
 
 @mixin button() {
   border: none;
-  transition: background-color 0.3s;
+  transition: 
+    background-color 0.3s,
+    color 0.3s;
 
   cursor: pointer;
 
@@ -16,7 +18,7 @@
   color: $white-color;
 
   &:hover {
-    background-color: $white-color;
+    background-color: $light-purple-color;
     color: $dark-purple-color;
   }
 }

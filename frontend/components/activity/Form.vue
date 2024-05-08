@@ -5,16 +5,15 @@
       <span class="description" v-text="descriptionValue"></span>
     </div>
     <CommonBanner v-bind="{ bannerType: BannerType.WARNING, bannerText }" />
-    <div class="input-fields-grid">
-      <fieldset class="input-group">
-        <div class="control-groups">
-          <slot />
-        </div>
-      </fieldset>
-    </div>
-    <button type="submit" class="form-submit-button">
+    <fieldset class="input-fields">
+      <slot />
+    </fieldset>
+    <div class="button-field"> 
+      <button type="submit" class="form-submit-button">
       {{ buttonTitle }}
-    </button>
+      </button>
+      <slot name="buttons" />
+    </div>
   </form>
 </template>
 
@@ -41,8 +40,12 @@
 </script>
 
 <style lang="scss" scoped>
-  .input-group {
-    border: none;
+  .activity-input-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
   }
 
   .heading {
@@ -50,17 +53,26 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+  }
 
- }
+  .input-fields {
 
- .form-submit-button {
-   padding: 0.5rem 1rem;
-   border: none;
-   border-radius: 0.7em;
-   background-color: $primary-purple-color;
-   color: $white-color;
-   font-size: $medium-large-text-size;
-   cursor: pointer;
-   transition: background-color 0.3s;
- }
+    border: none;
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+  }
+
+  .button-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .form-submit-button {
+    @include large-button;
+
+    width: 20%;
+  }
 </style>

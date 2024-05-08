@@ -80,5 +80,6 @@
     overflow: auto;
 
     font-size: $standard-text-size;
+    height: 6rem;
   }
 </style>
