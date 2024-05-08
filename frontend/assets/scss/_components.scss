@@ -1,0 +1,39 @@
+/* Reusable mixins for components */
+
+@mixin small-box-shadow() {
+  box-shadow:
+    4px 0px 12px 0 rgba(0, 0, 0, 0.2),
+    8px 0px 24px 0 rgba(0, 0, 0, 0.19);
+}
+
+@mixin button() {
+  border: none;
+  transition: background-color 0.3s;
+
+
+  cursor: pointer;
+
+  background-color: $primary-purple-color;
+  color: $white-color;
+  &:hover {
+    background-color: $white-color;
+    color: $dark-purple-color;
+  }
+}
+
+@mixin large-button() {
+  @include button;
+
+  padding: 0.5rem 1rem;
+  border-radius: 0.6em;
+  font-size: $medium-large-text-size;
+}
+
+
+@mixin small-button() {
+    @include button;
+    
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3em;
+    font-size: $small-text-size;
+}

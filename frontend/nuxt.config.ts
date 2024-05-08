@@ -32,6 +32,7 @@ export default defineNuxtConfig({
                           @use 'sass:color';
                           @import "@/assets/scss/_theme.scss";
                           @import "@/assets/scss/_font.scss";
+                          @import "@/assets/scss/_components.scss";
                           `,
         },
       },

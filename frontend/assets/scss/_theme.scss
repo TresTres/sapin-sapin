@@ -1,3 +1,5 @@
+/* colors for theming */
+
 $primary-red-color: hsl(11, 93%, 43%);
 $primary-orange-color: hsl(27, 71%, 50%);
 $primary-green-color: hsl(86, 84%, 34%);
@@ -32,11 +34,6 @@ $black-color: hsl(210, 6%, 26%);
     color: $text-color;
 }
 
-@mixin small-box-shadow() {
-    box-shadow:
-        4px 0px 12px 0 rgba(0, 0, 0, 0.2),
-        8px 0px 24px 0 rgba(0, 0, 0, 0.19);
-}
 
 .notify-success {
     @include notification-theme($light-green-color, $primary-green-color);
