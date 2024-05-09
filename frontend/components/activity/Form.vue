@@ -41,11 +41,14 @@
 
 <style lang="scss" scoped>
   .activity-input-form {
-    position: relative;
     display: flex;
+
     flex-direction: column;
+    align-items: stretch;
 
     height: 100%;
+    // max-height: 67vh;
+    box-sizing: border-box;
   }
 
   .heading {
@@ -57,14 +60,18 @@
 
   .input-fields {
 
-    border: none;
-    width: 100%;
-    height: 100%;
+    flex: 12;
 
+    width: 100%;
+    box-sizing: border-box;
+
+    border: none;
     overflow: auto;
   }
 
   .button-field {
+    flex: 1;
+    margin-top: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

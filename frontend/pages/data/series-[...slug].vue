@@ -117,7 +117,6 @@
 
   const removeNode = (ind: number) => {
     dataPoints.value.splice(ind, 1);
-    console.log(dataPoints.value);
   };
 
   const clearAllNodes = () => {
@@ -168,10 +167,10 @@
 
   .edit-area {
     grid-area: A;
-    height: 100%;
+    
+    max-height: 75vh;
 
-    display: flex;
-    flex-direction: column;
+    width: 100%;
   }
 
   .node-container {
@@ -179,7 +178,6 @@
     flex-direction: column;
     gap: 1rem;
 
-    max-height: 100%;
     width: 100%;
 
     align-items: center;
