@@ -14,6 +14,7 @@
 
 <style lang="scss" >
   .header-content {
+    flex: 1;
     padding: $small-text-size;
 
     h1 {
@@ -38,11 +39,12 @@
   // }
 
   .activity-container {
+    flex: 12;
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
-    padding: $medium-large-text-size;
+    padding: $standard-text-size;
 
     color: $white-color;
     font-weight: $thin-text-weight;

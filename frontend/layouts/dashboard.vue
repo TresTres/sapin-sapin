@@ -11,7 +11,8 @@
 <style lang="scss" scoped>
 
 .dashboard-container {
-  height: 100%;
+  height: 100dvh;
+  width: 100dvw;
   display: flex;
   align-items: stretch;
   flex-direction: row;
@@ -33,6 +34,6 @@
   width: 100%;
   align-items: stretch;
   flex-direction: column;
-  padding: 2rem;
+  padding: $medium-large-text-size;
 }
 </style>
