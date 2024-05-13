@@ -1,3 +1,5 @@
+<!-- component that handles various text inputs, e.g. text, textarea, and password -->
+
 <template>
   <div class="control-group">
     <label v-if="label" for="aligned-identifier">

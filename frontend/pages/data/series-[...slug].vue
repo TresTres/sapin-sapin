@@ -42,6 +42,16 @@
                     inputValue: point.data.description,
                   }"
                 />
+                <ActivityFormAmountInput
+                  @update:amountValue="point.data.amount = $event"
+                  label="Data Amount"
+                  v-bind="{
+                    index,
+                    placeholder: '0',
+                    required: true,
+                    amountValue: point.data.amount,
+                  }"
+                />
                 <button
                   class="remove-node-button"
                   v-if="dataPoints.length > 1"
@@ -69,6 +79,7 @@
 </template>
 
 <script lang="ts" setup>
+
   definePageMeta({
     title: `User Series`,
     layout: "dashboard",

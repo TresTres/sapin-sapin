@@ -38,13 +38,17 @@
   const emit = defineEmits(["update:amountValue"]);
 
 
-  const handleAmountInput = (event: Event) => {
-    (event.target as HTMLInputElement).value = convertValue((event.target as HTMLInputElement)?.value);
-    emit("update:amountValue", (event.target as HTMLInputElement).value);
+  const handleAmountInput = (event: Event): void => {
+    (event.target as HTMLInputElement).value = formatValue((event.target as HTMLInputElement)?.value);
+    emit("update:amountValue", convertToFloat((event.target as HTMLInputElement)?.value));
   }
 
-  const convertValue = (value: string): string => {
-    const parsedValue = parseFloat(value.replace(/(,)?(\s+)?/g, "") + ".00");
+  const formatValue = (value: string): string => {
+    /*
+        This function takes a string value and converts it to a internationalized
+        float with two decimal places. If the value is not a number, it returns "0.00"
+    */
+    const parsedValue = convertToFloat(value);
     if(isNaN(parsedValue)) return "0.00";
     return Intl.NumberFormat("en-US", {
       style: "decimal",
@@ -53,4 +57,15 @@
       minimumIntegerDigits: 1,
     }).format(parsedValue);
   };
+
+  const convertToFloat = (value: string): number => {
+    /*
+        This function takes a string value and converts it to a string with two decimal places.
+        It removes any commas and spaces, and adds .00 to the end if the value is an integer.
+        If the value is not a number, it returns 0
+    */
+    return parseFloat(value.replace(/(,)?(\s+)?/g, "") + ".00");
+  };
+
+
 </script>
