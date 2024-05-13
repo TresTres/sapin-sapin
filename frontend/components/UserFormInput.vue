@@ -67,6 +67,6 @@ const inputValue = defineModel("inputValue", {
 }
 
 label {
-  display: none;
+  @include label;
 }
 </style>

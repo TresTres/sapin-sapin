@@ -40,9 +40,22 @@
     font-size: $small-text-size;
 }
 
+@mixin input-label {
+  font-size: $medium-large-text-size;
+  font-weight: $header-text-weight;
+}
+
+@mixin required-label {
+  font-size: $small-text-size;
+  font-weight: $thin-text-weight;
+  color: $primary-red-color;
+}
+
 @mixin text-input() {
   
   padding: 0.5rem 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
   width: 100%;
   border: none;
   border-radius: 0.6em;

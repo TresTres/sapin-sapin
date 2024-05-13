@@ -6,14 +6,16 @@
       {{ label }}
       <span v-if="required" class="required">*required</span>
     </label>
-    <span>{{ unitLabel }}</span>
-    <input
-      :id="`${label}-${index}-amount`"
-      class="amount-field"
-      @change="(event: Event) => handleAmountInput(event)"
-      :placeholder="placeholder"
-      :required="required"
-    />
+    <div class="formatted-amount">
+      <span>{{ unitLabel }}</span> 
+      <input
+        :id="`${label}-${index}-amount`"
+        class="amount-field"
+        @change="(event: Event) => handleAmountInput(event)"
+        :placeholder="placeholder"
+        :required="required"
+      />
+    </div>
   </div>
 </template>
 
@@ -69,3 +71,30 @@
 
 
 </script>
+
+<style lang="scss" scoped> 
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    @include input-label;
+  }
+
+  .required {
+    @include required-label;
+  }
+
+  .formatted-amount {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+
+  }
+  .amount-field {
+    @include text-input;
+  }
+</style>

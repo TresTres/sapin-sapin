@@ -55,22 +55,18 @@
 </script>
 
 <style lang="scss" scoped>
-  label {
-    font-size: $medium-large-text-size;
-    font-weight: $header-text-weight;
-    margin-bottom: 0.5rem;
-  }
-
-  .required {
-    font-size: $small-text-size;
-    font-weight: $thin-text-weight;
-    color: $primary-red-color;
-  }
 
   .control-group {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
+  }
+
+  label {
+    @include input-label;
+  }
+
+  .required {
+    @include required-label;
   }
 
   .input-field {
