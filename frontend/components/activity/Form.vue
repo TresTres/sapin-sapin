@@ -47,7 +47,6 @@
     align-items: stretch;
 
     height: 100%;
-    // max-height: 67vh;
     box-sizing: border-box;
   }
 
