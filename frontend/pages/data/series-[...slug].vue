@@ -16,30 +16,27 @@
             @submit.prevent="handleSave"
           >
             <ActivityFormInput
-              @update:inputValue="dataPoint.data.label = $event"
-              label="Data Label"
+              v-model:inputValue="dataPoint.label"
               v-bind="{
-                placeholder: 'Label',
+                label: 'Data Label',
+                placeholder: 'Grocery Trip',
                 required: true,
-                inputValue: dataPoint.data.label,
               }"
             />
             <ActivityFormInput
-              @update:inputValue="dataPoint.data.description = $event"
+              v-model:inputValue="dataPoint.description"
               label="Data Description"
               v-bind="{
                 placeholder: 'Description',
                 required: false,
-                inputValue: dataPoint.data.description,
               }"
             />
             <ActivityFormAmountInput
-              @update:amountValue="dataPoint.data.amount = $event"
+              v-model:amountValue="dataPoint.amount"
               label="Data Amount"
               v-bind="{
                 placeholder: '0',
                 required: true,
-                amountValue: dataPoint.data.amount,
               }"
             />
             <template #buttons>
@@ -48,9 +45,9 @@
               </button>
               <button
                 class="clear-nodes-button"
-                @click.stop.prevent="clearAllNodes()"
+                @click.stop.prevent="resetDataPoint()"
               >
-                Clear All
+                Clear Fields
               </button>
             </template>
           </ActivityForm>
@@ -73,21 +70,12 @@
   let series: DataEventSeries | null = null;
 
   //data event addition form
-
-  type DataEventProps = {
-    fieldSetId: number;
-    data: DataEvent;
-  };
-
   const bannerError = ref("");
-  const dataPoint = ref<DataEventProps>({
-    fieldSetId: 0,
-    data: {
-      label: "",
-      description: "",
-      date: new Date(),
-      amount: 0,
-    },
+  const dataPoint = ref<DataEvent>({
+    label: "",
+    description: "",
+    date: new Date(),
+    amount: 0.00,
   });
 
   //retrieve series data
@@ -98,6 +86,15 @@
   const handleSave = () => {
     console.log(dataPoint.value);
   };
+
+  const resetDataPoint = () => {
+    dataPoint.value = {
+      label: "",
+      description: "",
+      date: new Date(),
+      amount: 0.00,
+    };
+  };  
 </script>
 
 <style lang="scss" scoped>

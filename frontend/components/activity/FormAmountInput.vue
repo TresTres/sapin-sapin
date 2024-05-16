@@ -11,9 +11,10 @@
       <input
         :id="`${label}-${index}-amount`"
         class="amount-field"
-        @change="(event: Event) => handleAmountInput(event)"
         :placeholder="placeholder"
         :required="required"
+        v-model="amountValue"
+        @change="(event: Event) => handleAmountInput(event)"
       />
     </div>
   </div>
@@ -22,7 +23,6 @@
 <script setup lang="ts">
   interface Props {
     unitLabel?: string;
-    amountValue?: number;
     label: string | boolean;
     index: number;
     placeholder: string;
@@ -31,18 +31,20 @@
 
   withDefaults(defineProps<Props>(), {
     unitLabel: "$",
-    amountValue: 0,
     label: false,
     index: 0,
     required: false,
   });
 
-  const emit = defineEmits(["update:amountValue"]);
+  const amountValue = defineModel<number>("amountValue", {
+    required: true,
+    default: 0,
+  });
 
 
   const handleAmountInput = (event: Event): void => {
     (event.target as HTMLInputElement).value = formatValue((event.target as HTMLInputElement)?.value);
-    emit("update:amountValue", convertToFloat((event.target as HTMLInputElement)?.value));
+    amountValue.value = convertToFloat((event.target as HTMLInputElement)?.value);
   }
 
   const formatValue = (value: string): string => {
@@ -64,7 +66,7 @@
     /*
         This function takes a string value and converts it to a string with two decimal places.
         It removes any commas and spaces, and adds .00 to the end if the value is an integer.
-        If the value is not a number, it returns 0
+        If the value is not a number, it returns 0.00
     */
     return parseFloat(value.replace(/(,)?(\s+)?/g, "") + ".00");
   };

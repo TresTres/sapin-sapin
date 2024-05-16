@@ -13,6 +13,7 @@
       rows="5"
       :placeholder="placeholder"
       :required="required"
+      v-model="inputValue"
     />
     <input
       v-else
