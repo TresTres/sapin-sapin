@@ -11,9 +11,6 @@
       :id="`${label}-${index}`"
       class="input-field input-area"
       rows="5"
-      @input="
-        $emit('update:inputValue', ($event.target as HTMLInputElement)?.value)
-      "
       :placeholder="placeholder"
       :required="required"
     />
@@ -21,24 +18,21 @@
       v-else
       :id="`${label}-${index}`"
       class="input-field"
-      @input="
-        $emit('update:inputValue', ($event.target as HTMLInputElement)?.value)
-      "
       :placeholder="placeholder"
       :type="inputType"
       :required="required"
+      v-model="inputValue"
     />
   </div>
 </template>
 
 <script setup lang="ts">
   interface Props {
-    //it's nonsensical that TS complains about this
+    //it's nonsensical that TS complains about this for enums
     //@ts-expect-error: TS2749
     inputType?: FormInputType;
-    inputValue?: string;
     label: string | boolean;
-    index: number;
+    index?: number;
     placeholder: string;
     required?: boolean;
   }
@@ -51,7 +45,11 @@
     required: false,
   });
 
-  defineEmits(["update:inputValue"]);
+  const inputValue = defineModel<string>("inputValue", {
+    required: true,
+    default: "",
+  });
+
 </script>
 
 <style lang="scss" scoped>
