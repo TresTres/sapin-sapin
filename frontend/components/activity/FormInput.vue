@@ -40,7 +40,6 @@
 
   withDefaults(defineProps<Props>(), {
     inputType: FormInputType.TEXT,
-    inputValue: "",
     label: false,
     index: 0,
     required: false,

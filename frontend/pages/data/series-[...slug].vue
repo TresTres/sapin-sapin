@@ -1,3 +1,4 @@
+import { Activity } from '../../.nuxt/components';
 <template>
   <Activity>
     <template #header>
@@ -10,7 +11,7 @@
           <ActivityForm
             v-bind="{
               title: 'Add Financial Transaction',
-              buttonTitle: 'Save',
+              buttonTitle: 'Add Point',
               bannerText: bannerError,
             }"
             @submit.prevent="handleSave"
@@ -31,18 +32,30 @@
                 required: false,
               }"
             />
-            <ActivityFormAmountInput
-              v-model:amountValue="dataPoint.amount"
-              label="Data Amount"
-              v-bind="{
-                placeholder: '0',
-                required: true,
-              }"
-            />
+            <fieldset class="small-fields"> 
+              <div style="flex: 5">
+                <ActivityFormAmountInput
+                  v-model:amountValue="dataPoint.amount"
+                  label="Data Amount"
+                  v-bind="{
+                    placeholder: '0',
+                    required: true,
+                  }"
+                />
+              </div>
+              <div style="flex: 7">
+                <ActivityFormDatetimeInput
+                  v-model:dateValue="dataPoint.date"
+                  label="Date"
+                  v-bind="{
+                    placeholder: '2010-10-10',
+                    required: true,
+                  }"
+                />
+              </div>
+            </fieldset>
+
             <template #buttons>
-              <button class="add-node-button" @click.stop.prevent="addEvent()">
-                +
-              </button>
               <button
                 class="clear-nodes-button"
                 @click.stop.prevent="resetDataPoint()"
@@ -77,7 +90,6 @@
     date: new Date(),
     amount: 0.00,
   });
-
   //retrieve series data
   onBeforeMount(() => {
     series = dataStore.getSeries(route.params.slug as string);
@@ -112,22 +124,31 @@
     padding: $standard-text-size;
 
     grid-template-areas:
-      "A A A A  A A B B  B B B B  B B B B"
-      "A A A A  A A B B  B B B B  B B B B"
-      "A A A A  A A B B  B B B B  B B B B"
-      "A A A A  A A B B  B B B B  B B B B"
-      "A A A A  A A B B  B B B B  B B B B"
-      "C C C C  C C C C  C C C C  C C C C"
-      "C C C C  C C C C  C C C C  C C C C"
-      "C C C C  C C C C  C C C C  C C C C"
-      "C C C C  C C C C  C C C C  C C C C"
-      "C C C C  C C C C  C C C C  C C C C";
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "A A A A  A A A B  B B B B  B B B B"
+      "C C C C  C C C B  B B B B  B B B B"
+      "C C C C  C C C B  B B B B  B B B B"
+      "C C C C  C C C B  B B B B  B B B B"
+      "C C C C  C C C B  B B B B  B B B B"
+      "C C C C  C C C B  B B B B  B B B B";
   }
 
   .edit-area {
     grid-area: A;
     width: 100%;
     max-height: 100%;
+  }
+
+  .small-fields {
+    
+    border: none;
+    display: flex;
+    flex-direction: row;
+
+    gap: $small-text-size
   }
 
   .add-node-button {
