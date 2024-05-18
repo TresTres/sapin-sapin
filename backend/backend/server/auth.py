@@ -1,5 +1,5 @@
 import jwt
-import typing 
+import typing
 import hashlib
 import datetime
 from functools import wraps
@@ -17,7 +17,7 @@ def generate_refresh_token(user: User, fingerprint: str) -> str:
     digest = hashlib.sha256(fingerprint.encode()).hexdigest()
     return jwt.encode(
         {
-            "user": user.id, 
+            "user": user.id,
             "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15),
             "fingerprint": digest,
         },
@@ -35,14 +35,14 @@ def generate_access_token(user: User, fingerprint: str) -> str:
     return jwt.encode(
         {
             "user": user.id,
-            "exp": datetime.datetime.now(datetime.UTC)
-            + datetime.timedelta(minutes=1),
+            "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=1),
             "fingerprint": digest,
         },
         key=current_app.config["ACCESS_KEY_SECRET"],
         algorithm="HS256",
         headers={"typ": "JWT"},
     )
+
 
 def jwt_authenticated(f: typing.Callable) -> typing.Callable:
     """
@@ -54,21 +54,26 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
         token = request.headers.get("Authorization").split(" ")[1]
         if not token:
             logger.error("No token provided")
-            return jsonify(
-                {
-                    "message": "No token provided",
-                    "headers": {"WWW-Authenticate": "Basic realm='Valid login required'"},
-                }
-            ), 401
+            return (
+                jsonify(
+                    {
+                        "message": "No token provided",
+                        "headers": {
+                            "WWW-Authenticate": "Basic realm='Valid login required'"
+                        },
+                    }
+                ),
+                401,
+            )
         try:
             payload = jwt.decode(
                 token,
                 key=current_app.config["ACCESS_KEY_SECRET"],
                 algorithms=["HS256"],
                 options={
-                    'verify_signature': True,
-                    'verify_exp': True,
-                }
+                    "verify_signature": True,
+                    "verify_exp": True,
+                },
             )
             user_id = payload["user"]
             # TODO: Implement a check against cookie for fingerprint once https is working

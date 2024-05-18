@@ -146,7 +146,4 @@ class UserRefreshToken(Resource):
                 )
             except User.DoesNotExist:
                 logger.error("User does not exist")
-                abort(
-                    401,
-                    message="User in refresh token does not exist"
-                )
+                abort(401, message="User in refresh token does not exist")

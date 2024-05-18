@@ -64,12 +64,16 @@ class DataSeries(Resource):
                 series_by_user = DataEventSeries.select().where(
                     DataEventSeries.owner == user
                 )
-                related_events = DataEvent.select().join(DataEventSeries).where(
-                    DataEventSeries.owner == user
+                related_events = (
+                    DataEvent.select()
+                    .join(DataEventSeries)
+                    .where(DataEventSeries.owner == user)
                 )
                 events_by_series = defaultdict(list)
                 for event in related_events:
-                    events_by_series[event.series_id].append(model_to_dict(event, recurse=False))
+                    events_by_series[event.series_id].append(
+                        model_to_dict(event, recurse=False)
+                    )
 
             except User.DoesNotExist:
                 abort(404, message="User does not exist")
@@ -108,40 +112,59 @@ class DataBatch(Resource):
             if date_str
             else datetime.date.today()
         )
-        
-    def sanitize_batch(self, batch: List[Dict[str, str]], series_id: int, batch_offset: int) -> Dict: 
+
+    def sanitize_batch(
+        self, batch: List[Dict[str, str]], series_id: int, batch_offset: int
+    ) -> Dict:
         """
         Sanitize the data batch to ensure that all required fields are present.
-        This returns an object containing the sanitized data and the collection of errors if 
-        any occurred. 
+        This returns an object containing the sanitized data and the collection of errors if
+        any occurred.
         """
-        sanitized_batch = []   
+        sanitized_batch = []
         error_collection = []
-        
+
         for ind, d in enumerate(batch):
             if not d:
-                error_collection.append({ "item": ind + batch_offset, "message": "Item was empty", "field": ""})
+                error_collection.append(
+                    {
+                        "item": ind + batch_offset,
+                        "message": "Item was empty",
+                        "field": "",
+                    }
+                )
                 continue
             # TODO: replace all this with validation via pydantic
-            try: 
+            try:
                 d["series"] = series_id
                 d["amount"] = float(d.get("amount", 0.0))
                 d["date"] = self.get_date_from_string(d.get("date", ""))
             except ValueError as ve:
-                # TODO: collect all applicable errors in a single item, but not with 
+                # TODO: collect all applicable errors in a single item, but not with
                 # multiple try-except blocks
-                
+
                 if "time data" in str(ve):
-                    error_collection.append({ "item": ind + batch_offset, "message": "Date must be in the format YYYY-MM-DD", "field": "date" })
+                    error_collection.append(
+                        {
+                            "item": ind + batch_offset,
+                            "message": "Date must be in the format YYYY-MM-DD",
+                            "field": "date",
+                        }
+                    )
                 elif "could not convert string to float" in str(ve):
-                    error_collection.append({ "item": ind + batch_offset, "message": "Amount must be a number", "field": "amount" })
-                error_collection.append({ "item": ind + batch_offset, "message": str(ve), "field": ""})
+                    error_collection.append(
+                        {
+                            "item": ind + batch_offset,
+                            "message": "Amount must be a number",
+                            "field": "amount",
+                        }
+                    )
+                error_collection.append(
+                    {"item": ind + batch_offset, "message": str(ve), "field": ""}
+                )
                 continue
             sanitized_batch.append(d)
-        return {
-            "sanitized": sanitized_batch,
-            "errors": error_collection
-        }
+        return {"sanitized": sanitized_batch, "errors": error_collection}
 
     def create_data_in_batch(
         self, series: DataEventSeries, data: List[Dict[str, str]]
@@ -154,24 +177,25 @@ class DataBatch(Resource):
         inserted_rows = 0
         errors = []
         with db.atomic():
-            if data: 
+            if data:
                 for batch in chunked(data, 100):
-                    try: 
-                        batch_result = self.sanitize_batch(batch, series.id, inserted_rows)
+                    try:
+                        batch_result = self.sanitize_batch(
+                            batch, series.id, inserted_rows
+                        )
                         errors.extend(batch_result["errors"])
                         sanitized_data = batch_result["sanitized"]
                         if not sanitized_data:
                             continue
-                        inserted_rows += DataEvent.insert_many(
-                            sanitized_data
-                        ).as_rowcount().execute()
+                        inserted_rows += (
+                            DataEvent.insert_many(sanitized_data)
+                            .as_rowcount()
+                            .execute()
+                        )
                     except IntegrityError as ie:
                         errors.append({"message": str(ie)})
                         break
-        return {
-            "created": inserted_rows,
-            "errors": errors
-        }
+        return {"created": inserted_rows, "errors": errors}
 
     @cross_origin()
     @jwt_authenticated
@@ -189,11 +213,15 @@ class DataBatch(Resource):
                 result = self.create_data_in_batch(series, request.json.get("data"))
                 if result["created"] == 0:
                     atxn.rollback()
-                    abort(400, message="No valid data were provided", batch_errors=result["errors"])
+                    abort(
+                        400,
+                        message="No valid data were provided",
+                        batch_errors=result["errors"],
+                    )
             except DataEventSeries.DoesNotExist:
                 atxn.rollback()
                 abort(404, message="Series does not exist")
             return make_response(
                 result,
                 201,
-            )#
+            )  #

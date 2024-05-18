@@ -20,7 +20,7 @@ def create_app(mode: str) -> Flask:
     app.register_blueprint(data_blueprint)
 
     configure_logging(app.config)
-    
+
     # Prepare the database and set up routes
     db.init(app.config.get("DATABASE_URL", ":memory:"))
     migrate(db)
