@@ -8,16 +8,21 @@ import { LazyUserRegistration } from '../../.nuxt/components';
       <span v-if="required" class="required">*required</span>
     </label>
     <div class="formatted-amount">
-      <div class="unit">{{ unitLabel }}</div> 
+      <div class="unit">{{ unitLabel }}</div>
       <input
+        v-model="inputAmount"
         :id="`${label}-${index}-amount`"
-        ref="amountField"
+        type="number"
         class="amount-field"
         :placeholder="placeholder"
         :required="required"
-        @change="(event: Event) => handleAmountInput(event)"
-        @focus.stop="setCursorToStart()"
+        min="0"
+        step=".01"
+        @change.prevent="(event) => handleAmountChange(event)"
       />
+      <button class="toggle-button" @click.prevent="() => toggleDeduct()">
+        {{ deduction ? "Add" : "Deduct" }}
+      </button>
     </div>
   </div>
 </template>
@@ -38,67 +43,63 @@ import { LazyUserRegistration } from '../../.nuxt/components';
     required: false,
   });
 
+  const convertAmount = (value: number): string => {
+    /*
+      Converts the input value to a float with 2 decimal places
+    */
+    return Math.abs(value).toFixed(2);
+  };
 
-  const amountField = ref<HTMLInputElement | null>(null);
-  const amountValue = defineModel<number | string>("amountValue", {
+  // true value controlled by model
+  const amountValue = defineModel<number>("amountValue", {
     required: true,
     default: 0,
   });
+  // value displayed in input field
+  const inputAmount = ref<string>(
+    convertAmount(amountValue.value)
+  );
+  const deduction = ref<boolean>(amountValue.value < 0);
 
-  
-  // watcher to handle outside model changes
   watch(amountValue, (newValue) => {
-    if(typeof newValue === "number") {
-      (amountField.value as HTMLInputElement).value = formatValue(newValue.toString());
-    }
+    // upon model change, update input fields
+    inputAmount.value = convertAmount(newValue);
+    deduction.value = newValue < 0;
   });
 
-  const setCursorToStart = (): void => {
+  const toggleDeduct = (): void => {
     /*
-      This function takes an input event and sets the cursor to the start of the input field.
-      In some browsers, the focus event fires before the cursor is set, so we use setTimeout to ensure the cursor is set.
+      Toggles if the amount should be added or deducted
     */
-    setTimeout(() => (amountField.value as HTMLInputElement).setSelectionRange(0, 0), .1);
-  }
-
-  const handleAmountInput = (event: Event): void => {
-    /*
-      This funciton takes an input event and formats the value to an internationalized float with two decimal places.
-      It then updates the amountValue model with the numerical equivalent.
-    */
-    (event.target as HTMLInputElement).value = formatValue((event.target as HTMLInputElement)?.value);
-    amountValue.value = convertToFloat((event.target as HTMLInputElement)?.value);
-  }
-
-  const formatValue = (value: string): string => {
-    /*
-      This function takes a string value and converts it to a internationalized
-      float with two decimal places. If the value is not a number, it returns "0.00"
-    */
-    const parsedValue = convertToFloat(value);
-    if(isNaN(parsedValue)) return "0.00";
-    return Intl.NumberFormat("en-US", {
-      style: "decimal",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      minimumIntegerDigits: 1,
-    }).format(parsedValue);
+    deduction.value = !deduction.value;
+    calculateAmount();
   };
 
-  const convertToFloat = (value: string): number => {
+  const handleAmountChange = (event: Event): void => {
     /*
-      This function takes a string value and converts it to a numerical string with two decimal places.
-      It removes any commas and spaces, and adds .00 to the end if the value is an integer.
-      If the value is not a number, it returns 0.00
+      Format the amount input to a float with two decimal places for display
     */
-    return parseFloat(value.replace(/(,)?(\s+)?/g, "") + ".00");
+
+    const formattedValue = convertAmount(Math.max(
+      (event.target as HTMLInputElement).valueAsNumber,
+      0
+    ));
+    inputAmount.value = formattedValue;
+    calculateAmount();
   };
 
-
+  const calculateAmount = (): void => {
+    /*
+      Calculate the amount based on the input value and the deduction flag
+    */
+    const floatValue = parseFloat(inputAmount.value);
+    amountValue.value = deduction.value
+      ? -1 * floatValue
+      : floatValue;
+  };
 </script>
 
-<style lang="scss" scoped> 
-
+<style lang="scss" scoped>
   .control-group {
     display: flex;
     flex-direction: column;
@@ -117,7 +118,6 @@ import { LazyUserRegistration } from '../../.nuxt/components';
     flex-direction: row;
     align-items: baseline;
     gap: 0.5rem;
-
   }
   .amount-field {
     @include text-input;
