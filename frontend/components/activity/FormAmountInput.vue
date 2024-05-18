@@ -1,3 +1,4 @@
+import { LazyUserRegistration } from '../../.nuxt/components';
 <!-- component that handles formatting numerical input from free text -->
 
 <template>
@@ -7,7 +8,7 @@
       <span v-if="required" class="required">*required</span>
     </label>
     <div class="formatted-amount">
-      <span>{{ unitLabel }}</span> 
+      <div class="unit">{{ unitLabel }}</div> 
       <input
         :id="`${label}-${index}-amount`"
         ref="amountField"
@@ -114,11 +115,16 @@
   .formatted-amount {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     gap: 0.5rem;
 
   }
   .amount-field {
     @include text-input;
+  }
+
+  .unit {
+    @include input-label;
+    font-size: $large-text-size;
   }
 </style>

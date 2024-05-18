@@ -117,7 +117,7 @@
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(7, 1fr);
 
-    gap: 4rem;
+    gap: 2rem;
 
     padding: $standard-text-size;
 

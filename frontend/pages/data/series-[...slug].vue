@@ -10,7 +10,7 @@
           <ActivityForm
             v-bind="{
               title: 'Add Financial Transaction',
-              buttonTitle: 'Add Point',
+              buttonTitle: 'Create',
               bannerText: bannerError,
             }"
             @submit.prevent="handleSave"
@@ -18,45 +18,40 @@
             <ActivityFormInput
               v-model:inputValue="dataPoint.label"
               v-bind="{
-                label: 'Data Label',
+                label: 'Label',
                 placeholder: 'Grocery Trip',
                 required: true,
               }"
             />
-            <ActivityFormInput
-              v-model:inputValue="dataPoint.description"
-              label="Data Description"
+            <ActivityFormDatetimeInput
+              v-model:dateValue="dataPoint.date"
+              label="Date"
               v-bind="{
-                placeholder: 'Description',
-                required: false,
+                placeholder: '2010-10-10',
+                required: true,
               }"
             />
-            <fieldset class="small-fields">
-              <div style="flex: 5">
-                <ActivityFormAmountInput
+            <ActivityFormAmountInput
                   v-model:amountValue="dataPoint.amount"
-                  label="Data Amount"
+                  label="Amount"
                   v-bind="{
                     placeholder: '0',
                     required: true,
                   }"
                 />
-              </div>
-              <div style="flex: 7">
-                <ActivityFormDatetimeInput
-                  v-model:dateValue="dataPoint.date"
-                  label="Date"
-                  v-bind="{
-                    placeholder: '2010-10-10',
-                    required: true,
-                  }"
-                />
-              </div>
-            </fieldset>
 
+            <ActivityFormInput
+              v-model:inputValue="dataPoint.description"
+              label="Description"
+              v-bind="{
+                placeholder: 'Description',
+                inputType: FormInputType.AREA,
+                required: false,
+              }"
+            />
             <template #buttons>
               <button
-                class="clear-nodes-button"
+                class="clear-fields-button"
                 @click.stop.prevent="resetDataPoint()"
               >
                 Clear Fields
@@ -181,30 +176,27 @@
     height: 100%;
     align-items: stretch;
 
-    grid-template-columns: repeat(16, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(9, 1fr);
 
     gap: 2rem;
 
     padding: $standard-text-size;
 
     grid-template-areas:
-      "A A A A  A A A B  B B B B  B B B B"
-      "A A A A  A A A B  B B B B  B B B B"
-      "A A A A  A A A B  B B B B  B B B B"
-      "A A A A  A A A B  B B B B  B B B B"
-      "A A A A  A A A B  B B B B  B B B B"
-      "C C C C  C C C B  B B B B  B B B B"
-      "C C C C  C C C B  B B B B  B B B B"
-      "C C C C  C C C B  B B B B  B B B B"
-      "C C C C  C C C B  B B B B  B B B B"
-      "C C C C  C C C B  B B B B  B B B B";
+      "C C C C C  B B B B B  B B B B B B"
+      "C C C C C  B B B B B  B B B B B B"
+      "C C C C C  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B"
+      "A A A A A  B B B B B  B B B B B B";
   }
 
   .edit-area {
     grid-area: A;
-    width: 100%;
-    max-height: 100%;
   }
 
   .events-area {
@@ -223,30 +215,15 @@
     border: none;
     display: flex;
     flex-direction: row;
+    align-items: stretch;
 
     gap: $small-text-size;
   }
 
-  .add-node-button {
+  .clear-fields-button {
     @include large-button;
 
     width: 30%;
-
-    font-weight: $bold-text-weight;
-
-    background-color: $primary-orange-color;
-    color: $white-color;
-
-    &:hover {
-      background-color: $light-orange-color;
-      color: $dark-red-color;
-    }
-  }
-
-  .clear-nodes-button {
-    @include large-button;
-
-    width: 20%;
     left: 0;
 
     background-color: $dark-red-color;

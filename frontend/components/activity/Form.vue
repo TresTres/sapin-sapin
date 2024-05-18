@@ -79,6 +79,6 @@
   .form-submit-button {
     @include large-button;
 
-    width: 20%;
+    max-width: 35%;
   }
 </style>

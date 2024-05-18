@@ -10,7 +10,7 @@
       v-if="inputType == FormInputType.AREA"
       :id="`${label}-${index}`"
       class="input-field input-area"
-      rows="5"
+      rows="4"
       :placeholder="placeholder"
       :required="required"
       v-model="inputValue"
@@ -76,6 +76,6 @@
     overflow: auto;
 
     font-size: $standard-text-size;
-    height: 6rem;
+    height: 4rem;
   }
 </style>
