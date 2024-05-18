@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       "@pinia-plugin-persistedstate/nuxt",
       {
         autoImports: ["defineStore", "persistedState"],
-      }
+      },
     ],
     "@nuxt/image",
   ],

@@ -7,16 +7,13 @@
   </div>
 </template>
 
-
 <style lang="scss" scoped>
-
 .dashboard-container {
   height: 100dvh;
   width: 100dvw;
   display: flex;
   align-items: stretch;
   flex-direction: row;
-
 
   background-image: radial-gradient(
     farthest-corner circle at 90% 90%,

@@ -8,9 +8,9 @@
     <fieldset class="input-fields">
       <slot />
     </fieldset>
-    <div class="button-field"> 
+    <div class="button-field">
       <button type="submit" class="form-submit-button">
-      {{ buttonTitle }}
+        {{ buttonTitle }}
       </button>
       <slot name="buttons" />
     </div>
@@ -18,67 +18,66 @@
 </template>
 
 <script setup lang="ts">
-  defineProps({
-    title: {
-      type: String,
-      default: "Sign Up",
-    },
-    buttonTitle: {
-      type: String,
-      default: "Sign Up",
-    },
-    descriptionValue: {
-      type: String,
-      default: "",
-    },
-    bannerText: {
-      type: String,
-      default: "",
-    },
-  });
-  defineEmits(["submit"]);
+defineProps({
+  title: {
+    type: String,
+    default: "Sign Up",
+  },
+  buttonTitle: {
+    type: String,
+    default: "Sign Up",
+  },
+  descriptionValue: {
+    type: String,
+    default: "",
+  },
+  bannerText: {
+    type: String,
+    default: "",
+  },
+});
+defineEmits(["submit"]);
 </script>
 
 <style lang="scss" scoped>
-  .activity-input-form {
-    display: flex;
+.activity-input-form {
+  display: flex;
 
-    flex-direction: column;
-    align-items: stretch;
+  flex-direction: column;
+  align-items: stretch;
 
-    height: 100%;
-    box-sizing: border-box;
-  }
+  height: 100%;
+  box-sizing: border-box;
+}
 
-  .heading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
+.heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-  .input-fields {
+.input-fields {
+  flex: 12;
 
-    flex: 12;
+  width: 100%;
+  box-sizing: border-box;
 
-    width: 100%;
-    box-sizing: border-box;
+  border: none;
+  overflow: auto;
+}
 
-    border: none;
-    overflow: auto;
-  }
+.button-field {
+  flex: 1;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-  .button-field {
-    flex: 1;
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+.form-submit-button {
+  @include large-button;
 
-  .form-submit-button {
-    @include large-button;
-
-    max-width: 35%;
-  }
+  max-width: 35%;
+}
 </style>

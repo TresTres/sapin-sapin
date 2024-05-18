@@ -2,7 +2,7 @@ export const useDataStore = defineStore("dataStore", {
   state: () => ({
     allSeries: {} as {
       [key: string]: DataEventSeries;
-    }
+    },
   }),
   persist: {
     storage: persistedState.sessionStorage,
@@ -19,7 +19,7 @@ export const useDataStore = defineStore("dataStore", {
       }
     },
     getSeries(title: string): DataEventSeries | null {
-      if(this.allSeries.hasOwnProperty(lowerCase(title))){
+      if (this.allSeries.hasOwnProperty(lowerCase(title))) {
         return this.allSeries[lowerCase(title)];
       }
       return null;
@@ -27,18 +27,17 @@ export const useDataStore = defineStore("dataStore", {
     has(title: string): boolean {
       return this.allSeries.hasOwnProperty(lowerCase(title));
     },
-    replaceSeries(title: string, series: DataEventSeries): boolean { 
-      if(this.has(title)){
-
+    replaceSeries(title: string, series: DataEventSeries): boolean {
+      if (this.has(title)) {
         this.allSeries[lowerCase(title)] = structuredClone(series);
         return true;
       }
       return false;
-    }
+    },
   },
   getters: {
-    allSeriesEntries: (state) => Object.entries(state.allSeries)
-  }
+    allSeriesEntries: (state) => Object.entries(state.allSeries),
+  },
 });
 
 const lowerCase = (value: any) => String(value).toLowerCase().trim();

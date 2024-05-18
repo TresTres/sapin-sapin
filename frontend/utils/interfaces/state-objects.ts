@@ -4,14 +4,14 @@ export type DataEventSeries = {
   description: string;
   events: DataEvent[];
   recurrences: DataRecurrence[];
-}
+};
 
 export type DataEvent = {
   label: string;
   description: string;
   date: Date;
   amount: number;
-}
+};
 
 export type DataRecurrence = {
   label: string;
@@ -20,4 +20,4 @@ export type DataRecurrence = {
   end_date?: Date;
   interval: number;
   amount: number;
-}
+};

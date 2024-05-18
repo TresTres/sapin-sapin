@@ -9,73 +9,71 @@
     <textarea
       v-if="inputType == FormInputType.AREA"
       :id="`${label}-${index}`"
+      v-model="inputValue"
       class="input-field input-area"
       rows="4"
       :placeholder="placeholder"
       :required="required"
-      v-model="inputValue"
     />
     <input
       v-else
       :id="`${label}-${index}`"
+      v-model="inputValue"
       class="input-field"
       :placeholder="placeholder"
       :type="inputType"
       :required="required"
-      v-model="inputValue"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-  interface Props {
-    //it's nonsensical that TS complains about this for enums
-    //@ts-expect-error: TS2749
-    inputType?: FormInputType;
-    label: string | boolean;
-    index?: number;
-    placeholder: string;
-    required?: boolean;
-  }
+interface Props {
+  // it's nonsensical that TS complains about this for enums
+  // @ts-expect-error: TS2749
+  inputType?: FormInputType;
+  label: string | boolean;
+  index?: number;
+  placeholder: string;
+  required?: boolean;
+}
 
-  withDefaults(defineProps<Props>(), {
-    inputType: FormInputType.TEXT,
-    label: false,
-    index: 0,
-    required: false,
-  });
+withDefaults(defineProps<Props>(), {
+  inputType: FormInputType.TEXT,
+  label: false,
+  index: 0,
+  required: false,
+});
 
-  const inputValue = defineModel<string>("inputValue", {
-    required: true,
-    default: "",
-  });
-
+const inputValue = defineModel<string>("inputValue", {
+  required: true,
+  default: "",
+});
 </script>
 
 <style lang="scss" scoped>
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
 
-  .control-group {
-    display: flex;
-    flex-direction: column;
-  }
+label {
+  @include input-label;
+}
 
-  label {
-    @include input-label;
-  }
+.required {
+  @include required-label;
+}
 
-  .required {
-    @include required-label;
-  }
+.input-field {
+  @include text-input;
+}
 
-  .input-field {
-    @include text-input;
-  }
+.input-area {
+  resize: none;
+  overflow: auto;
 
-  .input-area {
-    resize: none;
-    overflow: auto;
-
-    font-size: $standard-text-size;
-    height: 4rem;
-  }
+  font-size: $standard-text-size;
+  height: 4rem;
+}
 </style>
