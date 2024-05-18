@@ -18,12 +18,10 @@
 </template>
 
 <script setup lang="ts">
-  definePageMeta({
-    title: "Profile Page",
-    layout: "dashboard",
-  });
+definePageMeta({
+  title: "Profile Page",
+  layout: "dashboard",
+});
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

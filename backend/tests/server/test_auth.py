@@ -3,6 +3,7 @@ import werkzeug
 
 from tests.constants import *
 
+
 class TestJWTAuthenticatedRoute:
 
     def test_jwt_authenticate_failure_with_missing_token(
@@ -29,7 +30,6 @@ class TestJWTAuthenticatedRoute:
         assert response.status_code == 401
         assert "Invalid token" in response.json["message"]
 
-
     def test_jwt_authenticate_failure_with_incorrectly_signed_token(
         self, client_with_protected_route: werkzeug.test.Client
     ) -> None:
@@ -38,13 +38,10 @@ class TestJWTAuthenticatedRoute:
         """
 
         token = jwt.encode(
-            {
-                "user": VALID_USER_ID,
-                "exp": datetime.datetime.now(datetime.UTC)
-            },
+            {"user": VALID_USER_ID, "exp": datetime.datetime.now(datetime.UTC)},
             key="invalid_secret",
             algorithm="HS256",
-            headers={"typ": "JWT"}
+            headers={"typ": "JWT"},
         )
 
         headers = {"Authorization": f"Bearer {token}"}
@@ -60,31 +57,30 @@ class TestJWTAuthenticatedRoute:
         """
 
         token = jwt.encode(
-            {
-                "user": VALID_USER_ID,
-                "exp": datetime.datetime(1990, 1, 1)
-            },
+            {"user": VALID_USER_ID, "exp": datetime.datetime(1990, 1, 1)},
             key=client_with_protected_route.application.config["ACCESS_KEY_SECRET"],
             algorithm="HS256",
-            headers={"typ": "JWT"}
+            headers={"typ": "JWT"},
         )
 
         headers = {"Authorization": f"Bearer {token}"}
         response = client_with_protected_route.post("/protected", headers=headers)
         assert response.status_code == 401
-        assert  "Token has expired" in response.json["message"]
-        
-            
-    def test_jwt_authenticated_with_valid_token(self, client_with_protected_route: werkzeug.test.Client) -> None:
-        
+        assert "Token has expired" in response.json["message"]
+
+    def test_jwt_authenticated_with_valid_token(
+        self, client_with_protected_route: werkzeug.test.Client
+    ) -> None:
+
         token = jwt.encode(
             {
                 "user": VALID_USER_ID,
-                "exp": datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=15)
+                "exp": datetime.datetime.now(datetime.UTC)
+                + datetime.timedelta(minutes=15),
             },
             key=client_with_protected_route.application.config["ACCESS_KEY_SECRET"],
             algorithm="HS256",
-            headers={"typ": "JWT"}
+            headers={"typ": "JWT"},
         )
 
         headers = {"Authorization": f"Bearer {token}"}

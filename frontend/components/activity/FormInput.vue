@@ -1,15 +1,17 @@
+<!-- component that handles various text inputs, e.g. text, textarea, and password -->
+
 <template>
   <div class="control-group">
     <label v-if="label" for="aligned-identifier">
-        {{ label }}
-        <span v-if="required" class="required">*required</span>
+      {{ label }}
+      <span v-if="required" class="required">*required</span>
     </label>
     <textarea
       v-if="inputType == FormInputType.AREA"
       :id="`${label}-${index}`"
       v-model="inputValue"
       class="input-field input-area"
-      rows="5"
+      rows="4"
       :placeholder="placeholder"
       :required="required"
     />
@@ -26,81 +28,52 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+  // it's nonsensical that TS complains about this for enums
+  // @ts-expect-error: TS2749
+  inputType?: FormInputType;
+  label: string | boolean;
+  index?: number;
+  placeholder: string;
+  required?: boolean;
+}
 
+withDefaults(defineProps<Props>(), {
+  inputType: FormInputType.TEXT,
+  label: false,
+  index: 0,
+  required: false,
+});
 
-  interface Props {
-    //it's nonsensical that TS complains about this
-    //@ts-expect-error: TS2749
-    inputType: FormInputType;
-    label: string | boolean;
-    index: number;
-    placeholder: string;
-    required: boolean;
-  }
-
-  withDefaults(
-    defineProps<Props>(),
-    {
-      inputType: FormInputType.TEXT,
-      label: false,
-      index: 0,
-      required: false,
-    }
-  )
-
-  const inputValue = defineModel("inputValue", {
-    type: String,
-    default: "",
-  });
+const inputValue = defineModel<string>("inputValue", {
+  required: true,
+  default: "",
+});
 </script>
 
 <style lang="scss" scoped>
+.control-group {
+  display: flex;
+  flex-direction: column;
+}
 
-  label {
-    font-size: $medium-large-text-size;
-    font-weight: $header-text-weight;
-    margin-bottom: 0.5rem;
-  }
+label {
+  @include input-label;
+}
 
-  .required {
-    font-size: $small-text-size;
-    font-weight: $thin-text-weight;
-    color: $primary-red-color;
-  }
+.required {
+  @include required-label;
+}
 
-  .control-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
+.input-field {
+  @include text-input;
+}
 
-  .input-field {
-    padding: 0.5rem 1rem;
-    width: 100%;
+.input-area {
+  resize: none;
+  overflow: auto;
 
-    border: none;
-    border-radius: 0.7em;
-
-    background-color: adjust-alpha($white-color, 50%);
-    color: $dark-purple-color;
-
-    font-size: $medium-large-text-size;
-    font-family: inherit;
-
-    &::placeholder {
-      color: adjust-alpha($dark-purple-color, 50%);
-    }
-
-    &:focus {
-      outline: 2px solid $primary-purple-color;
-    }
-  }
-
-  .input-area {
-    resize: none;
-    overflow: auto;
-
-    font-size: $standard-text-size;
-
-  }
+  font-size: $standard-text-size;
+  height: 4rem;
+}
 </style>

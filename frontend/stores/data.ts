@@ -1,33 +1,43 @@
 export const useDataStore = defineStore("dataStore", {
   state: () => ({
-    allSeries: new Map<string, DataEventSeries>(),
+    allSeries: {} as {
+      [key: string]: DataEventSeries;
+    },
   }),
+  persist: {
+    storage: persistedState.sessionStorage,
+  },
   actions: {
     addSeries(series: DataEventSeries): void {
-      this.allSeries.set(lowerCase(series.title), structuredClone(series));
+      this.allSeries[lowerCase(series.title)] = structuredClone(series);
     },
     loadMultipleSeries(setOfSeries: DataEventSeries[]): void {
       if (setOfSeries) {
         setOfSeries.forEach((series: DataEventSeries) => {
-          this.allSeries.set(lowerCase(series.title), structuredClone(series));
+          this.allSeries[lowerCase(series.title)] = structuredClone(series);
         });
       }
     },
-    getSeries(title: string): DataEventSeries | undefined {
-      return this.allSeries.get(lowerCase(title));
+    getSeries(title: string): DataEventSeries | null {
+      if (this.allSeries.hasOwnProperty(lowerCase(title))) {
+        return this.allSeries[lowerCase(title)];
+      }
+      return null;
     },
-    doesSeriesExist(title: string): boolean {
-      return this.allSeries.has(lowerCase(title));
+    has(title: string): boolean {
+      return this.allSeries.hasOwnProperty(lowerCase(title));
     },
-    replaceSeries(title: string, series: DataEventSeries): boolean { 
-      if(this.doesSeriesExist(title)){
-        this.allSeries.set(lowerCase(title), structuredClone(series));
+    replaceSeries(title: string, series: DataEventSeries): boolean {
+      if (this.has(title)) {
+        this.allSeries[lowerCase(title)] = structuredClone(series);
         return true;
       }
       return false;
-    }
+    },
+  },
+  getters: {
+    allSeriesEntries: (state) => Object.entries(state.allSeries),
   },
 });
-
 
 const lowerCase = (value: any) => String(value).toLowerCase().trim();

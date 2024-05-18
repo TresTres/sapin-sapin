@@ -6,8 +6,6 @@ from backend.server.routes import create_resource_path
 from tests.constants import *
 
 
-
-
 class TestUserRegistration:
 
     @pytest.mark.parametrize(
@@ -110,7 +108,7 @@ class TestUserLogin:
 
     def test_login_success(self, client_with_user: werkzeug.test.Client) -> None:
         """
-        Test successful user login, includes both refresh and access token 
+        Test successful user login, includes both refresh and access token
         """
         with patch("werkzeug.wrappers.Response.set_cookie") as mock_set_cookie:
             response = client_with_user.post(

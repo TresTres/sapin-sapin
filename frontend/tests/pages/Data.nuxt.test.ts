@@ -1,10 +1,10 @@
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import DataPage from '~/pages/data.vue'
-import { describe, it, expect } from 'vitest'
+import { mountSuspended } from "@nuxt/test-utils/runtime";
+import DataPage from "~/pages/data.vue";
+import { describe, it, expect } from "vitest";
 
-describe('DataPage', () => {
-  it('calls handleSeriesCreation', async () => {
-    const wrapper = await mountSuspended(DataPage)
+describe("DataPage", () => {
+  it("calls handleSeriesCreation", async () => {
+    const wrapper = await mountSuspended(DataPage);
     expect(wrapper).not.toBeUndefined();
 
     // // Mock the handleSeriesCreation function
@@ -16,5 +16,5 @@ describe('DataPage', () => {
 
     // // Check that the function was called
     // expect(mockHandleSeriesCreation).toHaveBeenCalled()
-  }) 
-})
+  });
+});

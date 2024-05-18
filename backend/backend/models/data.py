@@ -1,5 +1,6 @@
 import datetime
 import decimal
+import uuid
 
 from backend.models.base import *
 from backend.models.users import User
@@ -63,9 +64,9 @@ class DataEventSeries(BaseModel):
         return super().save(*args, **kwargs)
 
 
-class DataEvent(BaseModel):
+class DataModel(BaseModel):
     """
-    Represents a single event in a series.
+    Represents a generic data model.
     """
 
     label = CharField(
@@ -74,14 +75,23 @@ class DataEvent(BaseModel):
         default="",
     )
     description = CharField(null=True)
-    date = DateTimeField(
-        null=False, index=True, default=datetime.datetime.now(datetime.UTC)
-    )
     amount = DecimalField(null=False, decimal_places=4, default=0.0000)
     series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
 
     class Meta:
         constraints = [SQL("UNIQUE (series_id, label)")]
+
+
+class DataEvent(DataModel):
+    """
+    Represents a single event in a series.
+    """
+
+    date = DateTimeField(
+        null=False, index=True, default=datetime.datetime.now(datetime.UTC)
+    )
+
+    class Meta:
         indexes = ((("series", "label", "date"), True),)
 
     def save(self, *args, **kwargs) -> int:
@@ -89,8 +99,12 @@ class DataEvent(BaseModel):
         Override the save method to conduct validations.
         Label must be non-empty
         """
-        if not self.label:
-            raise ValidationError("Label must be non-empty")
+        if not self.label or len(self.label.strip()) == 0:
+            # TODO: If I ever need to do this again, refactor it to a util
+            random_id = uuid.uuid4()
+            sanitized_series_tile = self.series.title.lower().replace(" ", "-")
+            self.label = f"{sanitized_series_tile}-event-{random_id}"
+
         self.label = self.label.strip()
         return super().save(*args, **kwargs)
 
