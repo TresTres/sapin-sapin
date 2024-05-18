@@ -23,8 +23,5 @@ export const useUserStore = defineStore("userStore", {
       this.email = user.email;
       this.dateJoined = new Date(user.date_joined);
     },
-    clearData() {
-      this.$reset();
-    },
   },
 });

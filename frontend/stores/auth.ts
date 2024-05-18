@@ -1,49 +1,54 @@
-import type { FetchResponse, FetchError } from 'ofetch';
+import type { FetchResponse, FetchError } from "ofetch";
 
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
     accessToken: "" as string,
     isLoggedIn: false as boolean,
     authError: "" as string,
-    
   }),
   persist: {
     storage: persistedState.localStorage,
-    paths: ["isLoggedIn"]
+    paths: ["isLoggedIn"],
   },
   actions: {
     async login(identifier: string, password: string): Promise<void> {
-      await $fetch.raw("/api/login", {
-        method: "POST",
-        body: JSON.stringify({
-          identifier: identifier,
-          password: password,
-        }),
-      }).then(
-        async (resp: FetchResponse<any>):  Promise<void> => {
-          const { headers,  _data: { user } } = resp;
+      await $fetch
+        .raw("/api/login", {
+          method: "POST",
+          body: JSON.stringify({
+            identifier,
+            password,
+          }),
+        })
+        .then(async (resp: FetchResponse<any>): Promise<void> => {
+          const {
+            headers,
+            _data: { user },
+          } = resp;
           this.isLoggedIn = true;
           this.authError = "";
           this.accessToken = headers.get("Authorization")?.split(" ")[1] || "";
           const userStore = useUserStore();
           userStore.fillData(user as UserResponseObject);
           await navigateTo("/");
-        }
-      ).catch((error: FetchError): void => {
-        this.clearAuth();
-        if(error.status === 401) {
-          this.authError = "Invalid username or password.";
-        } else {
-          this.authError = "An error occurred on login.  Please retry again later.";
-          console.error(error.data);
-        }
-        return;
-      })
+        })
+        .catch((error: FetchError): void => {
+          this.clearAuth();
+          if (error.status === 401) {
+            this.authError = "Invalid username or password.";
+          } else {
+            this.authError =
+              "An error occurred on login.  Please retry again later.";
+            console.error(error.data);
+          }
+        });
     },
-    clearAuth(): void{
+    clearAuth(): void {
       const userStore = useUserStore();
-      userStore.clearData();
+      const dataStore = useDataStore();
+      userStore.$reset();
+      dataStore.$reset();
       this.isLoggedIn = false;
-    }
+    },
   },
 });

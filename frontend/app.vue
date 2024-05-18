@@ -8,23 +8,20 @@ import { ServerPlaceholder } from './.nuxt/components';
   </div>
 </template>
 
-<script setup lang="ts">
-
-
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
-
-
 .app-container {
+  position: absolute;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
 
   background-color: $dark-purple-color;
 
   font-family: "Rubik", Roboto, sans-serif;
   font-weight: $standard-text-weight;
-  letter-spacing: .05ch;
+  letter-spacing: 0.05ch;
 }
 </style>

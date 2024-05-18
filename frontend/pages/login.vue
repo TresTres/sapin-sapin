@@ -44,7 +44,7 @@ const password = ref("");
 
 const authStore = useAuthStore();
 
-const handleLogin = async(): Promise<void> => {
+const handleLogin = async (): Promise<void> => {
   await authStore.login(identifier.value, password.value);
 };
 </script>

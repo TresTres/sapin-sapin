@@ -1,0 +1,94 @@
+/* Reusable mixins for components */
+
+@mixin small-box-shadow() {
+  box-shadow:
+    4px 0px 12px 0 rgba(0, 0, 0, 0.2),
+    8px 0px 24px 0 rgba(0, 0, 0, 0.19);
+}
+
+@mixin hover-change-colors(
+  $start-bg-color,
+  $end-bg-color,
+  $start-text-color,
+  $end-text-color
+) {
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+
+  background-color: $start-bg-color;
+  color: $start-text-color;
+
+  &:hover {
+    background-color: $end-bg-color;
+    color: $end-text-color;
+  }
+}
+
+@mixin button() {
+  border: none;
+
+  @include hover-change-colors(
+    $primary-purple-color,
+    $light-purple-color,
+    $white-color,
+    $dark-purple-color
+  );
+}
+
+@mixin large-button() {
+  @include button;
+
+  padding: 0.5rem 1rem;
+  border-radius: 0.6em;
+  font-size: $medium-large-text-size;
+}
+
+@mixin small-button() {
+  @include button;
+
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3em;
+  font-size: $small-text-size;
+}
+
+@mixin input-label {
+  font-size: $medium-large-text-size;
+  font-weight: $header-text-weight;
+}
+
+@mixin required-label {
+  font-size: $small-text-size;
+  font-weight: $thin-text-weight;
+  color: $primary-red-color;
+}
+
+@mixin text-input() {
+  padding: 0.5rem 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  min-width: 0;
+  border: none;
+  border-radius: 0.6em;
+
+  cursor: text;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+
+  background-color: adjust-alpha($white-color, 60%);
+  color: $dark-purple-color;
+
+  font-size: $medium-large-text-size;
+  font-family: inherit;
+
+  &::placeholder {
+    color: adjust-alpha($dark-purple-color, 50%);
+  }
+
+  &:focus {
+    outline: 2px solid $primary-purple-color;
+    background-color: adjust-alpha($white-color, 80%);
+  }
+}

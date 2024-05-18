@@ -1,5 +1,5 @@
 import { FetchError, type FetchResponse, type FetchOptions } from "ofetch";
-import { useAuthStore } from '../stores/auth';
+import { useAuthStore } from "../stores/auth";
 
 type FetchRequestMethod =
   | "GET"
@@ -24,7 +24,7 @@ type FetchRequestMethod =
 
 export const useAuthorizingFetch = async (
   request: string,
-  opts?: FetchOptions<any>
+  opts?: FetchOptions<any>,
 ): Promise<any> => {
   /*
    * This function is a wrapper around useFetch that will attempt to contact protected routes.
@@ -35,12 +35,12 @@ export const useAuthorizingFetch = async (
   const authStore = useAuthStore();
   try {
     if (!authStore.accessToken) {
-      throw Error("No token found");
+      throw new Error("No token found");
     }
     // try inital request
     return await $fetch(request, {
       ...opts,
-      method: opts?.method as FetchRequestMethod || "GET",
+      method: (opts?.method as FetchRequestMethod) || "GET",
       headers: { Authorization: `Bearer ${authStore.accessToken}` },
     });
   } catch (error: any) {
@@ -51,7 +51,7 @@ export const useAuthorizingFetch = async (
         // try request again
         return await $fetch(request, {
           ...opts,
-          method: opts?.method as FetchRequestMethod || "GET",
+          method: (opts?.method as FetchRequestMethod) || "GET",
           headers: { Authorization: `Bearer ${authStore.accessToken}` },
         });
       }
@@ -100,6 +100,5 @@ const refreshAccessToken = async (): Promise<void> => {
         authStore.authError =
           "An error occurred on refresh.  Please retry login.";
       }
-      return;
     });
 };

@@ -1,24 +1,17 @@
 <template>
-  <Activity> 
-    <template #header> 
-      Profile 
-    </template>
+  <Activity>
+    <template #header> Profile </template>
     <template #content>
       <ClientOnly>
         <CommonCard class="profile-card">
           <p>Username: {{ username }}</p>
           <p>Email: {{ email }}</p>
           <p>Account age: {{ accountAge.toFixed(2) }} days</p>
-          <button
-            class="logout-button"
-            @click="logout"
-          >
-            Logout
-          </button>
+          <button class="logout-button" @click="logout">Logout</button>
         </CommonCard>
       </ClientOnly>
     </template>
-</Activity>
+  </Activity>
 </template>
 
 <script setup lang="ts">
@@ -27,9 +20,9 @@ definePageMeta({
 });
 const userStore = useUserStore();
 const authStore = useAuthStore();
-const { username , email,  accountAge } = storeToRefs(userStore);
+const { username, email, accountAge } = storeToRefs(userStore);
 
-const logout = async(): Promise<void> => {
+const logout = async (): Promise<void> => {
   /*
     Logout the user and return to the login page
   */
@@ -48,12 +41,11 @@ const logout = async(): Promise<void> => {
 }
 
 .logout-button {
-
   padding: $small-text-size $medium-large-text-size;
   margin: $medium-large-text-size;
 
   font-size: $large-text-size;
-  
+
   background-color: $dark-orange-color;
   color: $white-color;
   opacity: 0.8;
@@ -61,11 +53,9 @@ const logout = async(): Promise<void> => {
   border: none;
   border-radius: 0.75rem;
 
-
   &:hover {
     background-color: $white-color;
     color: $primary-orange-color;
   }
-
 }
 </style>

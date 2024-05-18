@@ -63,10 +63,12 @@ class DataEventSeries(BaseModel):
         self.title = self.title.strip().upper()
         return super().save(*args, **kwargs)
 
+
 class DataModel(BaseModel):
     """
     Represents a generic data model.
     """
+
     label = CharField(
         null=False,
         constraints=[Check("length(label) > 0"), Check("length(label) < 120")],
@@ -75,6 +77,7 @@ class DataModel(BaseModel):
     description = CharField(null=True)
     amount = DecimalField(null=False, decimal_places=4, default=0.0000)
     series = ForeignKeyField(DataEventSeries, on_delete="CASCADE")
+
     class Meta:
         constraints = [SQL("UNIQUE (series_id, label)")]
 
@@ -83,9 +86,11 @@ class DataEvent(DataModel):
     """
     Represents a single event in a series.
     """
+
     date = DateTimeField(
         null=False, index=True, default=datetime.datetime.now(datetime.UTC)
     )
+
     class Meta:
         indexes = ((("series", "label", "date"), True),)
 

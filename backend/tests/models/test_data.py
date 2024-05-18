@@ -197,14 +197,12 @@ class TestDataEventModel:
         assert created_event.date == DATA_DATE
         assert created_event.amount == DATA_AMOUNT
         assert created_event.series == event_series
-        
+
     def test_create_event_default_label(self, event_series: DataEventSeries) -> None:
         """
         Test creating a data event with a default label
         """
-        DataEvent.create(
-            date=DATA_DATE, amount=DATA_AMOUNT, series=event_series
-        )
+        DataEvent.create(date=DATA_DATE, amount=DATA_AMOUNT, series=event_series)
 
         created_event = DataEvent.select()[0]
         sanitized_series_tile = event_series.title.lower().replace(" ", "-")

@@ -3,10 +3,10 @@ export enum BannerType {
   INFO = "Info",
   WARNING = "Warning",
   ERROR = "Error",
-};
+}
 
 export enum FormInputType {
   TEXT = "text",
   HIDDEN = "password",
-  AREA = "textarea"
-};
+  AREA = "textarea",
+}
