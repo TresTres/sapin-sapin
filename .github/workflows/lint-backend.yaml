@@ -1,0 +1,33 @@
+name: Lint Backend
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs: 
+    lint-backend:
+        name: Run black
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.12
+
+            - name: Install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install poetry
+                poetry install
+
+            - name: Lint with Black
+              run: |
+                poetry run black --check backend
+
+            - name: Check for formatting changes
+              run: |
+                git diff --exit-code
