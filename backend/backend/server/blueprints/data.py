@@ -1,7 +1,9 @@
-from typing import Dict, List, ContextManager
+from collections import defaultdict
+from typing import Dict, List
 from flask import Blueprint, request, make_response, Response
 from flask_restful import Api, Resource, abort
 from flask_cors import cross_origin
+from playhouse.shortcuts import model_to_dict
 
 from backend.server.auth import jwt_authenticated
 
@@ -62,6 +64,13 @@ class DataSeries(Resource):
                 series_by_user = DataEventSeries.select().where(
                     DataEventSeries.owner == user
                 )
+                related_events = DataEvent.select().join(DataEventSeries).where(
+                    DataEventSeries.owner == user
+                )
+                events_by_series = defaultdict(list)
+                for event in related_events:
+                    events_by_series[event.series_id].append(model_to_dict(event, recurse=False))
+
             except User.DoesNotExist:
                 abort(404, message="User does not exist")
             except ValidationError as val_error:
@@ -73,7 +82,7 @@ class DataSeries(Resource):
                             "id": s.id,
                             "title": s.title,
                             "description": s.description,
-                            "events": [],
+                            "events": events_by_series[s.id],
                             "recurrences": [],
                         }
                         for s in series_by_user
@@ -95,7 +104,7 @@ class DataBatch(Resource):
         """
 
         return (
-            datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+            datetime.datetime.fromisoformat(date_str).date()
             if date_str
             else datetime.date.today()
         )
@@ -121,10 +130,12 @@ class DataBatch(Resource):
             except ValueError as ve:
                 # TODO: collect all applicable errors in a single item, but not with 
                 # multiple try-except blocks
+                
                 if "time data" in str(ve):
                     error_collection.append({ "item": ind + batch_offset, "message": "Date must be in the format YYYY-MM-DD", "field": "date" })
                 elif "could not convert string to float" in str(ve):
                     error_collection.append({ "item": ind + batch_offset, "message": "Amount must be a number", "field": "amount" })
+                error_collection.append({ "item": ind + batch_offset, "message": str(ve), "field": ""})
                 continue
             sanitized_batch.append(d)
         return {
@@ -133,7 +144,7 @@ class DataBatch(Resource):
         }
 
     def create_data_in_batch(
-        self, txn: ContextManager, series: DataEventSeries, data: List[Dict[str, str]]
+        self, series: DataEventSeries, data: List[Dict[str, str]]
     ) -> int:
         """
         Use the source data to create a batch of data associated to the series.
@@ -145,14 +156,18 @@ class DataBatch(Resource):
         with db.atomic():
             if data: 
                 for batch in chunked(data, 100):
-                    batch_result = self.sanitize_batch(batch, series.id, inserted_rows)
-                    errors.extend(batch_result["errors"])
-                    sanitized_data = batch_result["sanitized"]
-                    if not sanitized_data:
-                        continue
-                    inserted_rows += DataEvent.insert_many(
-                        sanitized_data
-                    ).as_rowcount().execute()
+                    try: 
+                        batch_result = self.sanitize_batch(batch, series.id, inserted_rows)
+                        errors.extend(batch_result["errors"])
+                        sanitized_data = batch_result["sanitized"]
+                        if not sanitized_data:
+                            continue
+                        inserted_rows += DataEvent.insert_many(
+                            sanitized_data
+                        ).as_rowcount().execute()
+                    except IntegrityError as ie:
+                        errors.append({"message": str(ie)})
+                        break
         return {
             "created": inserted_rows,
             "errors": errors
@@ -171,7 +186,7 @@ class DataBatch(Resource):
                 series = DataEventSeries.get(
                     DataEventSeries.id == request.json.get("series_id")
                 )
-                result = self.create_data_in_batch(atxn, series, request.json.get("data"))
+                result = self.create_data_in_batch(series, request.json.get("data"))
                 if result["created"] == 0:
                     atxn.rollback()
                     abort(400, message="No valid data were provided", batch_errors=result["errors"])
