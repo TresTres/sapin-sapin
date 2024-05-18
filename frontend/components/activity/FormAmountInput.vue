@@ -1,10 +1,10 @@
-import { LazyUserRegistration } from '../../.nuxt/components';
+import { LazyUserRegistration, Activity } from '../../.nuxt/components';
 <!-- component that handles formatting numerical input from free text -->
 
 <template>
   <div class="control-group">
     <label v-if="label" for="aligned-identifier">
-      {{ label }}
+      {{ `${deduction ? 'Deduct' : 'Add'} ${label}` }}
       <span v-if="required" class="required">*required</span>
     </label>
     <div class="formatted-amount">
@@ -125,6 +125,18 @@ import { LazyUserRegistration } from '../../.nuxt/components';
 
   .unit {
     @include input-label;
+    text-align: right;
     font-size: $large-text-size;
+  }
+
+  .toggle-button {
+    @include small-button;
+    min-width: 15%;
+    @include hover-change-colors(
+      $primary-orange-color,
+      $light-orange-color,
+      $white-color,
+      $dark-orange-color
+    );
   }
 </style>

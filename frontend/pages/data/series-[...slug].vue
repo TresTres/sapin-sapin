@@ -9,7 +9,7 @@
         <CommonCard class="edit-area">
           <ActivityForm
             v-bind="{
-              title: 'Add Financial Transaction',
+              title: 'Create Financial Transaction',
               buttonTitle: 'Create',
               bannerText: bannerError,
             }"
