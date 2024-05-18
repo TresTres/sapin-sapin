@@ -1,9 +1,14 @@
 name: Lint Backend
-
+run-name: Check ${{ github.head_ref }} 
 on:
   pull_request:
     branches:
       - main
+    types: 
+      - opened
+      - reopened
+      - edited
+      - synchronize 
 
 jobs: 
     lint-backend:
@@ -27,10 +32,11 @@ jobs:
                 pip install poetry
                 poetry install
 
-            - name: Lint with Black
+            - name: Lint with Black 🧹
               run: |
                 poetry run black --check backend
 
             - name: Check for formatting changes
               run: |
                 git diff --exit-code
+            - run: echo "Checks finished 🏁"
