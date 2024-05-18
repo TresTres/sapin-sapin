@@ -1,4 +1,3 @@
-import { Activity } from '../../.nuxt/components';
 <template>
   <Activity>
     <template #header>
@@ -32,7 +31,7 @@ import { Activity } from '../../.nuxt/components';
                 required: false,
               }"
             />
-            <fieldset class="small-fields"> 
+            <fieldset class="small-fields">
               <div style="flex: 5">
                 <ActivityFormAmountInput
                   v-model:amountValue="dataPoint.amount"
@@ -65,14 +64,26 @@ import { Activity } from '../../.nuxt/components';
             </template>
           </ActivityForm>
         </CommonCard>
+        <CommonCard class="events-area">
+          <ul>
+            <li v-for="event in series?.events" :key="event.label">
+              <div class="event-box">
+                <h3>{{ event.label }}</h3>
+                <p>{{ event.description }}</p>
+                <p>{{ event.amount }}</p>
+                <p>{{ event.date }}</p>
+              </div>
+            </li>
+          </ul>
+        </CommonCard>
         <div className="graph-area"></div>
-        <div className="cells-area"></div>
       </div>
     </template>
   </Activity>
 </template>
 
 <script lang="ts" setup>
+
   definePageMeta({
     title: `User Series`,
     layout: "dashboard",
@@ -80,7 +91,7 @@ import { Activity } from '../../.nuxt/components';
 
   const route = useRoute();
   const dataStore = useDataStore();
-  let series: DataEventSeries | null = null;
+  let series: DataEventSeries | null;
 
   //data event addition form
   const bannerError = ref("");
@@ -88,25 +99,79 @@ import { Activity } from '../../.nuxt/components';
     label: "",
     description: "",
     date: new Date(),
-    amount: 0.00,
+    amount: 0.0,
   });
+
   //retrieve series data
   onBeforeMount(() => {
     series = dataStore.getSeries(route.params.slug as string);
   });
 
-  const handleSave = () => {
-    console.log(dataPoint.value);
+  const handleSave = async (): Promise<void> => {
+    /*
+     * Attempt to add a new data point to the series, and display an error if the data point cannot be added.
+     */
+    
+
+    if(!checkPointUniqueness()) {
+      bannerError.value = "Data point with that name already exists";
+      return;
+    }
+    //update UI
+    bannerError.value = "";
+    (series as DataEventSeries).events.push(unref(dataPoint.value));
+    //POST to server
+    await useAuthorizingFetch("/api/data/batch", {
+      method: "POST", 
+      body: JSON.stringify({
+        series_id: (series as DataEventSeries).id,
+        data: [unref(dataPoint)]
+      }),
+    })
+      .then((response) => {
+        // replace element on success and cleanup
+        console.log(response);
+        // dataStore.replaceSeries(
+        //   proposedSeries.title,
+        //   response as DataEventSeries
+        // );
+        resetDataPoint();
+      })
+      .catch((error) => {
+        // remove element on failure
+        (series as DataEventSeries).events.pop();
+        // display error in form banner
+        if (error.data) {
+          const { message } = error.data;
+          bannerError.value = message;
+          return;
+        }
+        bannerError.value = error;
+      });
+  };
+
+  const checkPointUniqueness = () => {
+    /*
+     * Check if the data point is unique within the series.
+     */
+    return !(series as DataEventSeries).events.some(
+      (event) =>
+        event.label === dataPoint.value.label &&
+        event.date === dataPoint.value.date
+    );
   };
 
   const resetDataPoint = () => {
+    /*
+     * Reset the data point ref, clearing all connected form fields.
+     */
     dataPoint.value = {
       label: "",
       description: "",
       date: new Date(),
-      amount: 0.00,
+      amount: 0.0,
     };
-  };  
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -142,13 +207,24 @@ import { Activity } from '../../.nuxt/components';
     max-height: 100%;
   }
 
+  .events-area {
+    grid-area: B;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    li {
+      list-style: none;
+    }
+  }
+
+
   .small-fields {
-    
     border: none;
     display: flex;
     flex-direction: row;
 
-    gap: $small-text-size
+    gap: $small-text-size;
   }
 
   .add-node-button {

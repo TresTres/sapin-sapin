@@ -78,6 +78,8 @@
       id: "-0",
       title: seriesTitle.value,
       description: description.value,
+      events: [],
+      recurrences: [],
     };
     dataStore.addSeries(proposedSeries);
     // POST to server
