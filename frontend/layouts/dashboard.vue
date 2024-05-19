@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <Navbar :routes="appRoutes" />
+    <SideNavbar :routes="appRoutes" />
     <div class="dashboard-content">
       <slot />
     </div>
