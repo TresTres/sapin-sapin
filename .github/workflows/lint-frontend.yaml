@@ -1,0 +1,42 @@
+name: Lint Frontend
+run-name: Check ${{ github.head_ref }} 
+on:
+  pull_request:
+    branches:
+      - main
+    types: 
+      - opened
+      - reopened
+      - edited
+      - synchronize 
+
+jobs: 
+    lint-backend:
+        name: Run Eslint
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: frontend
+        steps: 
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 16
+
+            - name: Install yarn dependencies
+              run: |
+                yarn install --frozen-lockfile
+
+            - name: Lint with ESLint 🧹
+              run: |
+                yarn run lint
+
+            - name: Check for formatting changes
+              run: |
+                git diff --exit-code
+
+            - run: echo "Checks finished 🏁"
