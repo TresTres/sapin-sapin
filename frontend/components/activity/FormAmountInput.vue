@@ -1,4 +1,3 @@
-import { LazyUserRegistration, Activity } from '../../.nuxt/components';
 <!-- component that handles formatting numerical input from free text -->
 
 <template>

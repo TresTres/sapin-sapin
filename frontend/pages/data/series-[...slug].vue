@@ -1,5 +1,5 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header>
       <h2>{{ series?.title || "" }}</h2>
       <p>{{ series?.description || "" }}</p>
@@ -74,7 +74,7 @@
         <div className="graph-area"></div>
       </div>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script lang="ts" setup>

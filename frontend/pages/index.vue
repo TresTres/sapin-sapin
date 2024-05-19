@@ -1,5 +1,5 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header> Landing Page </template>
     <template #content>
       <div slot>
@@ -14,7 +14,7 @@
         </p>
       </div>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script setup lang="ts">

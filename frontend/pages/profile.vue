@@ -1,5 +1,5 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header> Profile </template>
     <template #content>
       <ClientOnly>
@@ -11,7 +11,7 @@
         </CommonCard>
       </ClientOnly>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script setup lang="ts">

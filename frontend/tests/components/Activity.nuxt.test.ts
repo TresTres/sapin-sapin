@@ -1,12 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
-import Activity from "@/components/Activity.vue";
+import ActivityShell from "~/components/activity/ActivityShell.vue";
 import { Html } from "../../.nuxt/components";
 
 describe("Activity", () => {
   it("Places activity content into an overlay component correctly", () => {
-    const wrapper = shallowMount(Activity, {
+    const wrapper = shallowMount(ActivityShell, {
       slots: {
         header: "Activity Name",
         bar: "<div>Bar</div>",
