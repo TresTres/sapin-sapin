@@ -13,7 +13,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint --ext \".ts,.vue\" --ignore-path .dockerignore .",
-    "lintfix": "prettier --write --list-different . && yarn lint --fix",
+    "lint:fix": "prettier --write --list-different . && yarn lint --fix",
     "test:watch": "vitest",
     "test": "vitest --run"
   },

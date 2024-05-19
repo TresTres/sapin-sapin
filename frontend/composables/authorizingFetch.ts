@@ -44,7 +44,7 @@ export const useAuthorizingFetch = async (
       headers: { Authorization: `Bearer ${authStore.accessToken}` },
     });
   } catch (error: any) {
-    if (error.status === 401 || error.message == "No token found") {
+    if (error.status === 401 || error.message === "No token found") {
       // attempt to get a new token
       await refreshAccessToken();
       if (authStore.accessToken) {
@@ -83,16 +83,12 @@ const refreshAccessToken = async (): Promise<void> => {
       method: "GET",
       headers: { Cookie: `refresh_token=${refreshToken}` },
     })
-    .then(async (resp: FetchResponse<any>): Promise<void> => {
-      const {
-        headers,
-        _data: { user },
-      } = resp;
+    .then((resp: FetchResponse<any>): void => {
+      const { headers } = resp;
       authStore.authError = "";
       authStore.accessToken = headers.get("Authorization")?.split(" ")[1] || "";
     })
     .catch((error: FetchError): void => {
-      console.error(error);
       authStore.clearAuth();
       if (error.status === 401) {
         authStore.authError = "Invalid refresh token.";
