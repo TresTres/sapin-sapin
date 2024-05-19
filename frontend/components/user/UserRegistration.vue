@@ -63,7 +63,7 @@ const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 
-const validatePasswordMatch = async (): Promise<boolean> => {
+const validatePasswordMatch = (): Promise<boolean> => {
   return new Promise<boolean>((resolve) =>
     resolve(confirmPassword.value === password.value),
   );
@@ -77,7 +77,7 @@ const handleRegistration = async (): Promise<void> => {
       }
     })
     .then(() =>
-      useBaseFetch("/registration", {
+      useFetch("/registration", {
         method: "POST",
         body: JSON.stringify({
           username: username.value,
