@@ -136,8 +136,7 @@ class DataBatch(Resource):
                 )
                 continue
             # TODO: replace all this with validation via pydantic
-            
-            
+
             try:
                 d["series"] = series_id
                 d["amount"] = float(d.get("amount", 0.0))

@@ -73,7 +73,6 @@ class TestDataBatchCreation:
         assert "batch_errors" in response.json
         assert len(response.json["batch_errors"]) == 2
 
-
     def test_batch_creation_total_success(
         self,
         client_with_data_series: werkzeug.test.Client,
