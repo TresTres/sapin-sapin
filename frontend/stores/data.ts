@@ -19,13 +19,18 @@ export const useDataStore = defineStore("dataStore", {
       }
     },
     getSeries(title: string): DataEventSeries | null {
-      if (this.allSeries.hasOwnProperty(lowerCase(title))) {
+      if (
+        Object.prototype.hasOwnProperty.call(this.allSeries, lowerCase(title))
+      ) {
         return this.allSeries[lowerCase(title)];
       }
       return null;
     },
     has(title: string): boolean {
-      return this.allSeries.hasOwnProperty(lowerCase(title));
+      return Object.prototype.hasOwnProperty.call(
+        this.allSeries,
+        lowerCase(title),
+      );
     },
     replaceSeries(title: string, series: DataEventSeries): boolean {
       if (this.has(title)) {

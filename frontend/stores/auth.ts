@@ -39,7 +39,7 @@ export const useAuthStore = defineStore("authStore", {
           } else {
             this.authError =
               "An error occurred on login.  Please retry again later.";
-            console.error(error.data);
+            console.error(error.data); // TODO: replace with winston
           }
         });
     },

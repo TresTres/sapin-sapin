@@ -98,8 +98,8 @@ const handleRegistration = async (): Promise<void> => {
           throw new Error("Unspecified error");
         }
       }
-      const newUser = data.value as UserRegistrationObject;
-      userRegistrationError.value = `Registration successful for username: ${newUser.newUser}.  Proceed to login.`;
+      const { newUser } = data.value;
+      userRegistrationError.value = `Registration successful for username: ${newUser}.  Proceed to login.`;
     })
     .catch((error) => {
       userRegistrationError.value = error.message;

@@ -121,9 +121,9 @@ const handleSave = async (): Promise<void> => {
       data: [unref(dataPoint)],
     }),
   })
-    .then((response) => {
+    .then((_) => {
       // replace element on success and cleanup
-      console.log(response);
+      // console.log(response);
       // dataStore.replaceSeries(
       //   proposedSeries.title,
       //   response as DataEventSeries
