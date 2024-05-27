@@ -9,6 +9,9 @@ on:
       - reopened
       - edited
       - synchronize 
+    paths:
+      - 'backend/**'
+
 
 jobs: 
     lint-backend:
