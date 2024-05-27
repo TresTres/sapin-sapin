@@ -117,7 +117,7 @@ const handleSave = async (): Promise<void> => {
   await useAuthorizingFetch("/api/data/batch", {
     method: "POST",
     body: JSON.stringify({
-      series_id: (series as DataEventSeries).id,
+      seriesId: (series as DataEventSeries).id,
       data: [unref(dataPoint)],
     }),
   })

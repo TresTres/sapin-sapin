@@ -99,7 +99,7 @@ const handleRegistration = async (): Promise<void> => {
         }
       }
       const newUser = data.value as UserRegistrationObject;
-      userRegistrationError.value = `Registration successful for username: ${newUser.new_user}.  Proceed to login.`;
+      userRegistrationError.value = `Registration successful for username: ${newUser.newUser}.  Proceed to login.`;
     })
     .catch((error) => {
       userRegistrationError.value = error.message;
