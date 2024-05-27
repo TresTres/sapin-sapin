@@ -125,16 +125,19 @@ class DataBatch(Resource):
         error_collection = []
 
         for ind, d in enumerate(batch):
+            item_number = ind + batch_offset
             if not d:
                 error_collection.append(
                     {
-                        "item": ind + batch_offset,
+                        "item": item_number,
                         "message": "Item was empty",
                         "field": "",
                     }
                 )
                 continue
             # TODO: replace all this with validation via pydantic
+            
+            
             try:
                 d["series"] = series_id
                 d["amount"] = float(d.get("amount", 0.0))
@@ -146,7 +149,7 @@ class DataBatch(Resource):
                 if "time data" in str(ve):
                     error_collection.append(
                         {
-                            "item": ind + batch_offset,
+                            "item": item_number,
                             "message": "Date must be in the format YYYY-MM-DD",
                             "field": "date",
                         }
@@ -154,7 +157,7 @@ class DataBatch(Resource):
                 elif "could not convert string to float" in str(ve):
                     error_collection.append(
                         {
-                            "item": ind + batch_offset,
+                            "item": item_number,
                             "message": "Amount must be a number",
                             "field": "amount",
                         }

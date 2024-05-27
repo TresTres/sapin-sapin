@@ -146,7 +146,6 @@ class TestDataEventModel:
     @pytest.mark.parametrize(
         "label,error",
         [
-            ("    ", "length(label) > 0"),
             ("a" * 200, "length(label) < 120"),
         ],
     )

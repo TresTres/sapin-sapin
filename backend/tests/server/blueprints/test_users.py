@@ -120,7 +120,6 @@ class TestUserLogin:
             assert "password" not in response.json["user"]
             assert "Authorization" in response.headers
             assert "Bearer" in response.headers["Authorization"]
-            # mock_set_cookie.assert_called_once_with(
-            #     "refresh_token", mock_set_cookie.call_args[0][1], httponly=True, max_age=1800
-            # )
-            mock_set_cookie.assert_not_called()
+            mock_set_cookie.assert_called_once()
+            assert mock_set_cookie.call_args[0] >= ("refresh_token",)
+            assert mock_set_cookie.call_args[1].items() >= {'httponly': True, 'samesite': 'Strict'}.items()

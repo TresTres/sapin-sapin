@@ -15,7 +15,7 @@ class TestJWTAuthenticatedRoute:
 
         response = client_with_protected_route.post("/protected")
         assert response.status_code == 401
-        assert response.json["message"] == "No token provided"
+        assert response.json["message"] == "No authorization header"
 
     def test_jwt_authenticate_failure_with_invalid_token(
         self, client_with_protected_route: werkzeug.test.Client
