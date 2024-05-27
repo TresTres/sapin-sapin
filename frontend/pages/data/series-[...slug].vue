@@ -1,5 +1,5 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header>
       <h2>{{ series?.title || "" }}</h2>
       <p>{{ series?.description || "" }}</p>
@@ -74,7 +74,7 @@
         <div className="graph-area"></div>
       </div>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script lang="ts" setup>
@@ -117,13 +117,13 @@ const handleSave = async (): Promise<void> => {
   await useAuthorizingFetch("/api/data/batch", {
     method: "POST",
     body: JSON.stringify({
-      series_id: (series as DataEventSeries).id,
+      seriesId: (series as DataEventSeries).id,
       data: [unref(dataPoint)],
     }),
   })
-    .then((response) => {
+    .then((_) => {
       // replace element on success and cleanup
-      console.log(response);
+      // console.log(response);
       // dataStore.replaceSeries(
       //   proposedSeries.title,
       //   response as DataEventSeries

@@ -21,7 +21,7 @@ export const useUserStore = defineStore("userStore", {
     fillData(user: UserResponseObject) {
       this.username = user.username;
       this.email = user.email;
-      this.dateJoined = new Date(user.date_joined);
+      this.dateJoined = new Date(user.dateJoined);
     },
   },
 });

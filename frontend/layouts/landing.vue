@@ -1,11 +1,13 @@
 <template>
-  <div class="page-content">
-    <div class="landing-card">
-      <slot />
+  <div>
+    <div class="page-content">
+      <div class="landing-card">
+        <slot />
+      </div>
     </div>
-  </div>
-  <div class="footer">
-    <div>Footer Text</div>
+    <div class="footer">
+      <div>Footer Text</div>
+    </div>
   </div>
 </template>
 

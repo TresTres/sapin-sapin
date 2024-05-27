@@ -2,16 +2,16 @@ import { mountSuspended } from "@nuxt/test-utils/runtime";
 import type { DOMWrapper } from "@vue/test-utils";
 import { describe, it, expect } from "vitest";
 
-import Navbar from "@/components/Navbar.vue";
+import SideNavbar from "@/components/SideNavbar.vue";
 
-describe("Navbar component", () => {
+describe("SideNavbar component", () => {
   it("should prepare a NuxtLink for each route", async () => {
     const routeProps = [
       { name: "Foo", path: "/foo" },
       { name: "Bar", path: "/bar" },
     ];
 
-    const navbarComponent = await mountSuspended(Navbar, {
+    const navbarComponent = await mountSuspended(SideNavbar, {
       props: {
         routes: routeProps,
       },

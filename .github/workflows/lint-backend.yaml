@@ -1,0 +1,46 @@
+name: Lint Backend
+run-name: Check ${{ github.head_ref }} 
+on:
+  pull_request:
+    branches:
+      - main
+    types: 
+      - opened
+      - reopened
+      - edited
+      - synchronize 
+    paths:
+      - 'backend/**'
+
+
+jobs: 
+    lint-backend:
+        name: Run black
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: backend
+        steps: 
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            
+            - name: Install poetry
+              run: pipx install poetry
+
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.12
+                cache: poetry
+
+            - name: Install dependencies
+              run: poetry install
+
+            - name: Lint with Black 🧹
+              run: |
+                poetry run black --check backend
+
+            - name: Check for formatting changes
+              run: |
+                git diff --exit-code
+            - run: echo "Checks finished 🏁"

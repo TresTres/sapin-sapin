@@ -51,7 +51,21 @@ def jwt_authenticated(f: typing.Callable) -> typing.Callable:
 
     @wraps(f)
     def decorated(*args, **kwargs) -> Response:
-        token = request.headers.get("Authorization").split(" ")[1]
+        authorization = request.headers.get("Authorization")
+        if not authorization:
+            logger.error("No authorization header")
+            return (
+                jsonify(
+                    {
+                        "message": "No authorization header",
+                        "headers": {
+                            "WWW-Authenticate": "Basic realm='Valid login required'"
+                        },
+                    }
+                ),
+                401,
+            )
+        token = authorization.split(" ")[1]
         if not token:
             logger.error("No token provided")
             return (

@@ -1,5 +1,5 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header>User Financial Data</template>
     <template #content>
       <div class="content-container">
@@ -45,7 +45,7 @@
         </CommonCard>
       </div>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script lang="ts" setup>
@@ -64,8 +64,8 @@ const dataStore = useDataStore();
 
 // get series
 onBeforeMount(async () => {
-  const { owned_series } = await useAuthorizingFetch("/api/data/series");
-  dataStore.loadMultipleSeries(owned_series as DataEventSeries[]);
+  const { ownedSeries } = await useAuthorizingFetch("/api/data/series");
+  dataStore.loadMultipleSeries(ownedSeries as DataEventSeries[]);
 });
 
 const handleSeriesCreation = async (): Promise<void> => {

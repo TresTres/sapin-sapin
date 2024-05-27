@@ -1,8 +1,8 @@
 <template>
-  <Activity>
+  <ActivityShell>
     <template #header> Landing Page </template>
     <template #content>
-      <div slot>
+      <div>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -14,7 +14,7 @@
         </p>
       </div>
     </template>
-  </Activity>
+  </ActivityShell>
 </template>
 
 <script setup lang="ts">

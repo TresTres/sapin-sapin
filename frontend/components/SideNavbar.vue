@@ -1,7 +1,7 @@
 <template>
   <aside class="navbar-container">
     <ul class="navbar-list">
-      <li v-for="route in routes" class="navbar-item">
+      <li v-for="(route, index) in routes" :key="index" class="navbar-item">
         <NuxtLink class="navbar-link" :to="`/${route.path}`">
           <div class="link-container">
             {{ route.name }}

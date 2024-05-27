@@ -63,7 +63,7 @@ const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 
-const validatePasswordMatch = async (): Promise<boolean> => {
+const validatePasswordMatch = (): Promise<boolean> => {
   return new Promise<boolean>((resolve) =>
     resolve(confirmPassword.value === password.value),
   );
@@ -77,7 +77,7 @@ const handleRegistration = async (): Promise<void> => {
       }
     })
     .then(() =>
-      useBaseFetch("/registration", {
+      useFetch("/registration", {
         method: "POST",
         body: JSON.stringify({
           username: username.value,
@@ -98,8 +98,8 @@ const handleRegistration = async (): Promise<void> => {
           throw new Error("Unspecified error");
         }
       }
-      const newUser = data.value as UserRegistrationObject;
-      userRegistrationError.value = `Registration successful for username: ${newUser.new_user}.  Proceed to login.`;
+      const { newUser } = data.value;
+      userRegistrationError.value = `Registration successful for username: ${newUser}.  Proceed to login.`;
     })
     .catch((error) => {
       userRegistrationError.value = error.message;

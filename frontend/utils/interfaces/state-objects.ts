@@ -1,11 +1,3 @@
-export type DataEventSeries = {
-  id: string;
-  title: string;
-  description: string;
-  events: DataEvent[];
-  recurrences: DataRecurrence[];
-};
-
 export type DataEvent = {
   label: string;
   description: string;
@@ -16,8 +8,16 @@ export type DataEvent = {
 export type DataRecurrence = {
   label: string;
   description: string;
-  start_date: Date;
-  end_date?: Date;
+  startDate: Date;
+  endDate?: Date;
   interval: number;
   amount: number;
+};
+
+export type DataEventSeries = {
+  id: string;
+  title: string;
+  description: string;
+  events: DataEvent[];
+  recurrences: DataRecurrence[];
 };

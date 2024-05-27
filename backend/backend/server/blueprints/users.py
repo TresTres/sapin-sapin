@@ -4,6 +4,7 @@ import datetime
 from flask import Blueprint, request, make_response, Response, current_app
 from flask_restful import Api, Resource, abort
 from flask_cors import cross_origin
+from playhouse.shortcuts import model_to_dict
 
 
 from backend.models import *
@@ -37,7 +38,7 @@ class UserRegistration(Resource):
                 abort(409, message="User already exists")
             except ValidationError as val_error:
                 abort(400, message=val_error.args[0])
-            return make_response({"new_user": user.username}, 201)
+            return make_response({"newUser": user.username}, 201)
 
 
 class UserLogin(Resource):
@@ -59,9 +60,13 @@ class UserLogin(Resource):
                     User.is_active == True,
                 )
                 if user.check_password(request.json["password"]):
-                    result_user = user.select(
-                        User.username, User.email, User.date_joined
-                    ).dicts()[0]
+                    result_user = model_to_dict(
+                        user,
+                        recurse=False,
+                        fields_from_query=User.select(
+                            User.username, User.email, User.date_joined
+                        ),
+                    )
                     fingerprint = secrets.token_urlsafe(32)
                     access_token = generate_access_token(user, fingerprint)
                     refresh_token = generate_refresh_token(user, fingerprint)
