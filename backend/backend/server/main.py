@@ -1,3 +1,4 @@
+import os
 from flask import Flask, Response, request
 from flask_cors import CORS
 
@@ -22,6 +23,7 @@ def create_app(mode: str) -> Flask:
     configure_logging(app.config)
 
     # Prepare the database and set up routes
+    os.makedirs("sqlite", exist_ok=True)
     db.init(app.config.get("DATABASE_URL", ":memory:"))
     migrate(db)
     if mode == "DEV":
