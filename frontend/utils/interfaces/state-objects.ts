@@ -16,8 +16,8 @@ export type DataEvent = {
 export type DataRecurrence = {
   label: string;
   description: string;
-  start_date: Date;
-  end_date?: Date;
+  startDate: Date;
+  endDate?: Date;
   interval: number;
   amount: number;
 };
