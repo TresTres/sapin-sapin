@@ -81,7 +81,7 @@ class DataSeries(Resource):
                 abort(400, message=val_error.args[0])
             return make_response(
                 {
-                    "owned_series": [
+                    "ownedSeries": [
                         {
                             "id": s.id,
                             "title": s.title,
@@ -210,7 +210,7 @@ class DataBatch(Resource):
         with db.atomic() as atxn:
             try:
                 series = DataEventSeries.get(
-                    DataEventSeries.id == request.json.get("series_id")
+                    DataEventSeries.id == request.json.get("seriesId")
                 )
                 result = self.create_data_in_batch(series, request.json.get("data"))
                 if result["created"] == 0:
@@ -218,7 +218,7 @@ class DataBatch(Resource):
                     abort(
                         400,
                         message="No valid data were provided",
-                        batch_errors=result["errors"],
+                        batchErrors=result["errors"],
                     )
             except DataEventSeries.DoesNotExist:
                 atxn.rollback()

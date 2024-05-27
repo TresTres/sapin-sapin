@@ -27,7 +27,7 @@ class TestDataBatchCreation:
         """
         response = client.post(
             create_resource_path(client.application.config, "data/batch"),
-            json={"series_id": 1, "data": []},
+            json={"seriesId": 1, "data": []},
             headers=valid_user_token_header,
         )
         assert response.status_code == 404
@@ -45,7 +45,7 @@ class TestDataBatchCreation:
             create_resource_path(
                 client_with_data_series.application.config, "data/batch"
             ),
-            json={"series_id": VALID_SERIES_ID, "data": []},
+            json={"seriesId": VALID_SERIES_ID, "data": []},
             headers=valid_user_token_header,
         )
         assert response.status_code == 400
@@ -64,14 +64,14 @@ class TestDataBatchCreation:
                 client_with_data_series.application.config, "data/batch"
             ),
             json={
-                "series_id": str(VALID_SERIES_ID),
+                "seriesId": str(VALID_SERIES_ID),
                 "data": [{}, {"date": "bad date"}],
             },
             headers=valid_user_token_header,
         )
         assert response.status_code == 400
-        assert "batch_errors" in response.json
-        assert len(response.json["batch_errors"]) == 2
+        assert "batchErrors" in response.json
+        assert len(response.json["batchErrors"]) == 2
 
     def test_batch_creation_total_success(
         self,
@@ -85,7 +85,7 @@ class TestDataBatchCreation:
             create_resource_path(
                 client_with_data_series.application.config, "data/batch"
             ),
-            json={"series_id": VALID_SERIES_ID, "data": self.batch_helper()},
+            json={"seriesId": VALID_SERIES_ID, "data": self.batch_helper()},
             headers=valid_user_token_header,
         )
         assert response.status_code == 201
@@ -106,7 +106,7 @@ class TestDataBatchCreation:
                 client_with_data_series.application.config, "data/batch"
             ),
             json={
-                "series_id": VALID_SERIES_ID,
+                "seriesId": VALID_SERIES_ID,
                 "data": self.batch_helper()
                 + [{"label": "bad data", "date": "bad date", "amount": "bad amount"}],
             },

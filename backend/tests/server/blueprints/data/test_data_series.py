@@ -108,9 +108,9 @@ class TestDataSeriesRetrieval:
             headers=valid_user_token_header,
         )
         assert response.status_code == 200
-        assert "owned_series" in response.json
-        assert len(response.json["owned_series"]) == 1
-        assert response.json["owned_series"][0]["title"] == VALID_SERIES_TITLE.upper()
+        assert "ownedSeries" in response.json
+        assert len(response.json["ownedSeries"]) == 1
+        assert response.json["ownedSeries"][0]["title"] == VALID_SERIES_TITLE.upper()
         assert (
-            response.json["owned_series"][0]["description"] == VALID_SERIES_DESCRIPTION
+            response.json["ownedSeries"][0]["description"] == VALID_SERIES_DESCRIPTION
         )

@@ -68,7 +68,7 @@ class TestUserRegistration:
             },
         )
         assert response.status_code == 201
-        assert "new_user" in response.json
+        assert "newUser" in response.json
 
 
 class TestUserLogin:
