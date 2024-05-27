@@ -7,7 +7,6 @@ class TestCreateResourcePath:
         assert create_resource_path(fake_config, "foo") == "/vtest/foo"
 
 
-
 class TestCamelCasePayload:
     def test_camel_case_payload(self):
         payload = {
@@ -18,7 +17,7 @@ class TestCamelCasePayload:
             "snakeCaseKey": "value",
             "key": "value",
         }
-        
+
     def test_camel_case_payload_nested(self):
         payload = {
             "snake_case_key": {
@@ -36,21 +35,37 @@ class TestCamelCasePayload:
                 "snakeCaseKey": "value",
             },
         }
-        
+
     def test_camel_case_payload_list(self):
         payload = {
-            "snake_case_key": ["snake_case_string", "key", {
-                "snake_case_key": "value",   
-            }],
-            "key": ["snake_case_string", "key", {
-                "snake_case_key": "value",   
-            }],
+            "snake_case_key": [
+                "snake_case_string",
+                "key",
+                {
+                    "snake_case_key": "value",
+                },
+            ],
+            "key": [
+                "snake_case_string",
+                "key",
+                {
+                    "snake_case_key": "value",
+                },
+            ],
         }
         assert camel_case_payload(payload) == {
-            "snakeCaseKey": ["snake_case_string", "key", {
-                "snakeCaseKey": "value",   
-            }],
-            "key": ["snake_case_string", "key", {
-                "snakeCaseKey": "value",   
-            }],
+            "snakeCaseKey": [
+                "snake_case_string",
+                "key",
+                {
+                    "snakeCaseKey": "value",
+                },
+            ],
+            "key": [
+                "snake_case_string",
+                "key",
+                {
+                    "snakeCaseKey": "value",
+                },
+            ],
         }

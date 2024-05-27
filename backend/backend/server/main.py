@@ -42,14 +42,12 @@ def create_app(mode: str) -> Flask:
         logger.debug(f"Request Headers: {request.headers}")
         logger.debug(f"Request Data: {request.get_data()}")
         db.connect()
-        
+
     @app.after_request
     def _convert_payload(response: Response) -> Response:
         # TODO: If you have to change this, switch to creating a custom response class
         if response.is_json:
-            response.data = json.dumps(
-                camel_case_payload(response.get_json())
-            )
+            response.data = json.dumps(camel_case_payload(response.get_json()))
         return response
 
     @app.after_request

@@ -12,6 +12,7 @@ def camel_case_payload(payload: dict) -> dict:
     """
     Convert a payload so that all snake_case keys are in camelCase
     """
+
     def camel_case(key: str) -> str:
         tokens = key.split("_")
         return tokens[0] + "".join(token.capitalize() for token in tokens[1:])
@@ -22,5 +23,5 @@ def camel_case_payload(payload: dict) -> dict:
         if isinstance(value, list):
             return [convert(item) for item in value]
         return value
-    
+
     return {camel_case(key): convert(value) for key, value in payload.items()}

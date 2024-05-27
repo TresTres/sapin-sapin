@@ -61,9 +61,11 @@ class UserLogin(Resource):
                 )
                 if user.check_password(request.json["password"]):
                     result_user = model_to_dict(
-                        user, recurse=False, fields_from_query=User.select(
+                        user,
+                        recurse=False,
+                        fields_from_query=User.select(
                             User.username, User.email, User.date_joined
-                        )
+                        ),
                     )
                     fingerprint = secrets.token_urlsafe(32)
                     access_token = generate_access_token(user, fingerprint)
